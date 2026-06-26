@@ -1,0 +1,11 @@
+*.jar binary
+*.gradle text
+*.apk binary
+*.aab binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.pdf binary
+*.ttf binary
+*.ico binary

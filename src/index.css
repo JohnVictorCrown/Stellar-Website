@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'Neue Frutiger World';
+  src: url('/neue_frutiger_world_regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --font-sans: "Neue Frutiger World", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Neue Frutiger World", ui-sans-serif, system-ui, sans-serif;
+
+  
+  --color-primary: #FFFFFF;
+  --color-on-primary: #000000;
+  --color-secondary: #E0B0FF;
+  --color-tertiary: #00FFFF;
+  --color-surface: rgba(0, 0, 0, 0.2);
+  --color-surface-variant: rgba(0, 0, 0, 0.4);
+  --color-on-background: #E0E0E0;
+  --color-on-surface: #EEEEEE;
+}
+
+@layer base {
+  body {
+    background: linear-gradient(to bottom, #220000 0%, #1A0033 25%, #001133 50%, #002200 75%, #000000 100%);
+    background-attachment: fixed;
+    color: var(--color-on-background);
+    @apply font-sans antialiased overflow-hidden min-h-screen;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif text-[var(--color-primary)];
+  }
+}
+
+@layer utilities {
+  .safe-top {
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+

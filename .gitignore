@@ -1,0 +1,11 @@
+node_modules/
+build/
+dist/
+coverage/
+.DS_Store
+*.log
+.env*
+debug.ts
+!.env.example
+*.terabox.uploading.cfg
+package-lock.json

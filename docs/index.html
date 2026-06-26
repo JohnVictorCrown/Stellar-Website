@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stellarium Foundation — Install the App</title>
+  <meta name="description" content="Download the Stellarium Foundation app. Access the Library, Media, Quizzes, and more on iOS, Android, and Web." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✦</text></svg>" />
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      background: linear-gradient(180deg, #172554 0%, #1e3a5f 30%, #1e3a5f 70%, #172554 100%);
+      color: #fff;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-x: hidden;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 720px;
+      padding: 40px 24px 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Badge */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      background: rgba(45, 212, 191, 0.1);
+      border: 1px solid rgba(45, 212, 191, 0.2);
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: #2dd4bf;
+      margin-bottom: 32px;
+    }
+
+    /* Logo + Title */
+    .logo-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .logo-wrap h1 {
+      font-size: 40px;
+      font-weight: 400;
+      text-align: center;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+    .logo-wrap h1 span {
+      display: block;
+      margin-top: 4px;
+      background: linear-gradient(90deg, #2dd4bf, #67e8f9, #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .subtitle {
+      font-size: 15px;
+      color: rgba(255,255,255,0.7);
+      text-align: center;
+      max-width: 480px;
+      line-height: 1.6;
+      margin: 20px 0 32px;
+      font-weight: 300;
+    }
+
+    /* CTA */
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 36px;
+      background: linear-gradient(135deg, #2dd4bf, #34d399);
+      color: #000;
+      font-weight: 900;
+      font-size: 14px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 999px;
+      transition: all 0.3s;
+      box-shadow: 0 0 30px rgba(45, 212, 191, 0.3);
+    }
+    .cta:hover { transform: scale(1.05); box-shadow: 0 0 50px rgba(45, 212, 191, 0.5); }
+
+    .platform-badges {
+      display: flex;
+      gap: 24px;
+      margin-top: 24px;
+      opacity: 0.5;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+    }
+    .platform-badges svg { width: 16px; height: 16px; fill: currentColor; }
+
+    /* Section title */
+    .section-title {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      margin: 56px 0 24px;
+      text-align: center;
+    }
+
+    /* Feature grid */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      width: 100%;
+    }
+    .card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 14px;
+      padding: 20px;
+      transition: all 0.3s;
+      text-decoration: none;
+      color: inherit;
+    }
+    .card:hover { background: rgba(255,255,255,0.07); border-color: rgba(45,212,191,0.3); }
+    .card .icon {
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      background: rgba(45,212,191,0.1);
+      border: 1px solid rgba(45,212,191,0.15);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 12px;
+      font-size: 16px;
+    }
+    .card h3 { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+    .card p { font-size: 12px; color: rgba(255,255,255,0.5); line-height: 1.5; }
+
+    /* Water projects grid */
+    .water-grid { display: grid; grid-template-columns: 1fr; gap: 10px; width: 100%; }
+    @media (min-width: 480px) { .water-grid { grid-template-columns: 1fr 1fr; } }
+    .water-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px;
+      padding: 16px;
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.3s;
+    }
+    .water-card:hover { background: rgba(255,255,255,0.06); border-color: rgba(45,212,191,0.3); transform: scale(1.02); }
+    .water-card h4 { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+    .water-card p { font-size: 11px; color: rgba(255,255,255,0.45); line-height: 1.5; }
+
+    /* Action links */
+    .actions { display: flex; flex-wrap: wrap; gap: 10px; width: 100%; margin-top: 16px; }
+    .action-btn {
+      flex: 1;
+      min-width: 140px;
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.04);
+      color: #fff;
+      text-decoration: none;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-align: center;
+      transition: all 0.3s;
+    }
+    .action-btn:hover { background: rgba(255,255,255,0.08); transform: scale(1.02); }
+
+    /* Social links */
+    .social-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
+    .social-link {
+      display: flex; align-items: center; gap: 10px;
+      padding: 12px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      text-decoration: none; color: inherit;
+      font-size: 12px; font-weight: 500;
+      transition: all 0.3s;
+    }
+    .social-link:hover { background: rgba(255,255,255,0.07); }
+    .social-link svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+    .footer { margin-top: 48px; font-size: 11px; color: rgba(255,255,255,0.3); text-align: center; }
+
+    /* Responsive */
+    @media (min-width: 600px) {
+      .container { padding: 60px 32px 100px; }
+      .logo-wrap h1 { font-size: 56px; }
+      .subtitle { font-size: 17px; }
+      .grid { gap: 16px; }
+      .card { padding: 24px; }
+      .card h3 { font-size: 15px; }
+      .card p { font-size: 13px; }
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- Badge -->
+    <div class="badge">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      Now Available
+    </div>
+
+    <!-- Hero -->
+    <div class="logo-wrap">
+      <h1>Stellarium<br /><span>Foundation</span></h1>
+    </div>
+    <p class="subtitle">
+      An institution to propel global wealth creation and wellness through innovative technology, strategic advising, and sovereign enterprise.
+    </p>
+    <a href="https://github.com/StellariumFoundation/Stellar-Website/releases" class="cta" target="_blank" rel="noopener">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><path d="M9 9h.01M15 9h.01M9 13h6"/></svg>
+      Install the App
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+
+    <div class="platform-badges">
+      <div class="flex items-center gap-1.5">
+        <svg viewBox="0 0 24 24"><path d="M17.523 16.435c-.526 1.213-.786 1.754-1.469 2.827-.954 1.5-2.301 3.37-3.971 3.387-1.487.017-1.872-.963-3.875-.953-2 .01-2.422.972-3.91.954-1.671-.018-2.975-1.74-3.929-3.24-2.722-4.296-3.004-9.329-1.326-12.012 1.196-1.912 3.08-3.03 4.854-3.03 1.819 0 2.962 1.008 4.463 1.008 1.45 0 2.332-1.008 4.459-1.008 1.594 0 3.273.91 4.457 2.474-3.914 2.228-3.28 7.416.677 8.848z"/></svg> iOS
+      </div>
+      <div class="flex items-center gap-1.5">
+        <svg viewBox="0 0 24 24"><path d="M3.609 1.814L13.792 12 3.61 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .609-.92zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.199l2.807 1.626a1 1 0 0 1 0 1.732l-2.807 1.626L15.206 12l2.492-2.492zM5.864 2.658L16.8 8.99l-2.302 2.302-8.634-8.634z"/></svg> Android
+      </div>
+      <div class="flex items-center gap-1.5">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><path d="M8 21h8M12 17v4"/></svg> Web / PWA
+      </div>
+    </div>
+
+    <!-- Features -->
+    <div class="section-title">What's Inside</div>
+    <div class="grid">
+      <div class="card">
+        <div class="icon">📚</div>
+        <h3>Stellarium Library</h3>
+        <p>Access foundational texts, strategy documents, and sovereign blueprints.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🎬</div>
+        <h3>Media & Broadcasts</h3>
+        <p>Watch presentations, tutorials, and strategic briefings.</p>
+      </div>
+      <div class="card">
+        <div class="icon">❓</div>
+        <h3>Interactive Quizzes</h3>
+        <p>Test your knowledge of wealth systems and governance models.</p>
+      </div>
+      <div class="card">
+        <div class="icon">💰</div>
+        <h3>Sponsor & Support</h3>
+        <p>Contribute directly and track your impact on global initiatives.</p>
+      </div>
+      <div class="card">
+        <div class="icon">✉️</div>
+        <h3>Secure Contact</h3>
+        <p>Encrypted channels with anonymous whistleblower portal.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🛡️</div>
+        <h3>Sovereign Tools</h3>
+        <p>Tor-secured messaging, WeChat, and decentralized communication.</p>
+      </div>
+    </div>
+
+    <!-- Water Suite -->
+    <div class="section-title">The Water Suite</div>
+    <p style="font-size:13px;color:rgba(255,255,255,0.5);text-align:center;max-width:480px;line-height:1.6;margin-bottom:20px;">
+      Revolutionary AI products designed to automate labor, democratize education, and engineer abundance.
+    </p>
+    <div class="water-grid">
+      <a href="https://www.notion.so/Water-Company-19bc1c04bbc180f188c1cd6f8d5c4681" class="water-card" target="_blank" rel="noopener"><h4>Water Company</h4><p>Autonomous AI companies with specialized agents as your digital workforce.</p></a>
+      <a href="https://www.notion.so/Water-Classroom-19cc1c04bbc180b18720d5998a6b081d" class="water-card" target="_blank" rel="noopener"><h4>Water Classroom</h4><p>AI-powered school with interactive content and 24/7 tutoring.</p></a>
+      <a href="https://www.notion.so/Water-AI-An-AI-Supermodel-184c1c04bbc180d0b23eefaad3f01c6a" class="water-card" target="_blank" rel="noopener"><h4>Water AI</h4><p>Unified AI Supermodel aggregating the world's best specialized AI.</p></a>
+      <a href="https://www.notion.so/Water-Economics-An-Artificial-Intelligence-Economy-Foundational-Model-16bc1c04bbc18044b6cbfcdbcf242d4c" class="water-card" target="_blank" rel="noopener"><h4>Water Economics</h4><p>AI economic model that validates theories and simulates policy impacts.</p></a>
+      <a href="https://www.notion.so/Water-Robotics-1ecc1c04bbc180c49df0d2512b972226" class="water-card" target="_blank" rel="noopener"><h4>Water Robotics</h4><p>Teleoperated robots controlled via VR for construction and mining.</p></a>
+      <a href="https://www.notion.so/Water-AI-Fluid-1bac1c04bbc180e9ab7fc5568f53ef33" class="water-card" target="_blank" rel="noopener"><h4>Water AI Fluid</h4><p>Decentralized computing network for autonomous AI agents.</p></a>
+      <a href="https://www.notion.so/Water-Coach-1afc1c04bbc1804a980bdc0b32331a35" class="water-card" target="_blank" rel="noopener"><h4>Water Coach</h4><p>AI personal productivity coach with real-time guidance.</p></a>
+      <a href="https://www.notion.so/Water-Gov-1fac1c04bbc180e0bddbd8a70714b532" class="water-card" target="_blank" rel="noopener"><h4>Water Gov</h4><p>Super app for government services with AI-guided processes.</p></a>
+    </div>
+
+    <div class="actions">
+      <a href="https://www.notion.so/The-Water-WATER-Token-Fueling-the-Elevation-to-Eden-200c1c04bbc18033b515da3d37df8c80" class="action-btn" style="border-color:rgba(6,182,212,0.3);color:#67e8f9;" target="_blank" rel="noopener">WATER Token</a>
+      <a href="https://pump.fun/coin/E9ZX6jx1ottp2r8v98vt2JpUzzZnbMohaHcDnqenpump" class="action-btn" style="border-color:rgba(52,211,153,0.3);color:#34d399;" target="_blank" rel="noopener">Buy on Pump.fun</a>
+      <a href="https://www.notion.so/Investment-Opportunity-A-Portfolio-of-Transformative-AI-Robotics-Products-Poised-to-Redefine-Indu-1ffc1c04bbc180228703d32ec89c71c5" class="action-btn" style="border-color:rgba(251,191,36,0.3);color:#fbbf24;" target="_blank" rel="noopener">Investment</a>
+      <a href="https://www.notion.so/Enterprise-Housing-Pledge-1a4c1c04bbc180518daaf78ef83966cc" class="action-btn" style="border-color:rgba(244,63,94,0.3);color:#fb7185;" target="_blank" rel="noopener">Housing Pledge</a>
+      <a href="https://www.notion.so/Stellarium-Mansion-And-Office-Fundraising-1aac1c04bbc180b4aa1bd77ecec414d6" class="action-btn" style="border-color:rgba(168,85,247,0.3);color:#c084fc;" target="_blank" rel="noopener">Mansion Fund</a>
+    </div>
+
+    <!-- Connect -->
+    <div class="section-title">Connect With Us</div>
+    <div class="social-grid">
+      <a href="https://tiktok.com/@johnvictorone" class="social-link" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg> John (TikTok)</a>
+      <a href="https://tiktok.com/@stellarium.foundation" class="social-link" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg> Stellarium (TikTok)</a>
+      <a href="https://t.me/JohnVictorOne" class="social-link" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="#0088cc"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg> John (Telegram)</a>
+      <a href="https://t.me/StellariumActions" class="social-link" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="#0088cc"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg> Stellarium (Telegram)</a>
+      <a href="https://youtube.com/@johnvictorwomen" class="social-link" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="#FF0000"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg> John (YouTube)</a>
+      <a href="https://youtube.com/@stellariumfoundation" class="social-link" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="#FF0000"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg> Stellarium (YouTube)</a>
+      <a href="https://vk.ru/id1113302487" class="social-link" target="_blank" rel="noopener"><span style="background:#0077FF;color:#fff;border-radius:4px;padding:2px 6px;font-size:10px;font-weight:700;">VK</span> VKontakte</a>
+      <a href="https://x.com/StellarFou4749" class="social-link" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg> X (Twitter)</a>
+    </div>
+
+    <div class="footer">
+      &copy; 2026 Stellarium Foundation &mdash; All rights reserved.
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,8 @@
+{
+  "name": "Stellarium Website",
+  "description": "A refined wellness and habit tracking app designed with a native mobile-first browser experience.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

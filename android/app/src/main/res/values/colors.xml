@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="stellarium_dark">#0a0c12</color>
+    <color name="stellarium_status_bar">#0d0015</color>
+    <color name="stellarium_nav_bar">#000000</color>
+</resources>
