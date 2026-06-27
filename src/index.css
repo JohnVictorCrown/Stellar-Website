@@ -2,8 +2,24 @@
 
 @font-face {
   font-family: 'Neue Frutiger World';
-  src: url('/neue_frutiger_world_regular.ttf') format('truetype');
-  font-weight: normal;
+  src: url('/fonts/thin.woff2') format('woff2');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Neue Frutiger World';
+  src: url('/fonts/regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Neue Frutiger World';
+  src: url('/fonts/black.woff2') format('woff2');
+  font-weight: 900;
   font-style: normal;
   font-display: swap;
 }
