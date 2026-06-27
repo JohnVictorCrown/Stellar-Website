@@ -1,5 +1,9 @@
 <script lang="ts">
   import { Mail, Shield, Zap, Copy, CheckCircle, Phone, PhoneOff, Mic, MicOff } from 'lucide-svelte';
+  import { Button } from '$lib/components/ui/button/index.js';
+  import { Card } from '$lib/components/ui/card/index.js';
+  import { Input } from '$lib/components/ui/input/index.js';
+  import { Textarea } from '$lib/components/ui/textarea/index.js';
   import { callClient } from '../utils/callClient';
 
   let email = $state('');
@@ -79,13 +83,13 @@
 <div class="flex flex-col h-full overflow-y-auto no-scrollbar w-full max-w-5xl lg:max-w-7xl mx-auto px-0 sm:p-6 lg:p-10 xl:p-12 items-center">
   <div class="mb-4 lg:mb-6"><Shield size={48} class="text-white opacity-80 lg:w-16 lg:h-16" /></div>
   <h1 class="text-3xl lg:text-5xl xl:text-6xl font-normal text-center mt-2 uppercase tracking-wide">Secure Comms</h1>
-  <p class="text-center text-sm lg:text-base xl:text-lg text-[var(--color-on-background)] mt-4 lg:mt-6 max-w-sm lg:max-w-xl xl:max-w-2xl leading-relaxed mb-8 lg:mb-12">
+  <p class="text-center text-sm lg:text-base xl:text-lg text-muted-foreground mt-4 lg:mt-6 max-w-sm lg:max-w-xl xl:max-w-2xl leading-relaxed mb-8 lg:mb-12">
     Send Intelligence or Directives to the Stellarium Foundation. (Routes via secure tunnel)
   </p>
 
   <div class="w-full max-w-md lg:max-w-xl xl:max-w-2xl space-y-4 lg:space-y-6 pb-24 lg:pb-32">
     <!-- Call Stellarium Section -->
-    <div class="bg-gradient-to-r from-emerald-950/40 to-cyan-950/40 border border-emerald-500/20 rounded-2xl p-6 lg:p-8 xl:p-10 shadow-xl space-y-4 lg:space-y-5">
+    <Card class="bg-gradient-to-r from-emerald-950/40 to-cyan-950/40 border-emerald-500/20 p-6 lg:p-8 xl:p-10 space-y-4 lg:space-y-5">
       <div class="flex items-center gap-3">
         <div class="p-2.5 lg:p-3.5 bg-emerald-500/15 text-emerald-400 border border-emerald-500/25 rounded-xl">
           <Phone size={20} class="text-emerald-400 lg:w-6 lg:h-6" />
@@ -101,13 +105,13 @@
       </p>
 
       {#if callState === 'idle' || callState === 'failed' || callState === 'no_answer'}
-        <button
+        <Button
           onclick={() => callClient.startCall()}
           disabled={callState === 'calling'}
           class="w-full bg-emerald-500 text-black font-bold py-3 lg:py-4 rounded-xl flex items-center justify-center gap-2 uppercase tracking-wider text-xs lg:text-sm hover:bg-emerald-400 disabled:opacity-50 transition-all active:scale-[0.98]"
         >
           <Phone size={18} /> Call Owner
-        </button>
+        </Button>
 
         {#if callErrorText}
           <p class="text-xs text-red-400 text-center">{callErrorText}</p>
@@ -120,9 +124,9 @@
       {:else if callState === 'in_call'}
         <div class="flex flex-col gap-3">
           <span class="text-emerald-300 font-semibold text-center">In Call</span>
-          
+
           <div class="flex gap-3">
-            <button
+            <Button
               onclick={() => callClient.toggleMute()}
               class="flex-1 bg-white/10 text-white font-semibold py-2 rounded-xl flex items-center justify-center gap-2 uppercase tracking-wider text-xs hover:bg-white/15 transition-all"
             >
@@ -131,50 +135,38 @@
               {:else}
                 <Mic size={16} /> Mute
               {/if}
-            </button>
-            
-            <button
+            </Button>
+
+            <Button
               onclick={() => callClient.endCall()}
               class="flex-1 bg-red-500 text-white font-bold py-2 rounded-xl flex items-center justify-center gap-2 uppercase tracking-wider text-xs hover:bg-red-400 transition-all"
             >
               <PhoneOff size={16} /> End Call
-            </button>
+            </Button>
           </div>
         </div>
       {:else if callState === 'ended'}
         <p class="text-xs text-gray-400 text-center">Call ended</p>
-        <button
+        <Button
           onclick={() => callClient.resetCall()}
           class="w-full bg-emerald-500/10 text-emerald-400 font-semibold py-2 rounded-xl text-xs uppercase tracking-wider hover:bg-emerald-500/20 transition-all"
         >
           Call Again
-        </button>
+        </Button>
       {/if}
-    </div>
+    </Card>
 
     <!-- Message Form -->
-    <div class="bg-[var(--color-surface)] border border-white/10 rounded-2xl p-6 lg:p-8 xl:p-10">
-      <label class="block text-xs lg:text-sm xl:text-base font-bold text-gray-400 uppercase tracking-widest mb-2">Contact Email (Optional)</label>
-      <input
-        type="email"
-        bind:value={email}
-        class="w-full bg-[var(--color-surface-variant)] border border-white/5 rounded-xl p-4 lg:p-5 xl:p-6 text-white focus:outline-none focus:border-[var(--color-tertiary)] transition-colors placeholder:text-gray-500 text-sm lg:text-base"
-        placeholder="Leave empty for anonymity"
-        disabled={isSending}
-      />
+    <Card class="border border-border p-6 lg:p-8 xl:p-10">
+      <label class="block text-xs lg:text-sm xl:text-base font-bold text-muted-foreground uppercase tracking-widest mb-2">Contact Email (Optional)</label>
+      <Input type="email" bind:value={email} placeholder="Leave empty for anonymity" disabled={isSending} />
 
-      <label class="block text-xs lg:text-sm xl:text-base font-bold text-gray-400 uppercase tracking-widest mt-6 lg:mt-8 mb-2">Intel / Message</label>
-      <textarea
-        bind:value={message}
-        rows={4}
-        class="w-full bg-[var(--color-surface-variant)] border border-white/5 rounded-xl p-4 lg:p-5 xl:p-6 text-white focus:outline-none focus:border-[var(--color-tertiary)] transition-colors resize-none placeholder:text-gray-500 text-sm lg:text-base"
-        placeholder="Enter your transmission..."
-        disabled={isSending}
-      />
+      <label class="block text-xs lg:text-sm xl:text-base font-bold text-muted-foreground uppercase tracking-widest mt-6 lg:mt-8 mb-2">Intel / Message</label>
+      <Textarea bind:value={message} placeholder="Enter your transmission..." disabled={isSending} />
 
       {#if statusType}
         <div
-          class="mt-6 p-4 lg:p-5 rounded-xl border flex items-start gap-3 {statusType === 'error' ? 'bg-red-500/10 border-red-500/30 text-red-400' : statusType === 'success' ? 'bg-green-500/10 border-green-500/30 text-green-400' : 'bg-[var(--color-tertiary)]/10 border-[var(--color-tertiary)]/30 text-[var(--color-tertiary)]'}"
+          class="mt-6 p-4 lg:p-5 rounded-xl border flex items-start gap-3 {statusType === 'error' ? 'bg-red-500/10 border-red-500/30 text-red-400' : statusType === 'success' ? 'bg-green-500/10 border-green-500/30 text-green-400' : 'bg-primary/10 border-primary/30 text-primary'}"
         >
           {#if statusType === 'info'}
             <Zap size={18} class="animate-pulse shrink-0 mt-0.5" />
@@ -183,21 +175,21 @@
         </div>
       {/if}
 
-      <button
+      <Button
         onclick={handleSend}
         disabled={isSending || !message.trim()}
-        class="w-full mt-6 lg:mt-8 bg-[var(--color-tertiary)] text-black font-bold py-4 lg:py-5 rounded-xl flex items-center justify-center gap-2 uppercase tracking-widest text-sm lg:text-base xl:text-lg hover:bg-[var(--color-tertiary)]/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+        class="w-full mt-6 lg:mt-8 bg-primary text-primary-foreground font-bold py-4 lg:py-5 rounded-xl flex items-center justify-center gap-2 uppercase tracking-widest text-sm lg:text-base xl:text-lg hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
       >
         {#if isSending}
           Encrypting...
         {:else}
           <Mail size={18} /> Broadcast
         {/if}
-      </button>
-    </div>
+      </Button>
+    </Card>
 
     <!-- Anonymous Messaging Tor Portal -->
-    <div class="bg-gradient-to-r from-purple-950/40 to-indigo-950/40 border border-purple-500/20 rounded-2xl p-6 lg:p-8 xl:p-10 shadow-xl space-y-4 lg:space-y-5">
+    <Card class="bg-gradient-to-r from-purple-950/40 to-indigo-950/40 border-purple-500/20 p-6 lg:p-8 xl:p-10 space-y-4 lg:space-y-5">
       <div class="flex items-center gap-3">
         <div class="p-2.5 lg:p-3.5 bg-purple-500/15 text-purple-400 border border-purple-500/25 rounded-xl">
           <Shield size={20} class="text-purple-400 lg:w-6 lg:h-6" />
@@ -212,9 +204,13 @@
         To preserve absolute anonymity and cryptographic protection, we strongly advise using the <strong class="text-white">Tor Browser</strong> when submitting messages through our anonymous messaging node:
       </p>
 
-      <div onclick={copyPortal} class="flex items-center justify-between gap-3 bg-black/45 hover:bg-black/60 border border-white/5 hover:border-purple-500/30 rounded-xl p-3 lg:p-4 select-all cursor-pointer group transition-all">
+      <div onclick={copyPortal} class="flex items-center justify-between gap-3 bg-black/45 hover:bg-black/60 border border-border hover:border-purple-500/30 rounded-xl p-3 lg:p-4 select-all cursor-pointer group transition-all">
         <span class="font-mono text-[10px] lg:text-xs xl:text-sm text-purple-300 break-all select-all text-left flex-1">https://mural-bnyh.onrender.com/</span>
-        <button type="button" class="p-1 px-2.5 lg:px-3 lg:py-1.5 bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 rounded-lg text-[9px] lg:text-xs font-bold uppercase tracking-wider flex items-center gap-1 shrink-0 transition-all border border-purple-500/20" title="Copy Address">
+        <Button
+          type="button"
+          class="bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 rounded-lg text-[9px] lg:text-xs font-bold uppercase tracking-wider flex items-center gap-1 shrink-0 transition-all border border-purple-500/20 px-2.5 py-1 lg:px-3 lg:py-1.5"
+          title="Copy Address"
+        >
           {#if portalCopied}
             <CheckCircle size={10} class="text-green-400" />
             <span class="text-green-400">Copied!</span>
@@ -222,13 +218,13 @@
             <Copy size={10} />
             <span>Copy</span>
           {/if}
-        </button>
+        </Button>
       </div>
 
       <div class="flex items-center justify-between text-[9px] lg:text-xs text-gray-400 pt-1">
         <span>Security: Use with Tor Browser</span>
         <span class="text-purple-400 font-bold uppercase tracking-widest">Identity Shielded</span>
       </div>
-    </div>
+    </Card>
   </div>
 </div>

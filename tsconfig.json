@@ -11,7 +11,9 @@
     "moduleDetection": "force",
     "allowJs": true,
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "$lib": ["./src/lib"],
+      "$lib/*": ["./src/lib/*"]
     },
     "allowImportingTsExtensions": true,
     "noEmit": true,

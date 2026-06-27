@@ -6,6 +6,7 @@
   import QuizScreen from './screens/QuizScreen.svelte';
   import SponsorScreen from './screens/SponsorScreen.svelte';
   import ContactScreen from './screens/ContactScreen.svelte';
+  import { Button } from '$lib/components/ui/button/index.js';
 
   let location = $state(window.location.pathname);
 
@@ -91,7 +92,7 @@
   ];
 </script>
 
-<div class="flex flex-col h-[100dvh] w-full bg-transparent">
+<div class="flex flex-col h-[100dvh] w-full bg-background">
   <div class="flex-1 overflow-hidden relative">
     <div class={matchRoute('/') && location === '/' ? 'h-full' : 'hidden'}><HomeScreen /></div>
     <div class={matchRoute('/library') ? 'h-full' : 'hidden'}><LibraryScreen bookTitle={bookFromPath()} /></div>
@@ -101,22 +102,24 @@
     <div class={matchRoute('/contact') ? 'h-full' : 'hidden'}><ContactScreen /></div>
   </div>
 
-  <div class="bg-black/70 backdrop-blur-md border-t border-white/5 safe-bottom z-50">
+  <nav class="bg-card border-t border-border safe-bottom z-50">
     <div class="flex justify-around items-center h-16 md:h-20 lg:h-24 px-2 max-w-lg md:max-w-3xl lg:max-w-5xl mx-auto">
       {#each tabs as { path, icon: Icon, label }}
-        <button
+        <Button
+          variant="ghost"
+          size="icon-lg"
           onclick={() => navigate(path)}
-          class="flex flex-col items-center justify-center w-full h-full space-y-1 transition-colors relative {matchRoute(path) ? 'text-[var(--color-tertiary)]' : 'text-gray-400 hover:text-white'}"
+          class="flex flex-col items-center justify-center w-full h-full gap-0.5 rounded-none {matchRoute(path) ? 'text-primary' : 'text-muted-foreground hover:text-foreground'}"
         >
-          <div class="relative p-1 md:p-2 lg:p-3 rounded-full z-10">
+          <div class="relative p-1">
             {#if matchRoute(path)}
-              <div class="absolute inset-0 bg-[var(--color-tertiary)]/20 blur-md rounded-full" />
+              <div class="absolute inset-0 bg-primary/20 blur-md rounded-full" />
             {/if}
-            <Icon strokeWidth={matchRoute(path) ? 2.5 : 2} class="relative z-10 w-[22px] h-[22px] md:w-[26px] md:h-[26px] lg:w-[32px] lg:h-[32px]" />
+            <Icon strokeWidth={matchRoute(path) ? 2.5 : 2} class="relative w-[22px] h-[22px] md:w-[26px] md:h-[26px] lg:w-[32px] lg:h-[32px]" />
           </div>
           <span class="text-[10px] md:text-xs lg:text-sm font-medium tracking-wide">{label}</span>
-        </button>
+        </Button>
       {/each}
     </div>
-  </div>
+  </nav>
 </div>

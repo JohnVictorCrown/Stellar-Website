@@ -1,4 +1,7 @@
 <script lang="ts">
+  import { Button } from '$lib/components/ui/button/index.js';
+  import { Card, CardContent } from '$lib/components/ui/card/index.js';
+  import { Badge } from '$lib/components/ui/badge/index.js';
 
   type Question = { text: string; options: string[]; correctIndex: number };
   type QuizCategory = { name: string; questions: Question[] };
@@ -96,59 +99,70 @@
 {#if activeSession}
   {#if isFinished || activeSession.questions.length === 0}
     <div class="flex flex-col h-full items-center p-6 lg:p-10 xl:p-12 justify-center">
-      <h2 class="text-3xl lg:text-5xl xl:text-6xl text-[var(--color-primary)] font-normal text-center">Assessment Complete</h2>
-      <p class="text-[var(--color-tertiary)] mt-2 lg:mt-4 font-bold text-center text-sm lg:text-base xl:text-lg">{activeSession.categoryName}</p>
-      <div class="text-6xl lg:text-7xl xl:text-8xl font-black text-white mt-8 lg:mt-12">{score} / {activeSession.questions.length}</div>
-      <p class="text-[var(--color-on-surface)] uppercase tracking-widest text-sm lg:text-base xl:text-lg mt-2">Correct Answers</p>
-      <div class="mt-16 lg:mt-20 w-full max-w-sm lg:max-w-md xl:max-w-lg space-y-4">
-        <button onclick={handleRetake} class="w-full bg-[var(--color-tertiary)] text-black py-4 lg:py-5 rounded-full font-bold uppercase tracking-wider text-sm lg:text-base hover:bg-[var(--color-tertiary)]/90 active:scale-[0.98] transition-transform">Retake Quiz (New Questions)</button>
-        <button onclick={returnToMenu} class="w-full border border-white/20 text-white py-4 lg:py-5 rounded-full font-semibold uppercase tracking-wider text-sm lg:text-base hover:bg-white/10 active:scale-[0.98] transition-transform">Return to Topics</button>
-      </div>
+      <Card class="w-full max-w-sm lg:max-w-md xl:max-w-lg">
+        <CardContent class="flex flex-col items-center p-6 lg:p-8">
+          <h2 class="text-3xl lg:text-5xl xl:text-6xl text-primary font-normal text-center">Assessment Complete</h2>
+          <Badge variant="default" class="mt-2 lg:mt-4 font-bold text-center text-sm lg:text-base xl:text-lg">{activeSession.categoryName}</Badge>
+          <div class="text-6xl lg:text-7xl xl:text-8xl font-black text-foreground mt-8 lg:mt-12">{score} / {activeSession.questions.length}</div>
+          <p class="text-muted-foreground uppercase tracking-widest text-sm lg:text-base xl:text-lg mt-2">Correct Answers</p>
+          <div class="mt-16 lg:mt-20 w-full space-y-4">
+            <Button onclick={handleRetake} variant="default" class="w-full py-4 lg:py-5 rounded-full font-bold uppercase tracking-wider text-sm lg:text-base">
+              Retake Quiz (New Questions)
+            </Button>
+            <Button onclick={returnToMenu} variant="outline" class="w-full py-4 lg:py-5 rounded-full font-semibold uppercase tracking-wider text-sm lg:text-base">
+              Return to Topics
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   {:else}
     {@const question = activeSession.questions[currentIndex]}
     {@const progress = ((currentIndex + 1) / activeSession.questions.length) * 100}
     <div class="flex flex-col h-full overflow-y-auto no-scrollbar w-full px-2 sm:p-6 lg:p-10 xl:p-12 items-center max-w-5xl lg:max-w-7xl mx-auto">
-      <div class="w-full h-1 bg-white/10 rounded-full overflow-hidden mb-4">
-        <div class="h-full bg-[var(--color-tertiary)] transition-all duration-300" style="width: {progress}%" />
+      <div class="w-full h-1 bg-muted rounded-full overflow-hidden mb-4">
+        <div class="h-full bg-primary transition-all duration-300" style="width: {progress}%" />
       </div>
-      <p class="text-[10px] sm:text-xs lg:text-sm text-[var(--color-tertiary)] font-semibold mb-4 uppercase tracking-widest">Question {currentIndex + 1} of {activeSession.questions.length}</p>
-      <h3 class="text-base sm:text-lg lg:text-2xl xl:text-3xl font-normal text-center text-white/90 mb-6 lg:mb-10 px-2 lg:px-8 tracking-wide leading-relaxed">{question.text}</h3>
+      <Badge variant="default" class="mb-4 font-semibold uppercase tracking-widest">Question {currentIndex + 1} of {activeSession.questions.length}</Badge>
+      <h3 class="text-base sm:text-lg lg:text-2xl xl:text-3xl font-normal text-center text-foreground/90 mb-6 lg:mb-10 px-2 lg:px-8 tracking-wide leading-relaxed">{question.text}</h3>
       <div class="w-full max-w-2xl lg:max-w-3xl space-y-2.5 lg:space-y-3.5">
         {#each question.options as option, idx}
-          <button onclick={() => handleAnswer(idx)} class="w-full bg-white/95 hover:bg-white text-black py-3 sm:py-3.5 lg:py-4 xl:py-5 px-5 lg:px-8 rounded-xl text-xs sm:text-sm lg:text-base xl:text-lg font-medium text-center active:scale-[0.98] transition-all shadow-md tracking-wide">{option}</button>
+          <Button onclick={() => handleAnswer(idx)} variant="outline" class="w-full py-3 sm:py-3.5 lg:py-4 xl:py-5 px-5 lg:px-8 rounded-xl text-xs sm:text-sm lg:text-base xl:text-lg font-medium text-center shadow-md tracking-wide h-auto justify-start">
+            {option}
+          </Button>
         {/each}
       </div>
     </div>
   {/if}
 {:else}
   <div class="flex flex-col h-full overflow-y-auto no-scrollbar w-full max-w-5xl lg:max-w-7xl mx-auto px-2 sm:p-6 lg:p-10 xl:p-12 items-center">
-    <h1 class="text-3xl lg:text-5xl xl:text-6xl font-normal text-[var(--color-primary)] text-center mt-2 lg:mt-6">Stellarium Knowledge Base</h1>
-    <p class="text-center text-[var(--color-on-surface)] mt-4 lg:mt-6 max-w-sm lg:max-w-xl xl:max-w-2xl leading-relaxed text-sm lg:text-base xl:text-lg">
+    <h1 class="text-3xl lg:text-5xl xl:text-6xl font-normal text-primary text-center mt-2 lg:mt-6">Stellarium Knowledge Base</h1>
+    <p class="text-center text-muted-foreground mt-4 lg:mt-6 max-w-sm lg:max-w-xl xl:max-w-2xl leading-relaxed text-sm lg:text-base xl:text-lg">
       Master the principles of the Foundation. Select a module below or choose 'General Knowledge' to test yourself on everything.
     </p>
 
     {#if isLoading}
       <div class="flex-1 flex items-center justify-center mt-12 w-full">
-        <div class="w-8 h-8 border-4 border-[var(--color-tertiary)] border-t-transparent rounded-full animate-spin" />
+        <div class="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin" />
       </div>
     {/if}
 
     {#if errorMessage}
-      <div class="flex-1 flex items-center justify-center mt-12 text-red-400 text-sm lg:text-base">{errorMessage}</div>
+      <div class="flex-1 flex items-center justify-center mt-12 text-destructive text-sm lg:text-base">{errorMessage}</div>
     {/if}
 
     {#if !isLoading && !errorMessage}
       <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 lg:gap-4 w-full max-w-2xl lg:max-w-4xl xl:max-w-5xl mt-8 lg:mt-12 pb-24 lg:pb-32">
         {#each categories as category, idx}
           {@const isGeneral = category.name.includes("General Knowledge")}
-          <button
+          <Button
             onclick={() => startQuiz(category)}
-            class="h-24 lg:h-32 xl:h-36 border rounded-2xl lg:rounded-3xl flex flex-col items-center justify-center p-3 lg:p-5 transition-all active:scale-95 {isGeneral ? 'bg-[var(--color-tertiary)]/20 border-[var(--color-tertiary)]/50 hover:bg-[var(--color-tertiary)]/30' : 'bg-[var(--color-surface)] border-white/10 hover:border-[var(--color-tertiary)] hover:bg-white/5'}"
+            variant="outline"
+            class="h-24 lg:h-32 xl:h-36 rounded-2xl lg:rounded-3xl flex flex-col items-center justify-center p-3 lg:p-5 transition-all active:scale-95 {isGeneral ? 'bg-primary/20 border-primary/50 hover:bg-primary/30' : 'bg-card border-border hover:border-primary hover:bg-accent'}"
           >
-            <span class="font-bold text-center uppercase tracking-wider text-xs lg:text-sm xl:text-base {isGeneral ? 'text-[var(--color-tertiary)]' : 'text-[var(--color-secondary)]'}">{category.name}</span>
-            <span class="text-[10px] lg:text-xs xl:text-sm text-white/50 mt-2 font-medium">{category.questions.length} / {category.questions.length === 1 ? 'Question' : 'Questions'}</span>
-          </button>
+            <span class="font-bold text-center uppercase tracking-wider text-xs lg:text-sm xl:text-base {isGeneral ? 'text-primary' : 'text-secondary'}">{category.name}</span>
+            <span class="text-[10px] lg:text-xs xl:text-sm text-muted-foreground mt-2 font-medium">{category.questions.length} / {category.questions.length === 1 ? 'Question' : 'Questions'}</span>
+          </Button>
         {/each}
       </div>
     {/if}

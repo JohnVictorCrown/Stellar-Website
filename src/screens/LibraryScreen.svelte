@@ -2,6 +2,10 @@
   import MarkdownIt from 'markdown-it';
   import { ArrowLeft, BookOpen, ExternalLink, Download, Sparkles, Star, Orbit, Compass } from 'lucide-svelte';
   import { openPdf, savePdf } from '../pdf';
+  import { Button } from '$lib/components/ui/button/index.js';
+  import { Card } from '$lib/components/ui/card/index.js';
+  import { Badge } from '$lib/components/ui/badge/index.js';
+  import { Separator } from '$lib/components/ui/separator/index.js';
 
   type StellariumDocument = {
     title: string;
@@ -312,30 +316,30 @@
 
 {#if selectedBook}
   <div class="flex flex-col h-full bg-transparent overflow-hidden w-full">
-    <div class="flex items-center p-4 border-b border-white/10 sticky top-0 bg-black/80 backdrop-blur-md z-10 safe-top">
-      <button onclick={() => selectedBook = null} class="p-2 text-white hover:text-[var(--color-tertiary)] transition-colors rounded-lg hover:bg-white/5 active:scale-95 cursor-pointer" title="Go Back">
+    <div class="flex items-center p-4 border-b border-border sticky top-0 bg-black/80 backdrop-blur-md z-10 safe-top">
+      <Button onclick={() => selectedBook = null} variant="ghost" size="icon" class="text-white hover:text-primary" title="Go Back">
         <ArrowLeft size={24} />
-      </button>
+      </Button>
       <div class="flex-1 min-w-0 flex items-center justify-center gap-2">
-        <Compass size={18} class="text-[var(--color-tertiary)] animate-pulse shrink-0 hidden sm:inline" />
+        <Compass size={18} class="text-primary animate-pulse shrink-0 hidden sm:inline" />
         <h1 class="text-base sm:text-lg font-bold text-white truncate text-center max-w-xl">{selectedBook.title}</h1>
-        <Compass size={18} class="text-[var(--color-tertiary)] animate-pulse shrink-0 hidden sm:inline" />
+        <Compass size={18} class="text-primary animate-pulse shrink-0 hidden sm:inline" />
       </div>
-      <button onclick={() => copyBookLink(selectedBook.title)} class="p-2 text-gray-400 hover:text-[var(--color-tertiary)] transition-colors rounded-lg hover:bg-white/5 active:scale-95 cursor-pointer" title="Copy Link to This Book">
+      <Button onclick={() => copyBookLink(selectedBook.title)} variant="ghost" size="icon" class="text-gray-400 hover:text-primary" title="Copy Link to This Book">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-      </button>
+      </Button>
     </div>
     <div bind:this={readerContainer} onscroll={handleReaderScroll} class="flex-1 overflow-y-auto overflow-x-hidden p-4 sm:p-6 lg:p-8 pb-32 flex flex-col items-center w-full no-scrollbar">
-      <div class="w-full max-w-5xl bg-zinc-950/60 border border-white/10 shadow-2xl rounded-3xl p-6 sm:p-12 md:p-16 backdrop-blur-md">
+      <div class="w-full max-w-5xl bg-zinc-950/60 border border-border shadow-2xl rounded-3xl p-6 sm:p-12 md:p-16 backdrop-blur-md">
         <div class="prose-book">
           {@html renderMarkdown(selectedBook.content)}
         </div>
         {#if selectedBook.notion_url}
-          <div class="flex justify-center mt-12 pt-6 border-t border-white/5">
-            <a href={selectedBook.notion_url} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-tertiary)] text-black font-semibold rounded-full hover:bg-[var(--color-tertiary)]/95 transition-all shadow-[0_0_20px_rgba(0,255,255,0.25)] hover:scale-[1.03] active:scale-[0.97]">
+          <div class="flex justify-center mt-12 pt-6 border-t border-border">
+            <Button href={selectedBook.notion_url} target="_blank" rel="noopener noreferrer" variant="default" class="rounded-full shadow-[0_0_20px_rgba(0,255,255,0.25)] hover:scale-[1.03] active:scale-[0.97]">
               <span>Read Original on Notion</span>
               <ExternalLink size={16} />
-            </a>
+            </Button>
           </div>
         {/if}
       </div>
@@ -345,18 +349,18 @@
   <div bind:this={mainContainer} onscroll={handleMainScroll} class="flex flex-col h-full overflow-y-auto no-scrollbar w-full max-w-5xl lg:max-w-7xl mx-auto p-4 sm:p-6 lg:p-10 xl:p-12 items-center">
     <div class="w-full max-w-6xl mt-2 lg:mt-6 flex flex-col items-center">
       <div class="flex items-center gap-3 lg:gap-6 mb-2 justify-center">
-        <Orbit class="text-[var(--color-tertiary)] animate-[spin_20s_linear_infinite] shrink-0" size={32} />
+        <Orbit class="text-primary animate-[spin_20s_linear_infinite] shrink-0" size={32} />
         <h1 class="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl text-white font-normal text-center tracking-wide uppercase">Stellarium Library</h1>
-        <Orbit class="text-[var(--color-tertiary)] animate-[spin_20s_linear_infinite] shrink-0" size={32} />
+        <Orbit class="text-primary animate-[spin_20s_linear_infinite] shrink-0" size={32} />
       </div>
-      <p class="text-xs sm:text-sm lg:text-base xl:text-lg text-[var(--color-on-background)] opacity-85 text-center max-w-xl lg:max-w-2xl mb-8 lg:mb-12 leading-relaxed">
+      <p class="text-xs sm:text-sm lg:text-base xl:text-lg text-muted-foreground opacity-85 text-center max-w-xl lg:max-w-2xl mb-8 lg:mb-12 leading-relaxed">
         Access foundational source texts, universal philosophies, strategic guides, and sovereign blueprints curated by the Stellarium Foundation.
       </p>
     </div>
     <div class="w-full max-w-6xl mt-2 lg:mt-6 space-y-12 lg:space-y-16 pb-32">
       {#if isLoading}
         <div class="flex justify-center items-center h-48">
-          <div class="w-8 h-8 border-4 border-[var(--color-tertiary)] border-t-transparent rounded-full animate-spin" />
+          <div class="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin" />
         </div>
       {/if}
       {#if errorMsg}
@@ -364,90 +368,91 @@
       {/if}
       {#if !isLoading && !errorMsg}
         <div class="w-full">
-          <h2 class="text-sm lg:text-base xl:text-lg font-black text-[var(--color-secondary)] uppercase tracking-[0.25em] text-center mb-6">Official Books (PDF)</h2>
+          <h2 class="text-sm lg:text-base xl:text-lg font-black text-secondary uppercase tracking-[0.25em] text-center mb-6">Official Books (PDF)</h2>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 w-full max-w-5xl lg:max-w-6xl mx-auto">
-            <div class="bg-gradient-to-br from-zinc-950/80 to-zinc-900/80 border border-white/10 rounded-2xl overflow-hidden shadow-[0_4px_30px_rgba(0,0,0,0.5)] group hover:border-[var(--color-tertiary)]/40 hover:shadow-[0_0_25px_rgba(0,255,255,0.15)] transition-all duration-300 flex flex-col sm:flex-row">
-              <div class="sm:w-32 lg:w-40 bg-gradient-to-b from-indigo-950 via-purple-950 to-zinc-950 p-6 lg:p-8 flex flex-col items-center justify-center border-b sm:border-b-0 sm:border-r border-white/10 relative overflow-hidden shrink-0 min-h-[120px]">
+            <Card class="bg-gradient-to-br from-zinc-950/80 to-zinc-900/80 border-border shadow-[0_4px_30px_rgba(0,0,0,0.5)] group hover:border-primary/40 hover:shadow-[0_0_25px_rgba(0,255,255,0.15)] rounded-2xl p-0 gap-0 ring-0 flex-col sm:flex-row" size="sm">
+              <div class="sm:w-32 lg:w-40 bg-gradient-to-b from-indigo-950 via-purple-950 to-zinc-950 p-6 lg:p-8 flex flex-col items-center justify-center border-b sm:border-b-0 sm:border-r border-border relative overflow-hidden shrink-0 min-h-[120px]">
                 <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,255,255,0.12)_0,transparent_100%)]" />
-                <BookOpen size={40} class="text-[var(--color-tertiary)] relative z-10 animate-pulse" />
-                <span class="text-[8px] lg:text-[10px] uppercase tracking-[0.2em] font-bold text-gray-400 mt-4 text-center select-none relative z-10 font-mono">Volume I</span>
+                <BookOpen size={40} class="text-primary relative z-10 animate-pulse" />
+                <Badge variant="outline" class="text-[8px] lg:text-[10px] uppercase tracking-[0.2em] font-bold mt-4 font-mono">Volume I</Badge>
               </div>
               <div class="p-6 lg:p-8 flex-1 flex flex-col justify-between">
                 <div>
-                  <h3 class="text-base lg:text-lg xl:text-xl font-bold text-white mb-2 leading-snug group-hover:text-[var(--color-tertiary)] transition-colors">The Stellarium Book</h3>
+                  <h3 class="text-base lg:text-lg xl:text-xl font-bold text-white mb-2 leading-snug group-hover:text-primary transition-colors">The Stellarium Book</h3>
                   <p class="text-xs lg:text-sm xl:text-base text-gray-400 mb-6 leading-relaxed">The foundational text detailing the architecture of universal human sovereignty, cosmic alignment and gold-backed standard systems.</p>
                 </div>
                 <div class="space-y-3">
                   <div class="flex gap-3 w-full">
-                    <button onclick={() => openPdf('/The.Stellarium.Book.pdf', 'The.Stellarium.Book.pdf')} class="flex-1 flex items-center justify-center gap-2 px-4 py-2 lg:px-6 lg:py-3 bg-[var(--color-tertiary)]/15 text-[var(--color-tertiary)] hover:bg-[var(--color-tertiary)]/25 border border-[var(--color-tertiary)]/30 rounded-xl text-xs lg:text-sm font-semibold uppercase tracking-wider transition-all cursor-pointer">
+                    <Button onclick={() => openPdf('/The.Stellarium.Book.pdf', 'The.Stellarium.Book.pdf')} variant="outline" class="flex-1 bg-primary/15 text-primary hover:bg-primary/25 border-primary/30 rounded-xl">
                       <ExternalLink size={14} /> Open
-                    </button>
-                    <button onclick={() => savePdf('/The.Stellarium.Book.pdf', 'The.Stellarium.Book.pdf')} class="flex-1 flex items-center justify-center gap-2 px-4 py-2 lg:px-6 lg:py-3 bg-white/5 border border-white/10 text-gray-300 hover:bg-white/15 hover:text-white rounded-xl text-xs lg:text-sm font-semibold uppercase tracking-wider transition-all cursor-pointer">
+                    </Button>
+                    <Button onclick={() => savePdf('/The.Stellarium.Book.pdf', 'The.Stellarium.Book.pdf')} variant="outline" class="flex-1 rounded-xl">
                       <Download size={14} /> Save
-                    </button>
+                    </Button>
                   </div>
-                  <div class="pt-2 border-t border-white/5 flex justify-center">
-                    <a href="https://www.everand.com/book/897831454/The-Stellarium-Book" target="_blank" rel="noopener noreferrer" class="text-[10px] lg:text-xs text-[var(--color-secondary)] hover:text-white transition-colors uppercase tracking-widest font-bold flex items-center gap-1">
+                  <div class="pt-2 border-t border-border flex justify-center">
+                    <Button href="https://www.everand.com/book/897831454/The-Stellarium-Book" target="_blank" rel="noopener noreferrer" variant="link" size="xs" class="uppercase tracking-widest font-bold text-secondary hover:text-white gap-1">
                       Read on Everand <ExternalLink size={10} />
-                    </a>
+                    </Button>
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="bg-gradient-to-br from-zinc-950/80 to-zinc-900/80 border border-white/10 rounded-2xl overflow-hidden shadow-[0_4px_30px_rgba(0,0,0,0.5)] group hover:border-[var(--color-tertiary)]/40 hover:shadow-[0_0_25px_rgba(0,255,255,0.15)] transition-all duration-300 flex flex-col sm:flex-row">
-              <div class="sm:w-32 lg:w-40 bg-gradient-to-b from-purple-950 via-emerald-950 to-zinc-950 p-6 lg:p-8 flex flex-col items-center justify-center border-b sm:border-b-0 sm:border-r border-white/10 relative overflow-hidden shrink-0 min-h-[120px]">
+            </Card>
+            <Card class="bg-gradient-to-br from-zinc-950/80 to-zinc-900/80 border-border shadow-[0_4px_30px_rgba(0,0,0,0.5)] group hover:border-primary/40 hover:shadow-[0_0_25px_rgba(0,255,255,0.15)] rounded-2xl p-0 gap-0 ring-0 flex-col sm:flex-row" size="sm">
+              <div class="sm:w-32 lg:w-40 bg-gradient-to-b from-purple-950 via-emerald-950 to-zinc-950 p-6 lg:p-8 flex flex-col items-center justify-center border-b sm:border-b-0 sm:border-r border-border relative overflow-hidden shrink-0 min-h-[120px]">
                 <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,255,255,0.12)_0,transparent_100%)]" />
-                <BookOpen size={40} class="text-[var(--color-tertiary)] relative z-10" />
-                <span class="text-[8px] lg:text-[10px] uppercase tracking-[0.2em] font-bold text-gray-400 mt-4 text-center select-none relative z-10 font-mono">Volume II</span>
+                <BookOpen size={40} class="text-primary relative z-10" />
+                <Badge variant="outline" class="text-[8px] lg:text-[10px] uppercase tracking-[0.2em] font-bold mt-4 font-mono">Volume II</Badge>
               </div>
               <div class="p-6 lg:p-8 flex-1 flex flex-col justify-between">
                 <div>
-                  <h3 class="text-base lg:text-lg xl:text-xl font-bold text-white mb-2 leading-snug group-hover:text-[var(--color-tertiary)] transition-colors">The Stellarium Society</h3>
+                  <h3 class="text-base lg:text-lg xl:text-xl font-bold text-white mb-2 leading-snug group-hover:text-primary transition-colors">The Stellarium Society</h3>
                   <p class="text-xs lg:text-sm xl:text-base text-gray-400 mb-6 leading-relaxed">The active manifest and blueprint for self-organized localized sovereign hubs, shared wealth systems, and collective growth circles.</p>
                 </div>
                 <div class="flex gap-3 w-full">
-                  <button onclick={() => openPdf('/Stellarium.Society.pdf', 'Stellarium.Society.pdf')} class="flex-1 flex items-center justify-center gap-2 px-4 py-2 lg:px-6 lg:py-3 bg-[var(--color-tertiary)]/15 text-[var(--color-tertiary)] hover:bg-[var(--color-tertiary)]/25 border border-[var(--color-tertiary)]/30 rounded-xl text-xs lg:text-sm font-semibold uppercase tracking-wider transition-all cursor-pointer">
+                  <Button onclick={() => openPdf('/Stellarium.Society.pdf', 'Stellarium.Society.pdf')} variant="outline" class="flex-1 bg-primary/15 text-primary hover:bg-primary/25 border-primary/30 rounded-xl">
                     <ExternalLink size={14} /> Open
-                  </button>
-                  <button onclick={() => savePdf('/Stellarium.Society.pdf', 'Stellarium.Society.pdf')} class="flex-1 flex items-center justify-center gap-2 px-4 py-2 lg:px-6 lg:py-3 bg-white/5 border border-white/10 text-gray-300 hover:bg-white/15 hover:text-white rounded-xl text-xs lg:text-sm font-semibold uppercase tracking-wider transition-all cursor-pointer">
+                  </Button>
+                  <Button onclick={() => savePdf('/Stellarium.Society.pdf', 'Stellarium.Society.pdf')} variant="outline" class="flex-1 rounded-xl">
                     <Download size={14} /> Save
-                  </button>
+                  </Button>
                 </div>
               </div>
-            </div>
+            </Card>
           </div>
         </div>
-        <div class="h-px bg-white/10 w-full my-8 max-w-5xl mx-auto" />
+        <Separator class="my-8 max-w-5xl mx-auto" />
         <div class="space-y-12 w-full">
           {#each Object.entries(groupedBooks) as [category, books]}
             <div class="w-full">
-              <div class="flex items-center gap-3 justify-center mb-8 border-b border-white/5 pb-3">
-                <Sparkles size={14} class="text-[var(--color-tertiary)] animate-pulse shrink-0" />
+              <div class="flex items-center gap-3 justify-center mb-8 border-b border-border pb-3">
+                <Sparkles size={14} class="text-primary animate-pulse shrink-0" />
                 <h2 class="text-sm font-black text-white uppercase tracking-[0.25em]">{category}</h2>
-                <Sparkles size={14} class="text-[var(--color-tertiary)] animate-pulse shrink-0" />
+                <Sparkles size={14} class="text-primary animate-pulse shrink-0" />
               </div>
               <div class="flex flex-col items-center gap-6 w-full max-w-3xl mx-auto">
                 {#each books as book, idx}
-                  <button
+                  <Button
                     onclick={() => selectedBook = book}
-                    class="group relative bg-zinc-950/60 hover:bg-zinc-900/90 border border-white/10 hover:border-[var(--color-tertiary)]/45 rounded-2xl p-8 sm:p-10 flex flex-col items-center justify-center text-center transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] focus:outline-none min-h-[160px] md:min-h-[180px] shadow-2xl hover:shadow-[0_12px_45px_rgba(0,255,255,0.12)] overflow-hidden w-full focus:ring-2 focus:ring-[var(--color-tertiary)]/35"
+                    variant="ghost"
+                    class="group relative bg-zinc-950/60 hover:bg-zinc-900/90 border-border hover:border-primary/45 rounded-2xl p-8 sm:p-10 flex-col items-center justify-center text-center hover:scale-[1.02] active:scale-[0.98] min-h-[160px] md:min-h-[180px] shadow-2xl hover:shadow-[0_12px_45px_rgba(0,255,255,0.12)] overflow-hidden w-full focus:ring-2 focus:ring-primary/35"
                   >
                     <div class="absolute right-6 bottom-4 opacity-[0.03] group-hover:opacity-[0.09] group-hover:scale-125 transition-all duration-500 text-white select-none pointer-events-none">
                       <Orbit size={110} />
                     </div>
                     <div class="w-full flex flex-col items-center">
                       <div class="flex items-center justify-center gap-2.5 mb-4">
-                        <div class="p-3 bg-white/5 rounded-2xl text-[var(--color-secondary)] group-hover:bg-[var(--color-tertiary)]/15 group-hover:text-[var(--color-tertiary)] transition-colors">
+                        <div class="p-3 bg-white/5 rounded-2xl text-secondary group-hover:bg-primary/15 group-hover:text-primary transition-colors">
                           <BookOpen size={20} />
                         </div>
-                        <span class="text-[10px] text-gray-400 font-mono tracking-[0.2em] uppercase">SECURE TRANSMISSION</span>
+                        <Badge variant="outline" class="text-[10px] font-mono tracking-[0.2em] uppercase">SECURE TRANSMISSION</Badge>
                       </div>
-                      <h3 class="text-base sm:text-xl font-normal text-white group-hover:text-[var(--color-tertiary)] transition-colors text-center max-w-2xl leading-snug">{book.title}</h3>
+                      <h3 class="text-base sm:text-xl font-normal text-white group-hover:text-primary transition-colors text-center max-w-2xl leading-snug">{book.title}</h3>
                     </div>
                     {#if book.comment_from_index}
-                      <p class="text-xs sm:text-sm text-gray-300 mt-4 italic text-center leading-relaxed border-t border-white/5 pt-4 w-full max-w-xl">&ldquo;{book.comment_from_index}&rdquo;</p>
+                      <p class="text-xs sm:text-sm text-gray-300 mt-4 italic text-center leading-relaxed border-t border-border pt-4 w-full max-w-xl">&ldquo;{book.comment_from_index}&rdquo;</p>
                     {/if}
-                  </button>
+                  </Button>
                 {/each}
               </div>
             </div>
@@ -471,7 +476,7 @@
   :global(.prose-book .stellarium-h1) {
     font-size: 1.35rem;
     font-weight: 700;
-    color: var(--color-primary, #a78bfa);
+    color: var(--color-primary);
     margin: 1.5rem 0 0.85rem;
     letter-spacing: 0.04em;
     text-shadow: 0 0 30px rgba(167, 139, 250, 0.15);
@@ -479,7 +484,7 @@
   :global(.prose-book .stellarium-h2) {
     font-size: 1.1rem;
     font-weight: 600;
-    color: var(--color-secondary, #67e8f9);
+    color: var(--color-secondary);
     margin: 1.25rem 0 0.75rem;
     letter-spacing: 0.03em;
     text-shadow: 0 0 20px rgba(103, 232, 249, 0.12);
@@ -487,7 +492,7 @@
   :global(.prose-book .stellarium-h3) {
     font-size: 1rem;
     font-weight: 600;
-    color: var(--color-tertiary, #2dd4bf);
+    color: var(--color-primary);
     margin: 1rem 0 0.5rem;
     letter-spacing: 0.02em;
   }
@@ -499,7 +504,7 @@
   :global(.prose-book .stellarium-blockquote) {
     margin: 1.25rem auto;
     padding: 0.75rem 1.25rem;
-    border-left: 3px solid var(--color-tertiary, #2dd4bf);
+    border-left: 3px solid var(--color-primary);
     background: rgba(45, 212, 191, 0.06);
     border-radius: 0 12px 12px 0;
     color: rgba(255, 255, 255, 0.75);
@@ -532,19 +537,19 @@
   }
   :global(.prose-book .stellarium-ul .stellarium-li::before) {
     content: "◇";
-    color: var(--color-tertiary, #2dd4bf);
+    color: var(--color-primary);
     margin-right: 0.5rem;
     font-size: 0.7rem;
   }
   :global(.prose-book .stellarium-link) {
-    color: var(--color-tertiary, #2dd4bf);
+    color: var(--color-primary);
     text-decoration: none;
     border-bottom: 1px solid rgba(45, 212, 191, 0.3);
     transition: all 0.2s;
     word-break: break-word;
   }
   :global(.prose-book .stellarium-link:hover) {
-    border-bottom-color: var(--color-tertiary, #2dd4bf);
+    border-bottom-color: var(--color-primary);
     text-shadow: 0 0 12px rgba(45, 212, 191, 0.25);
   }
   :global(.prose-book .stellarium-img) {
@@ -563,7 +568,7 @@
     padding: 1rem 1.25rem;
     font-family: monospace;
     font-size: 0.85rem;
-    color: var(--color-tertiary, #2dd4bf);
+    color: var(--color-primary);
     overflow-x: auto;
     text-align: left;
     margin: 1rem auto;
@@ -577,7 +582,7 @@
     padding: 0.1rem 0.4rem;
     font-family: monospace;
     font-size: 0.85em;
-    color: var(--color-tertiary, #2dd4bf);
+    color: var(--color-primary);
   }
   :global(.prose-book .stellarium-code code) {
     background: none;
@@ -593,7 +598,7 @@
     max-width: 300px;
   }
   :global(.prose-book .stellarium-em) {
-    color: var(--color-secondary, #67e8f9);
+    color: var(--color-secondary);
     font-style: italic;
     font-size: 0.95em;
   }
