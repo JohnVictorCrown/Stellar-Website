@@ -103,6 +103,17 @@ function makeTransformStream(label: string): TransformStream<Uint8Array> {
 async function streamReaderLoop(label: string, reader: ReadableStreamDefaultReader<Uint8Array>, honoStream: any) {
   log('STREAM', label, 'reader loop starting');
   let seq = 0;
+  let heartbeatId: ReturnType<typeof setInterval> | null = null;
+
+  // Send heartbeat every 5s to prevent proxy idle timeout
+  heartbeatId = setInterval(async () => {
+    try {
+      await honoStream.write(encodeControl('heartbeat'));
+    } catch (e) {
+      log('STREAM', label, 'heartbeat error (client likely gone):', e);
+      if (heartbeatId) clearInterval(heartbeatId);
+    }
+  }, 5000);
 
   try {
     while (true) {
@@ -121,6 +132,7 @@ async function streamReaderLoop(label: string, reader: ReadableStreamDefaultRead
   } catch (e) {
     log('STREAM', label, 'reader error:', e);
   } finally {
+    if (heartbeatId) clearInterval(heartbeatId);
     reader.releaseLock();
     log('STREAM', label, 'reader loop ended, seq=', seq, stateLabel());
     if (label === 'caller' && callerPair) {
