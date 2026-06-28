@@ -22,9 +22,9 @@ import jv.stellariumcaller.stellariumcaller.ui.navigation.Screen
 import jv.stellariumcaller.stellariumcaller.ui.screens.CallDetailScreen
 import jv.stellariumcaller.stellariumcaller.ui.screens.CallsScreen
 import jv.stellariumcaller.stellariumcaller.ui.screens.SettingsScreen
+import jv.stellariumcaller.stellariumcaller.ui.theme.AccentBlue
 import jv.stellariumcaller.stellariumcaller.ui.theme.DarkBackground
 import jv.stellariumcaller.stellariumcaller.ui.theme.DarkSurface
-import jv.stellariumcaller.stellariumcaller.ui.theme.Emerald
 import jv.stellariumcaller.stellariumcaller.ui.theme.StellariumCallerTheme
 
 class MainActivity : ComponentActivity() {
@@ -54,7 +54,7 @@ private fun MainScreen(repo: CallLogRepository) {
             if (showBottomBar) {
                 NavigationBar(
                     containerColor = DarkSurface,
-                    contentColor = Emerald
+                    contentColor = AccentBlue
                 ) {
                     NavigationBarItem(
                         selected = currentRoute == Screen.Calls.route,
@@ -68,8 +68,8 @@ private fun MainScreen(repo: CallLogRepository) {
                         icon = { Icon(Icons.Default.Phone, contentDescription = "Calls") },
                         label = { Text("Calls") },
                         colors = NavigationBarItemDefaults.colors(
-                            selectedIconColor = Emerald,
-                            selectedTextColor = Emerald,
+                            selectedIconColor = AccentBlue,
+                            selectedTextColor = AccentBlue,
                             unselectedIconColor = Color.Gray,
                             unselectedTextColor = Color.Gray,
                             indicatorColor = DarkSurface
@@ -87,8 +87,8 @@ private fun MainScreen(repo: CallLogRepository) {
                         icon = { Icon(Icons.Default.Settings, contentDescription = "Settings") },
                         label = { Text("Settings") },
                         colors = NavigationBarItemDefaults.colors(
-                            selectedIconColor = Emerald,
-                            selectedTextColor = Emerald,
+                            selectedIconColor = AccentBlue,
+                            selectedTextColor = AccentBlue,
                             unselectedIconColor = Color.Gray,
                             unselectedTextColor = Color.Gray,
                             indicatorColor = DarkSurface

@@ -52,7 +52,7 @@
             android:name=".CallService"
             android:enabled="true"
             android:exported="false"
-            android:foregroundServiceType="microphone|mediaPlayback" />
+            android:foregroundServiceType="microphone|mediaPlayback|dataSync" />
         
         <receiver
             android:name=".BootReceiver"

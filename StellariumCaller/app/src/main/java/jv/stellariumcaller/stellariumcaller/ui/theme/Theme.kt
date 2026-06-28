@@ -1,19 +1,18 @@
 package jv.stellariumcaller.stellariumcaller.ui.theme
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Emerald,
-    secondary = EmeraldLight,
-    tertiary = BlueDark,
+    primary = AccentBlue,
+    secondary = AccentPurple,
+    tertiary = AccentPink,
     background = DarkBackground,
     surface = DarkSurface,
     surfaceVariant = DarkSurfaceVariant,
-    onPrimary = DarkBackground,
-    onSecondary = DarkBackground,
+    onPrimary = White,
+    onSecondary = White,
     onBackground = White,
     onSurface = White,
     onSurfaceVariant = GrayLight,

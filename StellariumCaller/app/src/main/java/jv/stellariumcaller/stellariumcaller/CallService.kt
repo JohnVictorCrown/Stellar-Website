@@ -24,7 +24,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import okhttp3.*
 import java.io.File
-import java.io.FileInputStream
 import java.util.concurrent.TimeUnit
 
 class CallService : Service() {
@@ -44,7 +43,6 @@ class CallService : Service() {
     @Volatile private var callActive = false
     @Volatile private var showingIncomingUI = false
     @Volatile private var shouldRun = true
-    @Volatile private var reconnecting = false
 
     @Volatile private var currentCallId: Long = -1
 
@@ -166,6 +164,14 @@ class CallService : Service() {
                     scheduleReconnect(0)
                 }
             }
+
+            override fun onLost(network: Network) {
+                if (connected) {
+                    connected = false
+                    _connectionFlow.value = false
+                    startForeground(serviceId, getServiceNotification())
+                }
+            }
         }
         val request = NetworkRequest.Builder()
             .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
@@ -184,14 +190,7 @@ class CallService : Service() {
     }
 
     private fun isWebSocketOpen(): Boolean {
-        return webSocket?.let {
-            try {
-                it.send("{\"type\":\"ping\"}")
-                true
-            } catch (_: Exception) {
-                false
-            }
-        } ?: false
+        return connected && webSocket != null
     }
 
     private fun startPing() {
@@ -215,10 +214,12 @@ class CallService : Service() {
         client = OkHttpClient.Builder()
             .pingInterval(30, TimeUnit.SECONDS)
             .connectionSpecs(listOf(
-                ConnectionSpec.MODERN_TLS,
+                ConnectionSpec.COMPATIBLE_TLS,
                 ConnectionSpec.CLEARTEXT
             ))
             .retryOnConnectionFailure(true)
+            .followRedirects(true)
+            .followSslRedirects(true)
             .build()
 
         val request = Request.Builder()
@@ -227,9 +228,9 @@ class CallService : Service() {
 
         val newSocket = client.newWebSocket(request, object : WebSocketListener() {
             override fun onOpen(webSocket: WebSocket, response: Response) {
-                reconnecting = false
                 reconnectAttempts = 0
                 if (this@CallService.webSocket !== webSocket) return
+                android.util.Log.i("CallService", "WebSocket connected to $SERVER_URL")
                 connected = true
                 _connectionFlow.value = true
                 startForeground(serviceId, getServiceNotification())
@@ -249,6 +250,7 @@ class CallService : Service() {
 
             override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
                 if (this@CallService.webSocket !== webSocket) return
+                android.util.Log.w("CallService", "WebSocket closing: code=$code reason=$reason")
                 connected = false
                 _connectionFlow.value = false
                 pingJob?.cancel()
@@ -258,6 +260,7 @@ class CallService : Service() {
 
             override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
                 if (this@CallService.webSocket !== webSocket) return
+                android.util.Log.w("CallService", "WebSocket closed: code=$code reason=$reason")
                 connected = false
                 _connectionFlow.value = false
                 pingJob?.cancel()
@@ -267,6 +270,7 @@ class CallService : Service() {
 
             override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
                 if (this@CallService.webSocket !== webSocket) return
+                android.util.Log.e("CallService", "WebSocket failure: ${t.message}", t)
                 connected = false
                 _connectionFlow.value = false
                 pingJob?.cancel()
@@ -278,8 +282,7 @@ class CallService : Service() {
     }
 
     private fun scheduleReconnect(forcedDelay: Long = -1) {
-        if (!shouldRun || reconnecting) return
-        reconnecting = true
+        if (!shouldRun) return
         reconnectAttempts++
         scope.launch {
             val delayMs = if (forcedDelay >= 0) forcedDelay

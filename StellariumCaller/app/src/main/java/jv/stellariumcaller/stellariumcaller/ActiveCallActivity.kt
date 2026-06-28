@@ -15,7 +15,6 @@ import androidx.compose.ui.input.pointer.*
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import jv.stellariumcaller.stellariumcaller.ui.screens.ActiveCallScreen
-import jv.stellariumcaller.stellariumcaller.ui.theme.DarkBackground
 import jv.stellariumcaller.stellariumcaller.ui.theme.StellariumCallerTheme
 
 class ActiveCallActivity : ComponentActivity() {
@@ -38,9 +37,7 @@ class ActiveCallActivity : ComponentActivity() {
                 audioManager.setStreamVolume(android.media.AudioManager.STREAM_VOICE_CALL, audioManager.getStreamMaxVolume(android.media.AudioManager.STREAM_VOICE_CALL), 0)
 
                 Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(DarkBackground)
+                    modifier = Modifier.fillMaxSize()
                 ) {
                     ActiveCallScreen(
                         pttPressed = pttPressed,

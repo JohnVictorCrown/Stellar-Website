@@ -27,14 +27,14 @@ fun CallsScreen(
 
     if (logs.isEmpty()) {
         Box(
-            modifier = Modifier.fillMaxSize().background(DarkBackground),
+            modifier = Modifier.fillMaxSize().background(BackgroundGradient),
             contentAlignment = Alignment.Center
         ) {
             Text("No calls yet", color = GrayDark, fontSize = 16.sp)
         }
     } else {
         LazyColumn(
-            modifier = Modifier.fillMaxSize().background(DarkBackground).padding(16.dp),
+            modifier = Modifier.fillMaxSize().background(BackgroundGradient).padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(logs) { log ->
@@ -51,7 +51,7 @@ private fun CallLogItem(log: CallLog, onClick: () -> Unit) {
     val date = remember(log.timestamp) { Date(log.timestamp) }
 
     val statusColor = when (log.status) {
-        "answered" -> Emerald
+        "answered" -> AccentBlue
         "missed" -> Red
         else -> GrayMedium
     }

@@ -19,7 +19,13 @@ import androidx.compose.ui.input.pointer.*
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import jv.stellariumcaller.stellariumcaller.ui.theme.*
+import jv.stellariumcaller.stellariumcaller.ui.theme.AccentBlue
+import jv.stellariumcaller.stellariumcaller.ui.theme.AccentPink
+import jv.stellariumcaller.stellariumcaller.ui.theme.AccentPinkLight
+import jv.stellariumcaller.stellariumcaller.ui.theme.AccentPurpleDark
+import jv.stellariumcaller.stellariumcaller.ui.theme.BackgroundGradient
+import jv.stellariumcaller.stellariumcaller.ui.theme.GrayLight
+import jv.stellariumcaller.stellariumcaller.ui.theme.White
 
 @Composable
 fun ActiveCallScreen(
@@ -32,7 +38,7 @@ fun ActiveCallScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(DarkBackground)
+            .background(BackgroundGradient)
             .padding(32.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -49,7 +55,7 @@ fun ActiveCallScreen(
 
         Text(
             "Connected",
-            color = Emerald,
+            color = AccentPink,
             fontSize = 18.sp
         )
 
@@ -66,7 +72,7 @@ fun ActiveCallScreen(
                     modifier = Modifier
                         .size(96.dp)
                         .then(
-                            if (isRecording) Modifier.border(3.dp, EmeraldLight, CircleShape) else Modifier
+                            if (isRecording) Modifier.border(3.dp, AccentPinkLight, CircleShape) else Modifier
                         )
                         .pointerInput(Unit) {
                             awaitPointerEventScope {
@@ -78,7 +84,7 @@ fun ActiveCallScreen(
                         },
                     shape = CircleShape,
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = if (isRecording) Emerald else EmeraldDark
+                        containerColor = if (isRecording) AccentPink else AccentPurpleDark
                     ),
                     contentPadding = PaddingValues(0.dp)
                 ) {
@@ -91,7 +97,7 @@ fun ActiveCallScreen(
                 }
                 Text(
                     if (isRecording) "RECORDING" else if (pttPressed) "INITIALIZING..." else "Hold to Talk",
-                    color = if (isRecording) EmeraldLight else GrayLight,
+                    color = if (isRecording) AccentPinkLight else GrayLight,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(top = 8.dp)

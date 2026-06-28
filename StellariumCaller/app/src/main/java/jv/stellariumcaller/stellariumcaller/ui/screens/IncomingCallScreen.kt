@@ -16,7 +16,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import jv.stellariumcaller.stellariumcaller.ui.theme.*
+import jv.stellariumcaller.stellariumcaller.ui.theme.AccentBlue
+import jv.stellariumcaller.stellariumcaller.ui.theme.AccentPinkLight
+import jv.stellariumcaller.stellariumcaller.ui.theme.BackgroundGradient
+import jv.stellariumcaller.stellariumcaller.ui.theme.White
 
 @Composable
 fun IncomingCallScreen(
@@ -26,7 +29,7 @@ fun IncomingCallScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(DarkBackground)
+            .background(BackgroundGradient)
             .padding(32.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -43,7 +46,7 @@ fun IncomingCallScreen(
 
         Text(
             "Stellarium Foundation",
-            color = EmeraldLight,
+            color = AccentPinkLight,
             fontSize = 18.sp
         )
 
@@ -65,7 +68,7 @@ fun IncomingCallScreen(
             Button(
                 onClick = onAnswer,
                 modifier = Modifier.size(72.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Emerald),
+                colors = ButtonDefaults.buttonColors(containerColor = AccentBlue),
                 contentPadding = PaddingValues(0.dp)
             ) {
                 Icon(Icons.Default.Call, contentDescription = "Answer", tint = White)

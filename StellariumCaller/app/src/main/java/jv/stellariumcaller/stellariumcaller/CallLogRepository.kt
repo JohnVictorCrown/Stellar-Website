@@ -83,6 +83,14 @@ class CallLogRepository private constructor(context: Context) {
         return msg
     }
 
+    fun deleteAudioMessage(msgId: Long): Boolean {
+        val log = callLogs.find { it.audioMessages.any { it.id == msgId } } ?: return false
+        log.audioMessages.removeAll { it.id == msgId }
+        save()
+        _callLogsFlow.value = callLogs.toList().reversed()
+        return true
+    }
+
     fun clearAll() {
         callLogs.clear()
         nextCallId = 1
