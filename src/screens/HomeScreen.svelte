@@ -36,62 +36,131 @@
   }
 </script>
 
+<style>
+  .resume-section {
+    text-align: center;
+  }
+  .resume-section hr {
+    margin: 2.5rem 0;
+    border: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(0, 255, 255, 0.3), transparent);
+  }
+  .resume-section h1 {
+    font-size: 1.75rem;
+    text-align: center;
+    color: white;
+    margin-bottom: 0.5rem;
+    font-weight: 400;
+  }
+  .resume-section h2 {
+    font-size: 1.2rem;
+    color: #00FFFF;
+    text-align: center;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-weight: 400;
+  }
+  .resume-section h3 {
+    font-size: 1rem;
+    color: #E0B0FF;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    font-weight: 400;
+  }
+  .resume-section p {
+    text-align: center;
+    line-height: 1.7;
+    margin-bottom: 0.75rem;
+    color: #ccc;
+    font-size: 0.9rem;
+  }
+  .resume-section ul {
+    list-style: none;
+    padding: 0;
+    text-align: center;
+  }
+  .resume-section li {
+    padding: 0.25rem 0;
+    color: #bbb;
+    font-size: 0.85rem;
+    line-height: 1.6;
+  }
+  .resume-section strong, .resume-section b {
+    color: white;
+    font-weight: 400;
+  }
+  .resume-section em {
+    color: #00FFFF;
+    font-style: normal;
+  }
+  .resume-section a {
+    color: #00FFFF;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .resume-section blockquote {
+    text-align: center;
+    color: #888;
+    font-style: italic;
+    padding: 1rem 0;
+  }
+</style>
+
 {#if showResume}
   <div class="flex flex-col h-full bg-transparent overflow-hidden">
     <div class="flex items-center p-4 border-b border-white/10 sticky top-0 bg-black/60 backdrop-blur-md z-10 safe-top">
       <button onclick={() => showResume = false} class="p-2 text-white hover:text-gray-300">
         <ArrowLeft size={24} />
       </button>
-      <h1 class="text-lg font-semibold text-white ml-4 truncate flex-1 text-center pr-10 hover:text-[var(--color-tertiary)] transition-colors">
+      <h1 class="text-lg text-white ml-4 truncate flex-1 text-center pr-10 hover:text-[var(--color-tertiary)] transition-colors">
         John Victor - Resume
       </h1>
     </div>
-      <div class="flex-1 overflow-y-auto no-scrollbar px-0 sm:p-6 lg:p-10 xl:p-12 pb-32 flex flex-col items-center max-w-5xl lg:max-w-7xl mx-auto w-full">
-      <div class="flex flex-col items-center mb-8 lg:mb-12">
-        <div class="relative group">
-          <div class="absolute -inset-0.5 bg-gradient-to-r from-red-650 via-pink-650 to-amber-600 rounded-full blur-md opacity-40 group-hover:opacity-70 transition duration-1000 group-hover:duration-200" />
-          <div class="relative bg-black rounded-full p-1 border border-white/5">
-            <img
-              src={PHOTO_PATHS[photoIndex]}
-              alt="John Victor"
-              class="w-32 h-32 lg:w-44 lg:h-44 xl:w-52 xl:h-52 rounded-full object-cover shadow-2xl border border-white/10"
-              onerror={handlePhotoError}
-              referrerpolicy="no-referrer"
-            />
-          </div>
-        </div>
-      </div>
-      <div class="w-full">
-        <div class="prose-custom">
-          {@html resumeHtml}
-        </div>
+    <div class="flex-1 overflow-y-auto no-scrollbar px-4 sm:px-8 lg:px-12 pb-32 flex flex-col items-center max-w-3xl mx-auto w-full">
+      <div class="resume-section w-full">
+        {@html resumeHtml}
       </div>
       <button
         onclick={() => savePdf('/resume.pdf', 'John_Victor_Resume.pdf')}
-        class="mt-12 px-8 py-3 bg-[var(--color-tertiary)] text-black font-semibold rounded-full hover:bg-[var(--color-tertiary)]/90 transition-colors shadow-[0_0_15px_rgba(0,255,255,0.3)] flex items-center gap-2 cursor-pointer"
+        class="mt-10 px-8 py-3 bg-[var(--color-tertiary)] text-black rounded-full hover:bg-[var(--color-tertiary)]/90 transition-colors shadow-[0_0_15px_rgba(0,255,255,0.3)] flex items-center gap-2 cursor-pointer"
       >
         <Download size={20} /> Download PDF Version
       </button>
     </div>
   </div>
 {:else}
-  <div class="flex flex-col h-full overflow-y-auto no-scrollbar w-full max-w-5xl lg:max-w-7xl mx-auto px-0 sm:p-6 lg:p-10 xl:p-12 items-center">
-    <h1 class="text-3xl lg:text-5xl xl:text-6xl font-normal text-center mt-6 lg:mt-10 uppercase tracking-wider">
+  <div class="flex flex-col h-full overflow-y-auto no-scrollbar w-full max-w-5xl lg:max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 items-center">
+    <img
+      src="/icons/icon-512.png"
+      alt="Stellarium"
+      class="w-16 h-16 lg:w-20 lg:h-20 mt-6 lg:mt-10"
+    />
+
+    <h1 class="text-3xl lg:text-5xl xl:text-6xl font-normal text-center mt-4 lg:mt-6 uppercase tracking-wider">
       Stellarium Foundation
     </h1>
 
-    <div class="mt-4 lg:mt-8 flex gap-3 items-center justify-center">
+    <div class="mt-4 lg:mt-8 flex items-center gap-2 justify-center flex-wrap">
       <a
-        href="https://stellariumfoundation.github.io/Stellar-Website/"
+        href="https://stellariumfoundation.github.io/StellarWebsite/"
         target="_blank"
         rel="noopener noreferrer"
-        class="px-6 py-3 lg:px-10 lg:py-4 bg-gradient-to-r from-[var(--color-tertiary)] to-emerald-400 text-black font-black rounded-full text-sm lg:text-base uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-[0_0_30px_rgba(0,255,255,0.3)] hover:shadow-[0_0_50px_rgba(0,255,255,0.5)] text-center flex items-center justify-center gap-2"
+        class="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-[var(--color-tertiary)] to-emerald-400 text-black rounded-lg text-xs uppercase tracking-widest font-medium hover:scale-105 active:scale-95 transition-all"
       >
-        <Download size={18} /> Install Stellarium App
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M17.523 14.342a.853.853 0 1 1-.002-1.706.853.853 0 0 1 .002 1.706zm-11.04 0a.853.853 0 1 1 .001-1.706.853.853 0 0 1-.001 1.706zm12.438-5.502l2.103-3.644a.359.359 0 1 0-.622-.36l-2.132 3.692A12.16 12.16 0 0 0 11.997 7.5a12.16 12.16 0 0 0-6.273 1.84L3.592 5.664a.358.358 0 1 0-.622.36l2.114 3.662C2.495 11.652.52 14.958.037 18.733a.09.09 0 0 0 .09.098h.318a.09.09 0 0 0 .09-.084c.443-3.648 2.32-6.826 4.943-9.12C7.486 8.152 9.71 7.5 12 7.5s4.514.652 6.522 2.127c2.623 2.294 4.5 5.472 4.943 9.12a.09.09 0 0 0 .09.084h.318a.09.09 0 0 0 .09-.098c-.483-3.775-2.458-7.081-5.042-9.893z"/>
+        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
+        </svg>
+        Install
       </a>
     </div>
 
-    <p class="mt-8 lg:mt-12 text-center font-bold text-[var(--color-secondary)] text-lg lg:text-2xl xl:text-3xl max-w-sm lg:max-w-xl">
+    <p class="mt-8 lg:mt-12 text-center text-[var(--color-secondary)] text-lg lg:text-2xl xl:text-3xl max-w-sm lg:max-w-xl">
       An institution to propel global wealth creation and wellness.
     </p>
 
@@ -112,14 +181,14 @@
           <div class="absolute inset-0 bg-gradient-to-b from-white/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl" />
           <div class="absolute -inset-1 bg-[var(--color-tertiary)]/10 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
           <svelte:component this={iconMap[topic.icon]} size={22} class="text-[var(--color-secondary)] mb-1.5 lg:!w-8 lg:!h-8 xl:!w-9 xl:!h-9 relative z-10 group-hover:scale-110 group-hover:text-[var(--color-tertiary)] transition-all duration-300" />
-          <span class="text-[10px] sm:text-xs lg:text-sm xl:text-base font-bold text-white/80 group-hover:text-white uppercase tracking-wider text-center leading-tight line-clamp-2 px-1 relative z-10 transition-colors duration-300">{topic.title}</span>
+          <span class="text-[10px] sm:text-xs lg:text-sm xl:text-base text-white/80 group-hover:text-white uppercase tracking-wider text-center leading-tight line-clamp-2 px-1 relative z-10 transition-colors duration-300">{topic.title}</span>
         </button>
       {/each}
     </div>
 
     <!-- Water Enterprises Section -->
     <div class="mt-10 lg:mt-16 w-full max-w-md lg:max-w-xl xl:max-w-2xl flex flex-col items-center border-t border-white/10 pt-8">
-      <h3 class="text-xs lg:text-sm xl:text-base font-bold uppercase tracking-[0.2em] text-[var(--color-on-surface)] mb-4">Core Enterprises</h3>
+      <h3 class="text-xs lg:text-sm xl:text-base uppercase tracking-[0.2em] text-[var(--color-on-surface)] mb-4">Core Enterprises</h3>
       <div class="w-full bg-[var(--color-surface)] border border-white/5 hover:border-[var(--color-tertiary)]/20 rounded-2xl p-5 lg:p-8 shadow-xl transition-all duration-300 relative overflow-hidden group">
         <div class="absolute top-0 right-0 w-24 h-24 bg-[var(--color-tertiary)]/5 rounded-full blur-2xl group-hover:bg-[var(--color-tertiary)]/10 transition-all duration-300 pointer-events-none" />
         <div class="flex flex-col gap-5 items-center text-center">
@@ -127,9 +196,9 @@
             <Droplet size={22} class="animate-pulse" />
           </div>
           <div class="flex-1 min-w-0 text-center">
-            <h4 class="text-sm font-bold text-white tracking-wide flex items-center justify-center gap-1.5">
+            <h4 class="text-sm text-white tracking-wide flex items-center justify-center gap-1.5">
               Water Enterprises Website
-              <span class="inline-block px-2 py-0.5 bg-[var(--color-tertiary)]/10 text-[var(--color-tertiary)] border border-[var(--color-tertiary)]/20 text-[9px] font-bold rounded-full uppercase tracking-wider">Live</span>
+              <span class="inline-block px-2 py-0.5 bg-[var(--color-tertiary)]/10 text-[var(--color-tertiary)] border border-[var(--color-tertiary)]/20 text-[9px] rounded-full uppercase tracking-wider">Live</span>
             </h4>
             <p class="text-xs text-gray-400 mt-2 leading-relaxed max-w-xs mx-auto">
               A website for all things water with all water products and opportunities for investment, get to know!
@@ -139,7 +208,7 @@
                 href="https://water-enterprises-landing.onrender.com/"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="inline-flex items-center gap-2 px-5 py-2.5 bg-[var(--color-tertiary)]/10 hover:bg-[var(--color-tertiary)]/20 text-[var(--color-tertiary)] border border-[var(--color-tertiary)]/30 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all hover:scale-[1.02] active:scale-[0.98] shadow-md group/btn"
+                class="inline-flex items-center gap-2 px-5 py-2.5 bg-[var(--color-tertiary)]/10 hover:bg-[var(--color-tertiary)]/20 text-[var(--color-tertiary)] border border-[var(--color-tertiary)]/30 rounded-xl text-xs uppercase tracking-wider transition-all hover:scale-[1.02] active:scale-[0.98] shadow-md group/btn"
               >
                 <span>Visit Landing Platform</span>
                 <ExternalLink size={14} class="group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
@@ -194,7 +263,7 @@
     </div>
 
 
-<!-- Substack Promotion Banner -->
+    <!-- Substack Promotion Banner -->
     <div class="w-full max-w-md lg:max-w-xl xl:max-w-2xl px-1 mt-4 lg:mt-8 mb-8">
       <a
         href="https://substack.com/@johnvictorcrown"
@@ -209,10 +278,10 @@
               <path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z" />
             </svg>
           </div>
-          <span class="text-[10px] text-orange-400 font-mono tracking-[0.25em] uppercase font-black mb-1.5">EXCLUSIVE TRANSMISSIONS</span>
-          <h4 class="text-base sm:text-lg font-bold text-white tracking-wide mb-2 group-hover:text-orange-300 transition-colors">Subscribe to John Victor's Substack</h4>
+          <span class="text-[10px] text-orange-400 font-mono tracking-[0.25em] uppercase mb-1.5">EXCLUSIVE TRANSMISSIONS</span>
+          <h4 class="text-base sm:text-lg text-white tracking-wide mb-2 group-hover:text-orange-300 transition-colors">Subscribe to John Victor's Substack</h4>
           <p class="text-xs sm:text-sm text-gray-300 max-w-sm leading-relaxed mb-5">Get raw insights, system engineering frameworks, and strategic letters delivered directly to your inbox.</p>
-          <div class="inline-flex items-center gap-2 px-5 py-2.5 bg-orange-500 hover:bg-orange-600 text-white rounded-xl text-xs font-black uppercase tracking-wider shadow-lg hover:shadow-orange-500/20 transition-all duration-300">
+          <div class="inline-flex items-center gap-2 px-5 py-2.5 bg-orange-500 hover:bg-orange-600 text-white rounded-xl text-xs uppercase tracking-wider shadow-lg hover:shadow-orange-500/20 transition-all duration-300">
             <span>Subscribe Now</span>
             <ExternalLink size={12} strokeWidth={2.5} />
           </div>
@@ -223,7 +292,7 @@
 
     <!-- Tor Anonymous Comms Section -->
     <div class="mt-10 lg:mt-16 w-full max-w-md lg:max-w-xl xl:max-w-2xl flex flex-col items-center border-t border-white/10 pt-8">
-      <h3 class="text-xs lg:text-sm xl:text-base font-bold uppercase tracking-[0.2em] text-[var(--color-on-surface)] mb-4">Secure Network</h3>
+      <h3 class="text-xs lg:text-sm xl:text-base uppercase tracking-[0.2em] text-[var(--color-on-surface)] mb-4">Secure Network</h3>
       <div class="w-full bg-gradient-to-b from-[#18112c] to-[#0e0a1b] border border-purple-500/15 hover:border-[var(--color-tertiary)]/20 rounded-2xl p-5 shadow-2xl transition-all duration-300 relative overflow-hidden group">
         <div class="absolute top-0 right-0 w-24 h-24 bg-purple-500/5 rounded-full blur-2xl group-hover:bg-purple-500/10 transition-all duration-300 pointer-events-none" />
         <div class="flex flex-col gap-4 items-center text-center">
@@ -231,9 +300,9 @@
             <Shield size={22} class="animate-pulse" />
           </div>
           <div class="flex-1 min-w-0 text-center w-full">
-            <h4 class="text-sm font-bold text-white tracking-wide flex items-center justify-center gap-1.5">
+            <h4 class="text-sm text-white tracking-wide flex items-center justify-center gap-1.5">
               Anonymous Messaging Portal
-              <span class="inline-block px-2 py-0.5 bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[9px] font-bold rounded-full uppercase tracking-wider">Tor Secure</span>
+              <span class="inline-block px-2 py-0.5 bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[9px] rounded-full uppercase tracking-wider">Tor Secure</span>
             </h4>
             <p class="text-xs text-gray-400 mt-2 leading-relaxed max-w-xs mx-auto">
               A secure, anonymous whistleblower portal. Open this site inside the Tor Browser to guarantee absolute anonymity and complete metadata protection.
@@ -243,7 +312,7 @@
                 href="https://mural-bnyh.onrender.com/"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="inline-flex items-center gap-2 px-5 py-2.5 bg-purple-500/15 hover:bg-purple-500/25 text-purple-300 border border-purple-500/30 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all hover:scale-[1.02] active:scale-[0.98] shadow-md group/btn w-full justify-center"
+                class="inline-flex items-center gap-2 px-5 py-2.5 bg-purple-500/15 hover:bg-purple-500/25 text-purple-300 border border-purple-500/30 rounded-xl text-xs uppercase tracking-wider transition-all hover:scale-[1.02] active:scale-[0.98] shadow-md group/btn w-full justify-center"
               >
                 <span>Launch Secure Portal</span>
                 <ExternalLink size={14} class="group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
@@ -256,7 +325,7 @@
                 <span class="font-mono text-[9.5px] text-purple-300 break-all select-all text-left truncate flex-1 pr-2">
                   mural-bnyh.onrender.com
                 </span>
-                <span class="flex items-center gap-1 text-[9px] font-bold text-purple-400 uppercase tracking-widest shrink-0">
+                <span class="flex items-center gap-1 text-[9px] text-purple-400 uppercase tracking-widest shrink-0">
                   {#if onionCopied}
                     <CheckCircle size={10} class="text-green-400" />
                     <span class="text-green-400">Copied</span>
@@ -273,7 +342,7 @@
     </div>
 
     <div class="mt-10 lg:mt-16 w-full max-w-md lg:max-w-xl xl:max-w-2xl flex flex-col items-center border-t border-white/10 pt-8">
-      <h3 class="text-xs lg:text-sm xl:text-base font-bold uppercase tracking-[0.2em] text-[var(--color-on-surface)] mb-4">Founder Profile</h3>
+      <h3 class="text-xs lg:text-sm xl:text-base uppercase tracking-[0.2em] text-[var(--color-on-surface)] mb-4">Founder Profile</h3>
       <div class="flex items-center gap-4 lg:gap-6 bg-[var(--color-surface)] border border-white/5 p-4 lg:p-6 rounded-2xl w-full mb-4">
         <img
           src={PHOTO_PATHS[photoIndex]}
@@ -283,8 +352,8 @@
           referrerpolicy="no-referrer"
         />
         <div class="flex-1 min-w-0 bg-transparent text-left">
-          <h4 class="text-sm font-bold text-white tracking-wide">John Victor</h4>
-          <p class="text-[10px] text-[var(--color-secondary)] font-bold uppercase tracking-widest mt-0.5">Founder & Wealth Activist</p>
+          <h4 class="text-sm text-white tracking-wide">John Victor</h4>
+          <p class="text-[10px] text-[var(--color-secondary)] uppercase tracking-widest mt-0.5">Founder & Wealth Activist</p>
           <p class="text-xs text-gray-400 mt-1 line-clamp-1">Propelling global wealth creation and sovereign enterprise systems.</p>
         </div>
       </div>
@@ -306,7 +375,7 @@
 
     <!-- Connect With Us -->
     <div class="mt-10 lg:mt-16 mb-24 w-full max-w-md lg:max-w-xl xl:max-w-2xl flex flex-col items-center border-t border-white/10 pt-8">
-      <h3 class="text-xs lg:text-sm xl:text-base font-bold uppercase tracking-[0.2em] text-[var(--color-on-surface)] mb-6">Connect With Us</h3>
+      <h3 class="text-xs lg:text-sm xl:text-base uppercase tracking-[0.2em] text-[var(--color-on-surface)] mb-6">Connect With Us</h3>
       <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 w-full transform-gpu">
         <a href="https://tiktok.com/@johnvictorone" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 p-3 bg-[var(--color-surface)] border border-white/5 rounded-xl hover:bg-white/5 transition-colors group transform-gpu">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="text-white group-hover:scale-110 transition-transform flex-shrink-0 will-change-transform">
@@ -338,7 +407,7 @@
         </a>
         <a href="https://vk.ru/id1113302487" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 p-3 bg-[var(--color-surface)] border border-white/5 rounded-xl hover:bg-white/5 transition-colors group transform-gpu">
           <div class="bg-[#0077FF] p-1 rounded-md group-hover:scale-110 transition-transform flex-shrink-0 w-5 h-5 flex items-center justify-center will-change-transform">
-            <span class="font-bold text-white text-[10px] leading-none">VK</span>
+            <span class="text-white text-[10px] leading-none">VK</span>
           </div>
           <span class="text-xs font-medium text-white truncate">VKontakte</span>
         </a>
@@ -367,7 +436,7 @@
   {#if selectedTopic}
     <div class="flex flex-col items-center">
       <svelte:component this={iconMap[selectedTopic.icon]} size={56} class="text-white" />
-      <h2 class="text-2xl font-bold text-white mt-6 text-center">{selectedTopic.subtitle}</h2>
+      <h2 class="text-2xl text-white mt-6 text-center">{selectedTopic.subtitle}</h2>
       <div class="mt-8 space-y-4 text-[var(--color-on-surface)] text-[15px] leading-relaxed text-center whitespace-pre-wrap">
         {selectedTopic.description}
       </div>

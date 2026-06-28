@@ -79,7 +79,7 @@
   }
 </script>
 
-<div class="flex flex-col h-full overflow-y-auto no-scrollbar w-full max-w-5xl lg:max-w-7xl mx-auto px-0 sm:p-6 lg:p-10 xl:p-12 items-center">
+<div class="flex flex-col h-full overflow-y-auto no-scrollbar w-full max-w-5xl lg:max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-6 lg:py-10 xl:py-12 items-center">
   <div class="mb-4 lg:mb-6"><Shield size={48} class="text-white opacity-80 lg:w-16 lg:h-16" /></div>
   <h1 class="text-3xl lg:text-5xl xl:text-6xl font-normal text-center mt-2 uppercase tracking-wide">Secure Comms</h1>
   <p class="text-center text-sm lg:text-base xl:text-lg text-[var(--color-on-background)] mt-4 lg:mt-6 max-w-sm lg:max-w-xl xl:max-w-2xl leading-relaxed mb-8 lg:mb-12">
@@ -94,8 +94,8 @@
           <Phone size={20} class="text-emerald-400 lg:w-6 lg:h-6" />
         </div>
         <div class="text-left">
-          <h3 class="text-xs lg:text-sm xl:text-base font-black text-white uppercase tracking-wider">Call Stellarium</h3>
-          <span class="text-[9px] lg:text-xs text-emerald-300 font-extrabold uppercase tracking-widest block">Direct Voice Connection</span>
+          <h3 class="text-xs lg:text-sm xl:text-base  text-white uppercase tracking-wider">Call Stellarium</h3>
+          <span class="text-[9px] lg:text-xs text-emerald-300  uppercase tracking-widest block">Direct Voice Connection</span>
         </div>
       </div>
 
@@ -107,7 +107,7 @@
         <button
           onclick={() => callClient.startCall()}
           disabled={callState === 'calling'}
-          class="w-full bg-emerald-500 text-black font-bold py-3 lg:py-4 rounded-xl flex items-center justify-center gap-2 uppercase tracking-wider text-xs lg:text-sm hover:bg-emerald-400 disabled:opacity-50 transition-all active:scale-[0.98]"
+          class="w-full bg-emerald-500 text-black  py-3 lg:py-4 rounded-xl flex items-center justify-center gap-2 uppercase tracking-wider text-xs lg:text-sm hover:bg-emerald-400 disabled:opacity-50 transition-all active:scale-[0.98]"
         >
           <Phone size={18} /> Call Owner
         </button>
@@ -118,11 +118,11 @@
       {:else if callState === 'calling'}
         <div class="flex items-center justify-center gap-3 py-3">
           <div class="w-5 h-5 border-2 border-emerald-400 border-t-transparent rounded-full animate-spin" />
-          <span class="text-emerald-300 font-semibold">Calling...</span>
+          <span class="text-emerald-300 ">Calling...</span>
         </div>
       {:else if callState === 'in_call'}
         <div class="flex flex-col gap-3">
-          <span class="text-emerald-300 font-semibold text-center">Connected — Walkie-Talkie Mode</span>
+          <span class="text-emerald-300  text-center">Connected — Walkie-Talkie Mode</span>
           
           <button
             ontouchstart={() => { isPTT = true; callClient.startTransmitting(); }}
@@ -130,7 +130,7 @@
             onmousedown={() => { isPTT = true; callClient.startTransmitting(); }}
             onmouseup={() => { isPTT = false; callClient.stopTransmitting(); }}
             onmouseleave={() => { if (isPTT) { isPTT = false; callClient.stopTransmitting(); } }}
-            class="w-full py-6 rounded-xl flex items-center justify-center gap-2 uppercase tracking-wider text-sm font-bold transition-all select-none active:scale-[0.98] {isRecording ? 'bg-emerald-500 text-black shadow-[0_0_40px_rgba(16,185,129,0.6)] animate-pulse' : isPTT ? 'bg-emerald-600/60 text-emerald-200 border border-emerald-500/50' : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/30'}"
+            class="w-full py-6 rounded-xl flex items-center justify-center gap-2 uppercase tracking-wider text-sm  transition-all select-none active:scale-[0.98] {isRecording ? 'bg-emerald-500 text-black shadow-[0_0_40px_rgba(16,185,129,0.6)] animate-pulse' : isPTT ? 'bg-emerald-600/60 text-emerald-200 border border-emerald-500/50' : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/30'}"
           >
             <Mic size={20} class={isRecording ? 'animate-pulse' : ''} />
             {isRecording ? 'RECORDING...' : isPTT ? 'INITIALIZING...' : 'HOLD TO TALK'}
@@ -138,7 +138,7 @@
           
           <button
             onclick={() => callClient.endCall()}
-            class="w-full bg-red-500/20 text-red-400 border border-red-500/30 font-semibold py-3 rounded-xl flex items-center justify-center gap-2 uppercase tracking-wider text-xs hover:bg-red-500/30 transition-all"
+            class="w-full bg-red-500/20 text-red-400 border border-red-500/30  py-3 rounded-xl flex items-center justify-center gap-2 uppercase tracking-wider text-xs hover:bg-red-500/30 transition-all"
           >
             <PhoneOff size={16} /> End Call
           </button>
@@ -147,7 +147,7 @@
         <p class="text-xs text-gray-400 text-center">Call ended</p>
         <button
           onclick={() => callClient.resetCall()}
-          class="w-full bg-emerald-500/10 text-emerald-400 font-semibold py-2 rounded-xl text-xs uppercase tracking-wider hover:bg-emerald-500/20 transition-all"
+          class="w-full bg-emerald-500/10 text-emerald-400  py-2 rounded-xl text-xs uppercase tracking-wider hover:bg-emerald-500/20 transition-all"
         >
           Call Again
         </button>
@@ -156,7 +156,7 @@
 
     <!-- Message Form -->
     <div class="bg-[var(--color-surface)] border border-white/10 rounded-2xl p-6 lg:p-8 xl:p-10">
-      <label class="block text-xs lg:text-sm xl:text-base font-bold text-gray-400 uppercase tracking-widest mb-2">Contact Email (Optional)</label>
+      <label class="block text-xs lg:text-sm xl:text-base  text-gray-400 uppercase tracking-widest mb-2">Contact Email (Optional)</label>
       <input
         type="email"
         bind:value={email}
@@ -165,7 +165,7 @@
         disabled={isSending}
       />
 
-      <label class="block text-xs lg:text-sm xl:text-base font-bold text-gray-400 uppercase tracking-widest mt-6 lg:mt-8 mb-2">Intel / Message</label>
+      <label class="block text-xs lg:text-sm xl:text-base  text-gray-400 uppercase tracking-widest mt-6 lg:mt-8 mb-2">Intel / Message</label>
       <textarea
         bind:value={message}
         rows={4}
@@ -188,7 +188,7 @@
       <button
         onclick={handleSend}
         disabled={isSending || !message.trim()}
-        class="w-full mt-6 lg:mt-8 bg-[var(--color-tertiary)] text-black font-bold py-4 lg:py-5 rounded-xl flex items-center justify-center gap-2 uppercase tracking-widest text-sm lg:text-base xl:text-lg hover:bg-[var(--color-tertiary)]/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+        class="w-full mt-6 lg:mt-8 bg-[var(--color-tertiary)] text-black  py-4 lg:py-5 rounded-xl flex items-center justify-center gap-2 uppercase tracking-widest text-sm lg:text-base xl:text-lg hover:bg-[var(--color-tertiary)]/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
       >
         {#if isSending}
           Encrypting...
@@ -205,8 +205,8 @@
           <Shield size={20} class="text-purple-400 lg:w-6 lg:h-6" />
         </div>
         <div class="text-left">
-          <h3 class="text-xs lg:text-sm xl:text-base font-black text-white uppercase tracking-wider">Anonymous Messaging</h3>
-          <span class="text-[9px] lg:text-xs text-purple-300 font-extrabold uppercase tracking-widest block">Supreme Metadata Protection</span>
+          <h3 class="text-xs lg:text-sm xl:text-base  text-white uppercase tracking-wider">Anonymous Messaging</h3>
+          <span class="text-[9px] lg:text-xs text-purple-300  uppercase tracking-widest block">Supreme Metadata Protection</span>
         </div>
       </div>
 
@@ -216,7 +216,7 @@
 
       <div onclick={copyPortal} class="flex items-center justify-between gap-3 bg-black/45 hover:bg-black/60 border border-white/5 hover:border-purple-500/30 rounded-xl p-3 lg:p-4 select-all cursor-pointer group transition-all">
         <span class="font-mono text-[10px] lg:text-xs xl:text-sm text-purple-300 break-all select-all text-left flex-1">https://mural-bnyh.onrender.com/</span>
-        <button type="button" class="p-1 px-2.5 lg:px-3 lg:py-1.5 bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 rounded-lg text-[9px] lg:text-xs font-bold uppercase tracking-wider flex items-center gap-1 shrink-0 transition-all border border-purple-500/20" title="Copy Address">
+        <button type="button" class="p-1 px-2.5 lg:px-3 lg:py-1.5 bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 rounded-lg text-[9px] lg:text-xs  uppercase tracking-wider flex items-center gap-1 shrink-0 transition-all border border-purple-500/20" title="Copy Address">
           {#if portalCopied}
             <CheckCircle size={10} class="text-green-400" />
             <span class="text-green-400">Copied!</span>
@@ -229,7 +229,7 @@
 
       <div class="flex items-center justify-between text-[9px] lg:text-xs text-gray-400 pt-1">
         <span>Security: Use with Tor Browser</span>
-        <span class="text-purple-400 font-bold uppercase tracking-widest">Identity Shielded</span>
+        <span class="text-purple-400  uppercase tracking-widest">Identity Shielded</span>
       </div>
     </div>
   </div>

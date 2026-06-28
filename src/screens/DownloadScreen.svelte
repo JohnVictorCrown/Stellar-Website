@@ -56,7 +56,7 @@
 
     <div class="relative z-10 flex flex-col items-center text-center max-w-3xl">
       <!-- Badge -->
-      <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-[var(--color-tertiary)]/10 border border-[var(--color-tertiary)]/20 rounded-full text-[10px] lg:text-xs text-[var(--color-tertiary)] font-bold uppercase tracking-[0.25em] mb-8">
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-[var(--color-tertiary)]/10 border border-[var(--color-tertiary)]/20 rounded-full text-[10px] lg:text-xs text-[var(--color-tertiary)]  uppercase tracking-[0.25em] mb-8">
         <Sparkles size={12} />
         <span>Now Available Everywhere</span>
       </div>
@@ -77,7 +77,7 @@
       <div class="mt-10 flex flex-col sm:flex-row gap-4 w-full max-w-md">
         <a
           href="/"
-          class="flex-1 inline-flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-[var(--color-tertiary)] to-emerald-400 text-black font-black rounded-full text-sm lg:text-base uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-[0_0_30px_rgba(0,255,255,0.3)] hover:shadow-[0_0_50px_rgba(0,255,255,0.5)]"
+          class="flex-1 inline-flex items-center justify-center gap-3 px-8 py-4 bg-gradient-to-r from-[var(--color-tertiary)] to-emerald-400 text-black  rounded-full text-sm lg:text-base uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-[0_0_30px_rgba(0,255,255,0.3)] hover:shadow-[0_0_50px_rgba(0,255,255,0.5)]"
         >
           <Smartphone size={20} />
           Install App
@@ -85,7 +85,7 @@
         </a>
         <button
           onclick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
-          class="flex-1 inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/5 border border-white/10 text-white rounded-full text-sm lg:text-base font-bold uppercase tracking-wider hover:bg-white/10 hover:border-white/20 transition-all"
+          class="flex-1 inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/5 border border-white/10 text-white rounded-full text-sm lg:text-base  uppercase tracking-wider hover:bg-white/10 hover:border-white/20 transition-all"
         >
           <Compass size={18} />
           Explore
@@ -94,15 +94,15 @@
 
       <!-- Platform badges -->
       <div class="mt-12 flex flex-wrap items-center justify-center gap-6 opacity-60">
-        <div class="flex items-center gap-2 text-[10px] lg:text-xs text-gray-400 uppercase tracking-widest font-bold">
+        <div class="flex items-center gap-2 text-[10px] lg:text-xs text-gray-400 uppercase tracking-widest ">
           <svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4"><path d="M17.523 16.435c-.526 1.213-.786 1.754-1.469 2.827-.954 1.5-2.301 3.37-3.971 3.387-1.487.017-1.872-.963-3.875-.953-2 .01-2.422.972-3.91.954-1.671-.018-2.975-1.74-3.929-3.24-2.722-4.296-3.004-9.329-1.326-12.012 1.196-1.912 3.08-3.03 4.854-3.03 1.819 0 2.962 1.008 4.463 1.008 1.45 0 2.332-1.008 4.459-1.008 1.594 0 3.273.91 4.457 2.474-3.914 2.228-3.28 7.416.677 8.848l.022.012zM14.443 3.048c-.824.979-1.566 2.299-1.356 3.656.93.071 1.86-.327 2.539-1.252.645-.88 1.117-2.176.895-3.452-.89-.064-1.777.393-2.078 1.048z"/></svg>
           iOS
         </div>
-        <div class="flex items-center gap-2 text-[10px] lg:text-xs text-gray-400 uppercase tracking-widest font-bold">
+        <div class="flex items-center gap-2 text-[10px] lg:text-xs text-gray-400 uppercase tracking-widest ">
           <svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4"><path d="M17.523 16.435c-.526 1.213-.786 1.754-1.469 2.827-.954 1.5-2.301 3.37-3.971 3.387-1.487.017-1.872-.963-3.875-.953-2 .01-2.422.972-3.91.954-1.671-.018-2.975-1.74-3.929-3.24-2.722-4.296-3.004-9.329-1.326-12.012 1.196-1.912 3.08-3.03 4.854-3.03 1.819 0 2.962 1.008 4.463 1.008 1.45 0 2.332-1.008 4.459-1.008 1.594 0 3.273.91 4.457 2.474-3.914 2.228-3.28 7.416.677 8.848l.022.012zM14.443 3.048c-.824.979-1.566 2.299-1.356 3.656.93.071 1.86-.327 2.539-1.252.645-.88 1.117-2.176.895-3.452-.89-.064-1.777.393-2.078 1.048z"/></svg>
           Android
         </div>
-        <div class="flex items-center gap-2 text-[10px] lg:text-xs text-gray-400 uppercase tracking-widest font-bold">
+        <div class="flex items-center gap-2 text-[10px] lg:text-xs text-gray-400 uppercase tracking-widest ">
           <Monitor size={14} />
           Web / PWA
         </div>
@@ -120,7 +120,7 @@
   <!-- ═══════════════════════════════════════════════════ -->
   <section id="features" class="w-full max-w-5xl px-4 py-20 lg:py-28">
     <div class="text-center mb-16">
-      <span class="inline-block px-3 py-1 bg-white/5 border border-white/10 rounded-full text-[9px] font-bold uppercase tracking-[0.25em] text-gray-400 mb-4">Platform Features</span>
+      <span class="inline-block px-3 py-1 bg-white/5 border border-white/10 rounded-full text-[9px]  uppercase tracking-[0.25em] text-gray-400 mb-4">Platform Features</span>
       <h2 class="text-2xl sm:text-3xl lg:text-4xl text-white font-normal">Everything in one ecosystem</h2>
       <p class="mt-3 text-sm lg:text-base text-gray-400 max-w-lg mx-auto">Access the full Stellarium knowledge and governance stack from any device.</p>
     </div>
@@ -138,7 +138,7 @@
           <div class="w-10 h-10 rounded-xl bg-[var(--color-tertiary)]/10 border border-[var(--color-tertiary)]/20 flex items-center justify-center mb-4 group-hover:bg-[var(--color-tertiary)]/20 transition-colors">
             <svelte:component this={item.icon} size={20} class="text-[var(--color-tertiary)]" />
           </div>
-          <h3 class="text-sm lg:text-base font-bold text-white mb-2">{item.title}</h3>
+          <h3 class="text-sm lg:text-base  text-white mb-2">{item.title}</h3>
           <p class="text-xs lg:text-sm text-gray-400 leading-relaxed">{item.desc}</p>
         </div>
       {/each}
@@ -157,8 +157,8 @@
         { num: '1', label: 'Foundation' },
       ] as stat}
         <div class="text-center">
-          <div class="text-3xl lg:text-4xl xl:text-5xl font-bold bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent">{stat.num}</div>
-          <div class="text-[10px] lg:text-xs text-gray-500 uppercase tracking-[0.2em] font-bold mt-2">{stat.label}</div>
+          <div class="text-3xl lg:text-4xl xl:text-5xl  bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent">{stat.num}</div>
+          <div class="text-[10px] lg:text-xs text-gray-500 uppercase tracking-[0.2em]  mt-2">{stat.label}</div>
         </div>
       {/each}
     </div>
@@ -181,7 +181,7 @@
           <div class="absolute inset-0 bg-gradient-to-b from-white/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl" />
           <div class="absolute -inset-1 bg-[var(--color-tertiary)]/10 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
           <svelte:component this={iconMap[topic.icon]} size={22} class="text-[var(--color-secondary)] mb-1.5 lg:!w-8 lg:!h-8 xl:!w-9 xl:!h-9 relative z-10 group-hover:scale-110 group-hover:text-[var(--color-tertiary)] transition-all duration-300" />
-          <span class="text-[10px] sm:text-xs lg:text-sm xl:text-base font-bold text-white/80 group-hover:text-white uppercase tracking-wider text-center leading-tight line-clamp-2 px-1 relative z-10 transition-colors duration-300">{topic.title}</span>
+          <span class="text-[10px] sm:text-xs lg:text-sm xl:text-base  text-white/80 group-hover:text-white uppercase tracking-wider text-center leading-tight line-clamp-2 px-1 relative z-10 transition-colors duration-300">{topic.title}</span>
         </button>
       {/each}
     </div>
@@ -193,7 +193,7 @@
 
   <!-- Core Enterprises -->
   <section class="w-full max-w-md lg:max-w-xl xl:max-w-2xl flex flex-col items-center px-4 border-t border-white/10 pt-8 mt-4">
-    <h3 class="text-xs lg:text-sm xl:text-base font-bold uppercase tracking-[0.2em] text-[var(--color-on-surface)] mb-4">Core Enterprises</h3>
+    <h3 class="text-xs lg:text-sm xl:text-base  uppercase tracking-[0.2em] text-[var(--color-on-surface)] mb-4">Core Enterprises</h3>
     <div class="w-full bg-[var(--color-surface)] border border-white/5 hover:border-[var(--color-tertiary)]/20 rounded-2xl p-5 lg:p-8 shadow-xl transition-all duration-300 relative overflow-hidden group">
       <div class="absolute top-0 right-0 w-24 h-24 bg-[var(--color-tertiary)]/5 rounded-full blur-2xl group-hover:bg-[var(--color-tertiary)]/10 transition-all duration-300 pointer-events-none" />
       <div class="flex flex-col gap-5 items-center text-center">
@@ -201,9 +201,9 @@
           <Droplet size={22} class="animate-pulse" />
         </div>
         <div class="flex-1 min-w-0 text-center">
-          <h4 class="text-sm font-bold text-white tracking-wide flex items-center justify-center gap-1.5">
+          <h4 class="text-sm  text-white tracking-wide flex items-center justify-center gap-1.5">
             Water Enterprises Website
-            <span class="inline-block px-2 py-0.5 bg-[var(--color-tertiary)]/10 text-[var(--color-tertiary)] border border-[var(--color-tertiary)]/20 text-[9px] font-bold rounded-full uppercase tracking-wider">Live</span>
+            <span class="inline-block px-2 py-0.5 bg-[var(--color-tertiary)]/10 text-[var(--color-tertiary)] border border-[var(--color-tertiary)]/20 text-[9px]  rounded-full uppercase tracking-wider">Live</span>
           </h4>
           <p class="text-xs text-gray-400 mt-2 leading-relaxed max-w-xs mx-auto">
             A website for all things water with all water products and opportunities for investment, get to know!
@@ -213,7 +213,7 @@
               href="https://water-enterprises-landing.onrender.com/"
               target="_blank"
               rel="noopener noreferrer"
-              class="inline-flex items-center gap-2 px-5 py-2.5 bg-[var(--color-tertiary)]/10 hover:bg-[var(--color-tertiary)]/20 text-[var(--color-tertiary)] border border-[var(--color-tertiary)]/30 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all hover:scale-[1.02] active:scale-[0.98] shadow-md group/btn"
+              class="inline-flex items-center gap-2 px-5 py-2.5 bg-[var(--color-tertiary)]/10 hover:bg-[var(--color-tertiary)]/20 text-[var(--color-tertiary)] border border-[var(--color-tertiary)]/30 rounded-xl text-xs  uppercase tracking-wider transition-all hover:scale-[1.02] active:scale-[0.98] shadow-md group/btn"
             >
               <span>Visit Landing Platform</span>
               <ExternalLink size={14} class="group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
@@ -269,7 +269,7 @@
 
   <!-- Water Suite / Projects & Products -->
   <section class="w-full max-w-3xl xl:max-w-4xl flex flex-col items-center px-4 border-t border-white/10 pt-8 mt-10">
-    <h3 class="text-xs lg:text-sm xl:text-base font-bold uppercase tracking-[0.2em] text-[var(--color-on-surface)] mb-2">The Water Suite</h3>
+    <h3 class="text-xs lg:text-sm xl:text-base  uppercase tracking-[0.2em] text-[var(--color-on-surface)] mb-2">The Water Suite</h3>
     <p class="text-center text-xs lg:text-sm text-gray-400 max-w-md mb-6">Revolutionary AI products designed to automate labor, democratize education, and engineer abundance — all under the Stellarium Foundation.</p>
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
       {#each [
@@ -283,31 +283,31 @@
         { title: 'Water Gov', desc: 'Super app for all government services — business creation, taxes, citizenship, all AI-guided in one platform.', link: 'https://www.notion.so/Water-Gov-1fac1c04bbc180e0bddbd8a70714b532' },
       ]}
         <a href={item.link} target="_blank" rel="noopener noreferrer" class="group bg-zinc-950/60 hover:bg-zinc-900/80 border border-white/[0.06] hover:border-[var(--color-tertiary)]/30 rounded-xl p-5 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]">
-          <h4 class="text-sm lg:text-base font-bold text-white group-hover:text-[var(--color-tertiary)] transition-colors">{item.title}</h4>
+          <h4 class="text-sm lg:text-base  text-white group-hover:text-[var(--color-tertiary)] transition-colors">{item.title}</h4>
           <p class="text-xs lg:text-sm text-gray-400 mt-1.5 leading-relaxed">{item.desc}</p>
         </a>
       {/each}
     </div>
     <div class="mt-6 w-full flex flex-col sm:flex-row gap-3">
-      <a href="https://www.notion.so/The-Water-WATER-Token-Fueling-the-Elevation-to-Eden-200c1c04bbc18033b515da3d37df8c80" target="_blank" rel="noopener noreferrer" class="flex-1 flex items-center justify-center gap-2 px-5 py-3 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/20 hover:border-cyan-500/40 rounded-xl text-xs font-bold uppercase tracking-wider text-cyan-300 hover:text-cyan-200 transition-all">
+      <a href="https://www.notion.so/The-Water-WATER-Token-Fueling-the-Elevation-to-Eden-200c1c04bbc18033b515da3d37df8c80" target="_blank" rel="noopener noreferrer" class="flex-1 flex items-center justify-center gap-2 px-5 py-3 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/20 hover:border-cyan-500/40 rounded-xl text-xs  uppercase tracking-wider text-cyan-300 hover:text-cyan-200 transition-all">
         <span>The WATER Token</span>
         <ExternalLink size={12} />
       </a>
-      <a href="https://pump.fun/coin/E9ZX6jx1ottp2r8v98vt2JpUzzZnbMohaHcDnqenpump" target="_blank" rel="noopener noreferrer" class="flex-1 flex items-center justify-center gap-2 px-5 py-3 bg-gradient-to-r from-emerald-500/10 to-green-500/10 border border-emerald-500/20 hover:border-emerald-500/40 rounded-xl text-xs font-bold uppercase tracking-wider text-emerald-300 hover:text-emerald-200 transition-all">
+      <a href="https://pump.fun/coin/E9ZX6jx1ottp2r8v98vt2JpUzzZnbMohaHcDnqenpump" target="_blank" rel="noopener noreferrer" class="flex-1 flex items-center justify-center gap-2 px-5 py-3 bg-gradient-to-r from-emerald-500/10 to-green-500/10 border border-emerald-500/20 hover:border-emerald-500/40 rounded-xl text-xs  uppercase tracking-wider text-emerald-300 hover:text-emerald-200 transition-all">
         <span>Buy WATER on Pump.fun</span>
         <ExternalLink size={12} />
       </a>
     </div>
     <div class="mt-4 w-full flex flex-col sm:flex-row gap-3">
-      <a href="https://www.notion.so/Investment-Opportunity-A-Portfolio-of-Transformative-AI-Robotics-Products-Poised-to-Redefine-Indu-1ffc1c04bbc180228703d32ec89c71c5" target="_blank" rel="noopener noreferrer" class="flex-1 flex items-center justify-center gap-2 px-5 py-3 bg-gradient-to-r from-yellow-500/10 to-amber-500/10 border border-yellow-500/20 hover:border-yellow-500/40 rounded-xl text-xs font-bold uppercase tracking-wider text-yellow-300 hover:text-yellow-200 transition-all">
+      <a href="https://www.notion.so/Investment-Opportunity-A-Portfolio-of-Transformative-AI-Robotics-Products-Poised-to-Redefine-Indu-1ffc1c04bbc180228703d32ec89c71c5" target="_blank" rel="noopener noreferrer" class="flex-1 flex items-center justify-center gap-2 px-5 py-3 bg-gradient-to-r from-yellow-500/10 to-amber-500/10 border border-yellow-500/20 hover:border-yellow-500/40 rounded-xl text-xs  uppercase tracking-wider text-yellow-300 hover:text-yellow-200 transition-all">
         <span>Investment Opportunity</span>
         <ExternalLink size={12} />
       </a>
-      <a href="https://www.notion.so/Enterprise-Housing-Pledge-1a4c1c04bbc180518daaf78ef83966cc" target="_blank" rel="noopener noreferrer" class="flex-1 flex items-center justify-center gap-2 px-5 py-3 bg-gradient-to-r from-rose-500/10 to-red-500/10 border border-rose-500/20 hover:border-rose-500/40 rounded-xl text-xs font-bold uppercase tracking-wider text-rose-300 hover:text-rose-200 transition-all">
+      <a href="https://www.notion.so/Enterprise-Housing-Pledge-1a4c1c04bbc180518daaf78ef83966cc" target="_blank" rel="noopener noreferrer" class="flex-1 flex items-center justify-center gap-2 px-5 py-3 bg-gradient-to-r from-rose-500/10 to-red-500/10 border border-rose-500/20 hover:border-rose-500/40 rounded-xl text-xs  uppercase tracking-wider text-rose-300 hover:text-rose-200 transition-all">
         <span>Enterprise Housing Pledge</span>
         <ExternalLink size={12} />
       </a>
-      <a href="https://www.notion.so/Stellarium-Mansion-And-Office-Fundraising-1aac1c04bbc180b4aa1bd77ecec414d6" target="_blank" rel="noopener noreferrer" class="flex-1 flex items-center justify-center gap-2 px-5 py-3 bg-gradient-to-r from-purple-500/10 to-violet-500/10 border border-purple-500/20 hover:border-purple-500/40 rounded-xl text-xs font-bold uppercase tracking-wider text-purple-300 hover:text-purple-200 transition-all">
+      <a href="https://www.notion.so/Stellarium-Mansion-And-Office-Fundraising-1aac1c04bbc180b4aa1bd77ecec414d6" target="_blank" rel="noopener noreferrer" class="flex-1 flex items-center justify-center gap-2 px-5 py-3 bg-gradient-to-r from-purple-500/10 to-violet-500/10 border border-purple-500/20 hover:border-purple-500/40 rounded-xl text-xs  uppercase tracking-wider text-purple-300 hover:text-purple-200 transition-all">
         <span>Mansion & Office Fund</span>
         <ExternalLink size={12} />
       </a>
@@ -329,10 +329,10 @@
             <path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z" />
           </svg>
         </div>
-        <span class="text-[10px] text-orange-400 font-mono tracking-[0.25em] uppercase font-black mb-1.5">EXCLUSIVE TRANSMISSIONS</span>
-        <h4 class="text-base sm:text-lg font-bold text-white tracking-wide mb-2 group-hover:text-orange-300 transition-colors">Subscribe to John Victor's Substack</h4>
+        <span class="text-[10px] text-orange-400 font-mono tracking-[0.25em] uppercase  mb-1.5">EXCLUSIVE TRANSMISSIONS</span>
+        <h4 class="text-base sm:text-lg  text-white tracking-wide mb-2 group-hover:text-orange-300 transition-colors">Subscribe to John Victor's Substack</h4>
         <p class="text-xs sm:text-sm text-gray-300 max-w-sm leading-relaxed mb-5">Get raw insights, system engineering frameworks, and strategic letters delivered directly to your inbox.</p>
-        <div class="inline-flex items-center gap-2 px-5 py-2.5 bg-orange-500 hover:bg-orange-600 text-white rounded-xl text-xs font-black uppercase tracking-wider shadow-lg hover:shadow-orange-500/20 transition-all duration-300">
+        <div class="inline-flex items-center gap-2 px-5 py-2.5 bg-orange-500 hover:bg-orange-600 text-white rounded-xl text-xs  uppercase tracking-wider shadow-lg hover:shadow-orange-500/20 transition-all duration-300">
           <span>Subscribe Now</span>
           <ExternalLink size={12} strokeWidth={2.5} />
         </div>
@@ -342,7 +342,7 @@
 
   <!-- Secure Network -->
   <section class="w-full max-w-md lg:max-w-xl xl:max-w-2xl flex flex-col items-center px-4 border-t border-white/10 pt-8">
-    <h3 class="text-xs lg:text-sm xl:text-base font-bold uppercase tracking-[0.2em] text-[var(--color-on-surface)] mb-4">Secure Network</h3>
+    <h3 class="text-xs lg:text-sm xl:text-base  uppercase tracking-[0.2em] text-[var(--color-on-surface)] mb-4">Secure Network</h3>
     <div class="w-full bg-gradient-to-b from-[#18112c] to-[#0e0a1b] border border-purple-500/15 hover:border-[var(--color-tertiary)]/20 rounded-2xl p-5 shadow-2xl transition-all duration-300 relative overflow-hidden group">
       <div class="absolute top-0 right-0 w-24 h-24 bg-purple-500/5 rounded-full blur-2xl group-hover:bg-purple-500/10 transition-all duration-300 pointer-events-none" />
       <div class="flex flex-col gap-4 items-center text-center">
@@ -350,9 +350,9 @@
           <Shield size={22} class="animate-pulse" />
         </div>
         <div class="flex-1 min-w-0 text-center w-full">
-          <h4 class="text-sm font-bold text-white tracking-wide flex items-center justify-center gap-1.5">
+          <h4 class="text-sm  text-white tracking-wide flex items-center justify-center gap-1.5">
             Anonymous Messaging Portal
-            <span class="inline-block px-2 py-0.5 bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[9px] font-bold rounded-full uppercase tracking-wider">Tor Secure</span>
+            <span class="inline-block px-2 py-0.5 bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[9px]  rounded-full uppercase tracking-wider">Tor Secure</span>
           </h4>
           <p class="text-xs text-gray-400 mt-2 leading-relaxed max-w-xs mx-auto">
             A secure, anonymous whistleblower portal. Open this site inside the Tor Browser to guarantee absolute anonymity and complete metadata protection.
@@ -362,7 +362,7 @@
               href="https://mural-bnyh.onrender.com/"
               target="_blank"
               rel="noopener noreferrer"
-              class="inline-flex items-center gap-2 px-5 py-2.5 bg-purple-500/15 hover:bg-purple-500/25 text-purple-300 border border-purple-500/30 rounded-xl text-xs font-semibold uppercase tracking-wider transition-all hover:scale-[1.02] active:scale-[0.98] shadow-md group/btn w-full justify-center"
+              class="inline-flex items-center gap-2 px-5 py-2.5 bg-purple-500/15 hover:bg-purple-500/25 text-purple-300 border border-purple-500/30 rounded-xl text-xs  uppercase tracking-wider transition-all hover:scale-[1.02] active:scale-[0.98] shadow-md group/btn w-full justify-center"
             >
               <span>Launch Secure Portal</span>
               <ExternalLink size={14} class="group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
@@ -375,7 +375,7 @@
               <span class="font-mono text-[9.5px] text-purple-300 break-all select-all text-left truncate flex-1 pr-2">
                 mural-bnyh.onrender.com
               </span>
-              <span class="flex items-center gap-1 text-[9px] font-bold text-purple-400 uppercase tracking-widest shrink-0">
+              <span class="flex items-center gap-1 text-[9px]  text-purple-400 uppercase tracking-widest shrink-0">
                 {#if onionCopied}
                   <CheckCircle size={10} class="text-green-400" />
                   <span class="text-green-400">Copied</span>
@@ -393,7 +393,7 @@
 
   <!-- Founder Profile -->
   <section class="w-full max-w-md lg:max-w-xl xl:max-w-2xl flex flex-col items-center px-4 border-t border-white/10 pt-8 mt-10">
-    <h3 class="text-xs lg:text-sm xl:text-base font-bold uppercase tracking-[0.2em] text-[var(--color-on-surface)] mb-4">Founder Profile</h3>
+    <h3 class="text-xs lg:text-sm xl:text-base  uppercase tracking-[0.2em] text-[var(--color-on-surface)] mb-4">Founder Profile</h3>
     <div class="flex items-center gap-4 lg:gap-6 bg-[var(--color-surface)] border border-white/5 p-4 lg:p-6 rounded-2xl w-full mb-4">
       <img
         src={PHOTO_PATHS[photoIndex]}
@@ -403,8 +403,8 @@
         referrerpolicy="no-referrer"
       />
       <div class="flex-1 min-w-0 bg-transparent text-left">
-        <h4 class="text-sm font-bold text-white tracking-wide">John Victor</h4>
-        <p class="text-[10px] text-[var(--color-secondary)] font-bold uppercase tracking-widest mt-0.5">Founder & Wealth Activist</p>
+        <h4 class="text-sm  text-white tracking-wide">John Victor</h4>
+        <p class="text-[10px] text-[var(--color-secondary)]  uppercase tracking-widest mt-0.5">Founder & Wealth Activist</p>
         <p class="text-xs text-gray-400 mt-1 line-clamp-1">Propelling global wealth creation and sovereign enterprise systems.</p>
       </div>
     </div>
@@ -426,7 +426,7 @@
 
   <!-- Connect With Us -->
   <section class="w-full max-w-md lg:max-w-xl xl:max-w-2xl flex flex-col items-center px-4 border-t border-white/10 pt-8 mt-10 mb-24">
-    <h3 class="text-xs lg:text-sm xl:text-base font-bold uppercase tracking-[0.2em] text-[var(--color-on-surface)] mb-6">Connect With Us</h3>
+    <h3 class="text-xs lg:text-sm xl:text-base  uppercase tracking-[0.2em] text-[var(--color-on-surface)] mb-6">Connect With Us</h3>
     <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 w-full transform-gpu">
       <a href="https://tiktok.com/@johnvictorone" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 p-3 bg-[var(--color-surface)] border border-white/5 rounded-xl hover:bg-white/5 transition-colors group transform-gpu">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="text-white group-hover:scale-110 transition-transform flex-shrink-0 will-change-transform">
@@ -458,7 +458,7 @@
       </a>
       <a href="https://vk.ru/id1113302487" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 p-3 bg-[var(--color-surface)] border border-white/5 rounded-xl hover:bg-white/5 transition-colors group transform-gpu">
         <div class="bg-[#0077FF] p-1 rounded-md group-hover:scale-110 transition-transform flex-shrink-0 w-5 h-5 flex items-center justify-center will-change-transform">
-          <span class="font-bold text-white text-[10px] leading-none">VK</span>
+          <span class=" text-white text-[10px] leading-none">VK</span>
         </div>
         <span class="text-xs font-medium text-white truncate">VKontakte</span>
       </a>
@@ -488,7 +488,7 @@
         <button onclick={() => showResume = false} class="p-2 text-white hover:text-gray-300">
           <ArrowLeft size={24} />
         </button>
-        <h1 class="text-lg font-semibold text-white ml-4 truncate flex-1 text-center pr-10 hover:text-[var(--color-tertiary)] transition-colors">
+        <h1 class="text-lg  text-white ml-4 truncate flex-1 text-center pr-10 hover:text-[var(--color-tertiary)] transition-colors">
           John Victor - Resume
         </h1>
       </div>
@@ -514,7 +514,7 @@
         </div>
         <button
           onclick={() => savePdf('/resume.pdf', 'John_Victor_Resume.pdf')}
-          class="mt-12 px-8 py-3 bg-[var(--color-tertiary)] text-black font-semibold rounded-full hover:bg-[var(--color-tertiary)]/90 transition-colors shadow-[0_0_15px_rgba(0,255,255,0.3)] flex items-center gap-2 cursor-pointer"
+          class="mt-12 px-8 py-3 bg-[var(--color-tertiary)] text-black  rounded-full hover:bg-[var(--color-tertiary)]/90 transition-colors shadow-[0_0_15px_rgba(0,255,255,0.3)] flex items-center gap-2 cursor-pointer"
         >
           <Download size={20} /> Download PDF Version
         </button>
@@ -526,7 +526,7 @@
     {#if selectedTopic}
       <div class="flex flex-col items-center">
         <svelte:component this={iconMap[selectedTopic.icon]} size={56} class="text-white" />
-        <h2 class="text-2xl font-bold text-white mt-6 text-center">{selectedTopic.subtitle}</h2>
+        <h2 class="text-2xl  text-white mt-6 text-center">{selectedTopic.subtitle}</h2>
         <div class="mt-8 space-y-4 text-[var(--color-on-surface)] text-[15px] leading-relaxed text-center whitespace-pre-wrap">
           {selectedTopic.description}
         </div>

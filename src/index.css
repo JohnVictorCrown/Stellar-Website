@@ -16,14 +16,6 @@
   font-display: swap;
 }
 
-@font-face {
-  font-family: 'Neue Frutiger World';
-  src: url('/fonts/black.woff2') format('woff2');
-  font-weight: 900;
-  font-style: normal;
-  font-display: swap;
-}
-
 @theme {
   --font-sans: "Neue Frutiger World", ui-sans-serif, system-ui, sans-serif;
   --font-serif: "Neue Frutiger World", ui-sans-serif, system-ui, sans-serif;

@@ -53,14 +53,14 @@
       {#if spotlightVideo}
         <div class="bg-gradient-to-b from-[var(--color-surface)] to-[var(--color-surface)]/80 border border-white/10 rounded-2xl p-4 shadow-2xl relative overflow-hidden">
           <div class="absolute top-4 right-4 z-10">
-            <span class="flex items-center gap-1.5 px-3 py-1 bg-gradient-to-r from-red-600 to-red-700 text-white text-[9px] font-bold rounded-full uppercase tracking-wider shadow-lg">
+            <span class="flex items-center gap-1.5 px-3 py-1 bg-gradient-to-r from-red-600 to-red-700 text-white text-[9px]  rounded-full uppercase tracking-wider shadow-lg">
               <Flame size={12} class="animate-pulse" />
               <span>Featured Release</span>
             </span>
           </div>
           <div class="mb-4">
-            <span class="text-[10px] uppercase tracking-widest font-bold text-[var(--color-tertiary)]">{spotlightVideo.category} Category Spec</span>
-            <h2 class="text-lg sm:text-xl font-bold text-white mt-1 leading-tight tracking-wide">{spotlightVideo.title}</h2>
+            <span class="text-[10px] uppercase tracking-widest  text-[var(--color-tertiary)]">{spotlightVideo.category} Category Spec</span>
+            <h2 class="text-lg sm:text-xl  text-white mt-1 leading-tight tracking-wide">{spotlightVideo.title}</h2>
           </div>
           <div
             class="relative bg-black rounded-xl overflow-hidden border border-white/5 aspect-video transform-gpu cursor-pointer group/spotlight shadow-2xl"
@@ -76,7 +76,7 @@
                     <svg class="w-6 h-6 fill-current translate-x-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" stroke="currentColor" stroke-width="1" stroke-linejoin="round" /></svg>
                   </div>
                 </div>
-                <div class="absolute bottom-3 right-3 px-2 py-0.5 bg-black/80 backdrop-blur-sm border border-white/10 rounded-md text-[9px] font-bold text-gray-200 uppercase tracking-widest font-mono">{spotlightVideo.duration}</div>
+                <div class="absolute bottom-3 right-3 px-2 py-0.5 bg-black/80 backdrop-blur-sm border border-white/10 rounded-md text-[9px]  text-gray-200 uppercase tracking-widest font-mono">{spotlightVideo.duration}</div>
               </div>
             {/if}
           </div>
@@ -87,7 +87,7 @@
                 <span class="flex items-center gap-1"><Eye size={12} /> {spotlightVideo.views} views</span>
                 <span class="flex items-center gap-1"><Calendar size={12} /> {spotlightVideo.date}</span>
               </div>
-              <a href={spotlightVideo.youtubeUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3 py-1 bg-red-600/10 hover:bg-red-600/20 text-red-400 border border-red-500/20 rounded-lg font-bold uppercase tracking-wider text-[9px] transition-all">
+              <a href={spotlightVideo.youtubeUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3 py-1 bg-red-600/10 hover:bg-red-600/20 text-red-400 border border-red-500/20 rounded-lg  uppercase tracking-wider text-[9px] transition-all">
                 <ExternalLink size={11} /><span>Watch On YouTube</span>
               </a>
             </div>
@@ -99,12 +99,12 @@
         <div id="water-suite-showcase" class="bg-gradient-to-b from-[#0e1823] to-[#0a111a] border border-white/10 rounded-2xl p-5 shadow-2xl space-y-4">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/5 pb-3">
             <div>
-              <span class="text-[9px] font-extrabold text-[var(--color-tertiary)] uppercase tracking-[0.2em] block">Advanced Project Portfolio Overview</span>
-              <h3 class="text-md sm:text-lg font-bold text-white mt-1 uppercase tracking-widest flex items-center gap-2">
+              <span class="text-[9px]  text-[var(--color-tertiary)] uppercase tracking-[0.2em] block">Advanced Project Portfolio Overview</span>
+              <h3 class="text-md sm:text-lg  text-white mt-1 uppercase tracking-widest flex items-center gap-2">
                 <span class="text-blue-400">💧</span> The Water Automated Suite
               </h3>
             </div>
-            <div class="flex items-center gap-1.5 px-2.5 py-1 bg-blue-500/10 border border-blue-500/25 rounded-xl text-[9px] text-blue-300 font-extrabold uppercase tracking-widest self-start sm:self-auto">
+            <div class="flex items-center gap-1.5 px-2.5 py-1 bg-blue-500/10 border border-blue-500/25 rounded-xl text-[9px] text-blue-300  uppercase tracking-widest self-start sm:self-auto">
               <span class="w-1.5 h-1.5 rounded-full bg-blue-400 animate-ping" />
               <span>4 Core Specs</span>
             </div>
@@ -123,7 +123,7 @@
                           <Play size={16} fill="currentColor" class="translate-x-0.5" />
                         </div>
                       </div>
-                      <div class="absolute bottom-2 right-2 px-1.5 py-0.5 bg-black/85 rounded text-[8px] font-mono font-bold text-gray-200 border border-white/10">{video.duration}</div>
+                      <div class="absolute bottom-2 right-2 px-1.5 py-0.5 bg-black/85 rounded text-[8px] font-mono  text-gray-200 border border-white/10">{video.duration}</div>
                       <div class="absolute top-2 left-2 w-7 h-7 bg-black/70 rounded-lg flex items-center justify-center text-sm shadow-md border border-white/5 backdrop-blur-sm select-none">{video.thumbnail}</div>
                     </div>
                   {/if}
@@ -131,21 +131,21 @@
                 <div class="p-3.5 flex-1 flex flex-col justify-between space-y-2.5">
                   <div>
                     <div class="flex items-center justify-between">
-                      <span class="text-[8px] font-bold text-blue-400 uppercase tracking-widest">{video.category} spec</span>
-                      <span class="text-[8px] text-gray-500 font-semibold uppercase">{video.views} Views</span>
+                      <span class="text-[8px]  text-blue-400 uppercase tracking-widest">{video.category} spec</span>
+                      <span class="text-[8px] text-gray-500  uppercase">{video.views} Views</span>
                     </div>
-                    <h4 class="text-xs font-black text-white mt-0.5 line-clamp-1 leading-snug">{video.title}</h4>
+                    <h4 class="text-xs  text-white mt-0.5 line-clamp-1 leading-snug">{video.title}</h4>
                     <p class="text-[11px] text-gray-400 mt-1 line-clamp-2 leading-relaxed">{video.description}</p>
                   </div>
                   <div class="flex items-center justify-between pt-2 border-t border-white/5">
-                    <span class="text-[8px] text-gray-500 font-semibold uppercase tracking-wider block">SYSTEM: CORE SUITE</span>
+                    <span class="text-[8px] text-gray-500  uppercase tracking-wider block">SYSTEM: CORE SUITE</span>
                     <div class="flex items-center gap-2.5">
                       {#if video.id === 'v_party'}
-                        <a href="https://github.com/StellariumFoundation/WaterParty-React/releases/tag/continuous-build-c3402110359c11ab1ac3612751700d1d427cb5e7" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1 text-[9px] font-black text-emerald-400 hover:text-emerald-300 transition-colors uppercase tracking-wider bg-emerald-500/10 hover:bg-emerald-500/20 px-2 py-1 rounded">
+                        <a href="https://github.com/StellariumFoundation/WaterParty-React/releases/tag/continuous-build-c3402110359c11ab1ac3612751700d1d427cb5e7" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1 text-[9px]  text-emerald-400 hover:text-emerald-300 transition-colors uppercase tracking-wider bg-emerald-500/10 hover:bg-emerald-500/20 px-2 py-1 rounded">
                           <span>GitHub</span><ExternalLink size={9} />
                         </a>
                       {/if}
-                      <a href={video.youtubeUrl} target="_blank" rel="noopener noreferrer" class="flex items-center gap-1 text-[9px] font-black text-blue-400 hover:text-white transition-colors uppercase tracking-wider">
+                      <a href={video.youtubeUrl} target="_blank" rel="noopener noreferrer" class="flex items-center gap-1 text-[9px]  text-blue-400 hover:text-white transition-colors uppercase tracking-wider">
                         <span>YouTube Link</span><ExternalLink size={9} />
                       </a>
                     </div>
@@ -166,7 +166,7 @@
                 <span class={`${section.tintColor} shrink-0`}>
                   <svelte:component this={section.icon} size={16} />
                 </span>
-                <h3 class="text-xs font-black text-white uppercase tracking-[0.2em]">{section.title} Spec Releases</h3>
+                <h3 class="text-xs  text-white uppercase tracking-[0.2em]">{section.title} Spec Releases</h3>
                 <span class="text-[10px] text-gray-500 font-mono ml-auto">{sectionVideos.length} Videos</span>
               </div>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -183,22 +183,22 @@
                               <svg class="w-4.5 h-4.5 fill-current translate-x-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" stroke="currentColor" stroke-width="0.5" stroke-linejoin="round" /></svg>
                             </div>
                           </div>
-                          <div class="absolute bottom-2.5 right-2.5 px-1.5 py-0.5 bg-black/80 backdrop-blur-sm border border-white/10 rounded text-[8px] font-bold text-gray-300 font-mono">{video.duration}</div>
+                          <div class="absolute bottom-2.5 right-2.5 px-1.5 py-0.5 bg-black/80 backdrop-blur-sm border border-white/10 rounded text-[8px]  text-gray-300 font-mono">{video.duration}</div>
                         </div>
                       {/if}
                     </div>
                     <div class="p-4 flex-1 flex flex-col justify-between space-y-3">
                       <div>
                         <div class="flex items-center justify-between">
-                          <span class="text-[8px] font-bold text-blue-400 uppercase tracking-wider block">{video.category} spec</span>
-                          <span class="text-[8px] font-semibold text-gray-500">{video.date}</span>
+                          <span class="text-[8px]  text-blue-400 uppercase tracking-wider block">{video.category} spec</span>
+                          <span class="text-[8px]  text-gray-500">{video.date}</span>
                         </div>
-                        <h3 class="text-xs font-bold text-white mt-1 leading-snug line-clamp-1">{video.title}</h3>
+                        <h3 class="text-xs  text-white mt-1 leading-snug line-clamp-1">{video.title}</h3>
                         <p class="text-[11px] text-gray-400 mt-1 lines-clamp-2 line-clamp-2 leading-relaxed">{video.description}</p>
                       </div>
                       <div class="flex items-center justify-between pt-2 border-t border-white/5 text-[9px] text-gray-400">
                         <span>{video.views} views</span>
-                        <a href={video.youtubeUrl} target="_blank" rel="noopener noreferrer" class="flex items-center gap-1 text-[var(--color-tertiary)] hover:text-white transition-colors uppercase tracking-wider font-bold">
+                        <a href={video.youtubeUrl} target="_blank" rel="noopener noreferrer" class="flex items-center gap-1 text-[var(--color-tertiary)] hover:text-white transition-colors uppercase tracking-wider ">
                           <span>YouTube</span><ExternalLink size={10} />
                         </a>
                       </div>
@@ -218,40 +218,40 @@
         <div class="flex items-center gap-3">
           <div class="w-11 h-11 rounded-full bg-gradient-to-br from-red-600 to-red-700 flex items-center justify-center text-white shadow relative shrink-0">
             <Youtube size={20} fill="currentColor" />
-            <span class="absolute -bottom-1 -right-1 w-4 h-4 bg-blue-500 rounded-full border border-slate-900 flex items-center justify-center text-[7px] font-extrabold text-white">✓</span>
+            <span class="absolute -bottom-1 -right-1 w-4 h-4 bg-blue-500 rounded-full border border-slate-900 flex items-center justify-center text-[7px]  text-white">✓</span>
           </div>
           <div class="flex-1 min-w-0">
-            <span class="text-xs font-black text-white tracking-wide uppercase truncate block">Stellarium Media</span>
+            <span class="text-xs  text-white tracking-wide uppercase truncate block">Stellarium Media</span>
             <p class="text-[10px] text-gray-400 font-medium">@stellariumfoundation</p>
-            <div class="flex items-center gap-1.5 mt-0.5 text-[9px] text-red-500 font-bold tracking-tight animate-pulse">
+            <div class="flex items-center gap-1.5 mt-0.5 text-[9px] text-red-500  tracking-tight animate-pulse">
               <span>● 100K+ Subscribers</span>
             </div>
           </div>
         </div>
         <p class="text-[11px] text-gray-400 leading-relaxed">Explore decentralized systems, sovereign water automation and infrastructure, and community empowerment frameworks. Subscribe to support active philanthropy.</p>
-        <a href="https://youtube.com/@stellariumfoundation?sub_confirmation=1" target="_blank" rel="noopener noreferrer" class="w-full py-2 bg-red-600 hover:bg-red-700 text-white font-bold text-[10px] rounded-xl text-center tracking-wider uppercase transition-colors font-sans">Subscribe Channel</a>
+        <a href="https://youtube.com/@stellariumfoundation?sub_confirmation=1" target="_blank" rel="noopener noreferrer" class="w-full py-2 bg-red-600 hover:bg-red-700 text-white  text-[10px] rounded-xl text-center tracking-wider uppercase transition-colors font-sans">Subscribe Channel</a>
       </div>
 
       <div class="bg-[var(--color-surface)] border border-white/5 rounded-2xl p-5 shadow-lg space-y-4">
-        <h3 class="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]">Official Playlists</h3>
+        <h3 class="text-[10px]  text-gray-400 uppercase tracking-[0.2em]">Official Playlists</h3>
         <div class="space-y-2.5">
           <a href="https://www.youtube.com/channel/UC6atIo9C5owrdZHLchGQ-Mg" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-3 bg-black/20 hover:bg-black/40 border border-white/5 rounded-xl transition-all group/list">
             <div class="text-left">
-              <h4 class="text-xs font-bold text-white group-hover/list:text-[var(--color-tertiary)] transition-colors">Water Utilities Series</h4>
+              <h4 class="text-xs  text-white group-hover/list:text-[var(--color-tertiary)] transition-colors">Water Utilities Series</h4>
               <p class="text-[9px] text-gray-400 mt-0.5">Automated Aquatics & AI specs</p>
             </div>
             <ExternalLink size={12} class="text-gray-500 group-hover/list:text-white transition-colors" />
           </a>
           <a href="https://www.youtube.com/channel/UC6atIo9C5owrdZHLchGQ-Mg" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-3 bg-black/20 hover:bg-black/40 border border-white/5 rounded-xl transition-all group/list">
             <div class="text-left">
-              <h4 class="text-xs font-bold text-white group-hover/list:text-[var(--color-tertiary)] transition-colors">Sovereign Governance</h4>
+              <h4 class="text-xs  text-white group-hover/list:text-[var(--color-tertiary)] transition-colors">Sovereign Governance</h4>
               <p class="text-[9px] text-gray-400 mt-0.5">Water Gov & Community models</p>
             </div>
             <ExternalLink size={12} class="text-gray-500 group-hover/list:text-white transition-colors" />
           </a>
           <a href="https://www.youtube.com/channel/UC6atIo9C5owrdZHLchGQ-Mg" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-3 bg-black/20 hover:bg-black/40 border border-white/5 rounded-xl transition-all group/list">
             <div class="text-left">
-              <h4 class="text-xs font-bold text-white group-hover/list:text-[var(--color-tertiary)] transition-colors">Altruism & Culture Pledges</h4>
+              <h4 class="text-xs  text-white group-hover/list:text-[var(--color-tertiary)] transition-colors">Altruism & Culture Pledges</h4>
               <p class="text-[9px] text-gray-400 mt-0.5">Housing pledges & founder talks</p>
             </div>
             <ExternalLink size={12} class="text-gray-500 group-hover/list:text-white transition-colors" />
@@ -260,15 +260,15 @@
       </div>
 
       <div class="bg-[var(--color-surface)]/40 border border-white/5 rounded-2xl p-4 shadow-md text-left">
-        <span class="text-[9px] font-bold text-gray-400 uppercase tracking-widest block mb-2">Streaming Statistics</span>
+        <span class="text-[9px]  text-gray-400 uppercase tracking-widest block mb-2">Streaming Statistics</span>
         <div class="grid grid-cols-2 gap-2 text-center">
           <div class="bg-black/20 p-2.5 rounded-lg border border-white/5">
             <span class="block text-xs text-gray-400 uppercase tracking-widest">Released</span>
-            <span class="text-sm font-black text-white mt-1 block">16 Specs</span>
+            <span class="text-sm  text-white mt-1 block">16 Specs</span>
           </div>
           <div class="bg-black/20 p-2.5 rounded-lg border border-white/5">
             <span class="block text-xs text-gray-400 uppercase tracking-widest">Total Views</span>
-            <span class="text-sm font-black text-[var(--color-tertiary)] mt-1 block">380K+</span>
+            <span class="text-sm  text-[var(--color-tertiary)] mt-1 block">380K+</span>
           </div>
         </div>
       </div>

@@ -318,7 +318,7 @@
       </button>
       <div class="flex-1 min-w-0 flex items-center justify-center gap-2">
         <Compass size={18} class="text-[var(--color-tertiary)] animate-pulse shrink-0 hidden sm:inline" />
-        <h1 class="text-base sm:text-lg font-bold text-white truncate text-center max-w-xl">{selectedBook.title}</h1>
+        <h1 class="text-base sm:text-lg  text-white truncate text-center max-w-xl">{selectedBook.title}</h1>
         <Compass size={18} class="text-[var(--color-tertiary)] animate-pulse shrink-0 hidden sm:inline" />
       </div>
       <button onclick={() => copyBookLink(selectedBook.title)} class="p-2 text-gray-400 hover:text-[var(--color-tertiary)] transition-colors rounded-lg hover:bg-white/5 active:scale-95 cursor-pointer" title="Copy Link to This Book">
@@ -332,7 +332,7 @@
         </div>
         {#if selectedBook.notion_url}
           <div class="flex justify-center mt-12 pt-6 border-t border-white/5">
-            <a href={selectedBook.notion_url} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-tertiary)] text-black font-semibold rounded-full hover:bg-[var(--color-tertiary)]/95 transition-all shadow-[0_0_20px_rgba(0,255,255,0.25)] hover:scale-[1.03] active:scale-[0.97]">
+            <a href={selectedBook.notion_url} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-6 py-3 bg-[var(--color-tertiary)] text-black  rounded-full hover:bg-[var(--color-tertiary)]/95 transition-all shadow-[0_0_20px_rgba(0,255,255,0.25)] hover:scale-[1.03] active:scale-[0.97]">
               <span>Read Original on Notion</span>
               <ExternalLink size={16} />
             </a>
@@ -364,30 +364,30 @@
       {/if}
       {#if !isLoading && !errorMsg}
         <div class="w-full">
-          <h2 class="text-sm lg:text-base xl:text-lg font-black text-[var(--color-secondary)] uppercase tracking-[0.25em] text-center mb-6">Official Books (PDF)</h2>
+          <h2 class="text-sm lg:text-base xl:text-lg  text-[var(--color-secondary)] uppercase tracking-[0.25em] text-center mb-6">Official Books (PDF)</h2>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 w-full max-w-5xl lg:max-w-6xl mx-auto">
             <div class="bg-gradient-to-br from-zinc-950/80 to-zinc-900/80 border border-white/10 rounded-2xl overflow-hidden shadow-[0_4px_30px_rgba(0,0,0,0.5)] group hover:border-[var(--color-tertiary)]/40 hover:shadow-[0_0_25px_rgba(0,255,255,0.15)] transition-all duration-300 flex flex-col sm:flex-row">
               <div class="sm:w-32 lg:w-40 bg-gradient-to-b from-indigo-950 via-purple-950 to-zinc-950 p-6 lg:p-8 flex flex-col items-center justify-center border-b sm:border-b-0 sm:border-r border-white/10 relative overflow-hidden shrink-0 min-h-[120px]">
                 <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,255,255,0.12)_0,transparent_100%)]" />
                 <BookOpen size={40} class="text-[var(--color-tertiary)] relative z-10 animate-pulse" />
-                <span class="text-[8px] lg:text-[10px] uppercase tracking-[0.2em] font-bold text-gray-400 mt-4 text-center select-none relative z-10 font-mono">Volume I</span>
+                <span class="text-[8px] lg:text-[10px] uppercase tracking-[0.2em]  text-gray-400 mt-4 text-center select-none relative z-10 font-mono">Volume I</span>
               </div>
               <div class="p-6 lg:p-8 flex-1 flex flex-col justify-between">
                 <div>
-                  <h3 class="text-base lg:text-lg xl:text-xl font-bold text-white mb-2 leading-snug group-hover:text-[var(--color-tertiary)] transition-colors">The Stellarium Book</h3>
+                  <h3 class="text-base lg:text-lg xl:text-xl  text-white mb-2 leading-snug group-hover:text-[var(--color-tertiary)] transition-colors">The Stellarium Book</h3>
                   <p class="text-xs lg:text-sm xl:text-base text-gray-400 mb-6 leading-relaxed">The foundational text detailing the architecture of universal human sovereignty, cosmic alignment and gold-backed standard systems.</p>
                 </div>
                 <div class="space-y-3">
                   <div class="flex gap-3 w-full">
-                    <button onclick={() => openPdf('/The.Stellarium.Book.pdf', 'The.Stellarium.Book.pdf')} class="flex-1 flex items-center justify-center gap-2 px-4 py-2 lg:px-6 lg:py-3 bg-[var(--color-tertiary)]/15 text-[var(--color-tertiary)] hover:bg-[var(--color-tertiary)]/25 border border-[var(--color-tertiary)]/30 rounded-xl text-xs lg:text-sm font-semibold uppercase tracking-wider transition-all cursor-pointer">
+                    <button onclick={() => openPdf('/The.Stellarium.Book.pdf', 'The.Stellarium.Book.pdf')} class="flex-1 flex items-center justify-center gap-2 px-4 py-2 lg:px-6 lg:py-3 bg-[var(--color-tertiary)]/15 text-[var(--color-tertiary)] hover:bg-[var(--color-tertiary)]/25 border border-[var(--color-tertiary)]/30 rounded-xl text-xs lg:text-sm  uppercase tracking-wider transition-all cursor-pointer">
                       <ExternalLink size={14} /> Open
                     </button>
-                    <button onclick={() => savePdf('/The.Stellarium.Book.pdf', 'The.Stellarium.Book.pdf')} class="flex-1 flex items-center justify-center gap-2 px-4 py-2 lg:px-6 lg:py-3 bg-white/5 border border-white/10 text-gray-300 hover:bg-white/15 hover:text-white rounded-xl text-xs lg:text-sm font-semibold uppercase tracking-wider transition-all cursor-pointer">
+                    <button onclick={() => savePdf('/The.Stellarium.Book.pdf', 'The.Stellarium.Book.pdf')} class="flex-1 flex items-center justify-center gap-2 px-4 py-2 lg:px-6 lg:py-3 bg-white/5 border border-white/10 text-gray-300 hover:bg-white/15 hover:text-white rounded-xl text-xs lg:text-sm  uppercase tracking-wider transition-all cursor-pointer">
                       <Download size={14} /> Save
                     </button>
                   </div>
                   <div class="pt-2 border-t border-white/5 flex justify-center">
-                    <a href="https://www.everand.com/book/897831454/The-Stellarium-Book" target="_blank" rel="noopener noreferrer" class="text-[10px] lg:text-xs text-[var(--color-secondary)] hover:text-white transition-colors uppercase tracking-widest font-bold flex items-center gap-1">
+                    <a href="https://www.everand.com/book/897831454/The-Stellarium-Book" target="_blank" rel="noopener noreferrer" class="text-[10px] lg:text-xs text-[var(--color-secondary)] hover:text-white transition-colors uppercase tracking-widest  flex items-center gap-1">
                       Read on Everand <ExternalLink size={10} />
                     </a>
                   </div>
@@ -398,18 +398,18 @@
               <div class="sm:w-32 lg:w-40 bg-gradient-to-b from-purple-950 via-emerald-950 to-zinc-950 p-6 lg:p-8 flex flex-col items-center justify-center border-b sm:border-b-0 sm:border-r border-white/10 relative overflow-hidden shrink-0 min-h-[120px]">
                 <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,255,255,0.12)_0,transparent_100%)]" />
                 <BookOpen size={40} class="text-[var(--color-tertiary)] relative z-10" />
-                <span class="text-[8px] lg:text-[10px] uppercase tracking-[0.2em] font-bold text-gray-400 mt-4 text-center select-none relative z-10 font-mono">Volume II</span>
+                <span class="text-[8px] lg:text-[10px] uppercase tracking-[0.2em]  text-gray-400 mt-4 text-center select-none relative z-10 font-mono">Volume II</span>
               </div>
               <div class="p-6 lg:p-8 flex-1 flex flex-col justify-between">
                 <div>
-                  <h3 class="text-base lg:text-lg xl:text-xl font-bold text-white mb-2 leading-snug group-hover:text-[var(--color-tertiary)] transition-colors">The Stellarium Society</h3>
+                  <h3 class="text-base lg:text-lg xl:text-xl  text-white mb-2 leading-snug group-hover:text-[var(--color-tertiary)] transition-colors">The Stellarium Society</h3>
                   <p class="text-xs lg:text-sm xl:text-base text-gray-400 mb-6 leading-relaxed">The active manifest and blueprint for self-organized localized sovereign hubs, shared wealth systems, and collective growth circles.</p>
                 </div>
                 <div class="flex gap-3 w-full">
-                  <button onclick={() => openPdf('/Stellarium.Society.pdf', 'Stellarium.Society.pdf')} class="flex-1 flex items-center justify-center gap-2 px-4 py-2 lg:px-6 lg:py-3 bg-[var(--color-tertiary)]/15 text-[var(--color-tertiary)] hover:bg-[var(--color-tertiary)]/25 border border-[var(--color-tertiary)]/30 rounded-xl text-xs lg:text-sm font-semibold uppercase tracking-wider transition-all cursor-pointer">
+                  <button onclick={() => openPdf('/Stellarium.Society.pdf', 'Stellarium.Society.pdf')} class="flex-1 flex items-center justify-center gap-2 px-4 py-2 lg:px-6 lg:py-3 bg-[var(--color-tertiary)]/15 text-[var(--color-tertiary)] hover:bg-[var(--color-tertiary)]/25 border border-[var(--color-tertiary)]/30 rounded-xl text-xs lg:text-sm  uppercase tracking-wider transition-all cursor-pointer">
                     <ExternalLink size={14} /> Open
                   </button>
-                  <button onclick={() => savePdf('/Stellarium.Society.pdf', 'Stellarium.Society.pdf')} class="flex-1 flex items-center justify-center gap-2 px-4 py-2 lg:px-6 lg:py-3 bg-white/5 border border-white/10 text-gray-300 hover:bg-white/15 hover:text-white rounded-xl text-xs lg:text-sm font-semibold uppercase tracking-wider transition-all cursor-pointer">
+                  <button onclick={() => savePdf('/Stellarium.Society.pdf', 'Stellarium.Society.pdf')} class="flex-1 flex items-center justify-center gap-2 px-4 py-2 lg:px-6 lg:py-3 bg-white/5 border border-white/10 text-gray-300 hover:bg-white/15 hover:text-white rounded-xl text-xs lg:text-sm  uppercase tracking-wider transition-all cursor-pointer">
                     <Download size={14} /> Save
                   </button>
                 </div>
@@ -423,7 +423,7 @@
             <div class="w-full">
               <div class="flex items-center gap-3 justify-center mb-8 border-b border-white/5 pb-3">
                 <Sparkles size={14} class="text-[var(--color-tertiary)] animate-pulse shrink-0" />
-                <h2 class="text-sm font-black text-white uppercase tracking-[0.25em]">{category}</h2>
+                <h2 class="text-sm  text-white uppercase tracking-[0.25em]">{category}</h2>
                 <Sparkles size={14} class="text-[var(--color-tertiary)] animate-pulse shrink-0" />
               </div>
               <div class="flex flex-col items-center gap-6 w-full max-w-3xl mx-auto">
