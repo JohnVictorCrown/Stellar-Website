@@ -87,14 +87,6 @@ function pushHangupTo(queue: MessageQueue | null, label: string) {
   queuePush(queue, encodeControl('hangup'), `hangup->${label}`);
 }
 
-async function hangupAll() {
-  log('HANGUP starting', stateLabel());
-  pushHangupTo(callerPair?.queue ?? null, 'caller');
-  pushHangupTo(calleePair?.queue ?? null, 'callee');
-  callActive = false;
-  log('HANGUP done', stateLabel());
-}
-
 const app = new Hono();
 
 app.use('*', async (c, next) => {
@@ -187,7 +179,10 @@ app.post('/caller', async (c) => {
 
 app.delete('/caller', async (c) => {
   log('CALLER-DELETE', stateLabel());
-  await hangupAll();
+  pushHangupTo(calleePair?.queue ?? null, 'callee');
+  callActive = false;
+  callerPair = null;
+  log('CALLER-DELETE done', stateLabel());
   return c.text('ok');
 });
 
@@ -270,7 +265,10 @@ app.post('/callee', async (c) => {
 
 app.delete('/callee', async (c) => {
   log('CALLEE-DELETE', stateLabel());
-  await hangupAll();
+  pushHangupTo(callerPair?.queue ?? null, 'caller');
+  callActive = false;
+  calleePair = null;
+  log('CALLEE-DELETE done', stateLabel());
   return c.text('ok');
 });
 
