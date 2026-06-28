@@ -60,7 +60,7 @@ class CallClient {
   private setupWebSocket(): Promise<WebSocket> {
     return new Promise((resolve, reject) => {
       const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-      const wsUrl = `${protocol}//${window.location.host}/ws`;
+      const wsUrl = (window as any).__WS_URL__ || `${protocol}//${window.location.host}/ws`;
       const ws = new WebSocket(wsUrl);
       this.ws = ws;
 

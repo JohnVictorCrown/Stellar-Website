@@ -5,11 +5,13 @@
   "type": "module",
   "scripts": {
     "dev": "bun bun-server.ts --dev",
-    "start": "bun bun-server.ts --start",
+    "start": "bun ws-server.ts",
     "build": "bun bun-server.ts --build",
     "icons": "bun run scripts/generate-icons.ts",
     "clean": "rm -rf dist",
     "lint": "tsc --noEmit",
+    "ws": "bun ws-server.ts",
+    "server": "bun ws-server.ts",
     "cap": "cap"
   },
   "dependencies": {
