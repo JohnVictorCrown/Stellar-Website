@@ -68,7 +68,9 @@ class CallClient {
     this.abortController = new AbortController();
     this.callStateWritable.set('calling');
 
-    opusStream.initStream().catch(() => {});
+    opusStream.initStream().catch((e: any) => {
+      console.warn('Mic init failed (receive-only mode):', e);
+    });
 
     try {
       const response = await fetch(`${this.baseUrl}/caller`, {
@@ -127,7 +129,7 @@ class CallClient {
       case 'call_answered':
         if (this.callTimeout) clearTimeout(this.callTimeout);
         this.callStateWritable.set('in_call');
-        opusStream.initStream().catch((e: any) => console.error('initStream error:', e));
+        opusStream.initStream().catch(() => {});
         break;
       case 'error':
         if (this.callTimeout) clearTimeout(this.callTimeout);
