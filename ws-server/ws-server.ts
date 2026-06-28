@@ -10,7 +10,6 @@ function log(...args: any[]) {
   console.log(`[${ts} +${delta}ms]`, ...args);
 }
 
-// A simple push/pop queue with timeout that avoids dangling promise issues
 class MessageQueue {
   private items: Uint8Array[] = [];
   private resolver: ((value: Uint8Array | null) => void) | null = null;
@@ -38,12 +37,8 @@ class MessageQueue {
   }
 }
 
-interface StreamPair {
-  queue: MessageQueue;
-}
-
-let callerPair: StreamPair | null = null;
-let calleePair: StreamPair | null = null;
+let callerQueue: MessageQueue | null = null;
+let calleeQueue: MessageQueue | null = null;
 let callActive = false;
 
 const encoder = new TextEncoder();
@@ -57,34 +52,38 @@ function writeInt32BE(value: number): Uint8Array {
   ]);
 }
 
-function encodeControl(type: string): Uint8Array {
-  const json = JSON.stringify({ type });
+function encodeFrame(ctrlType: string): Uint8Array {
+  const json = JSON.stringify({ type: ctrlType });
   const text = encoder.encode(json);
   const len = writeInt32BE(text.length);
   const buf = new Uint8Array(1 + 4 + text.length);
   buf[0] = 0;
   buf.set(len, 1);
   buf.set(text, 5);
-  log('CTRL', type, `(${text.length}B payload, ${buf.length}B total)`);
+  log('CTRL', ctrlType, `(${text.length}B)`);
   return buf;
 }
 
 function stateLabel(): string {
-  return `[caller=${callerPair ? 'connected' : 'null'} callee=${calleePair ? 'connected' : 'null'} active=${callActive}]`;
+  return `[caller=${callerQueue ? 'connected' : 'null'} callee=${calleeQueue ? 'connected' : 'null'} active=${callActive}]`;
 }
 
-function queuePush(queue: MessageQueue | undefined | null, frame: Uint8Array, label: string) {
+function pushFrame(queue: MessageQueue | null, frame: Uint8Array, label: string) {
   if (!queue) {
-    log('QUEUE', `${label} => no queue (dropping ${frame.length}B)`);
+    log('PUSH', `${label}: no queue, dropping ${frame.length}B`);
     return;
   }
-  log('QUEUE', `${label} => pushing ${frame.length}B`);
+  log('PUSH', `${label}: ${frame.length}B`);
   queue.push(frame);
 }
 
-function pushHangupTo(queue: MessageQueue | null, label: string) {
-  if (!queue) return;
-  queuePush(queue, encodeControl('hangup'), `hangup->${label}`);
+function wrapAudio(data: Uint8Array): Uint8Array {
+  const len = writeInt32BE(data.length);
+  const buf = new Uint8Array(1 + 4 + data.length);
+  buf[0] = 1;
+  buf.set(len, 1);
+  buf.set(data, 5);
+  return buf;
 }
 
 const app = new Hono();
@@ -102,23 +101,24 @@ app.use('*', cors({
   allowHeaders: ['Content-Type'],
 }));
 
-// ---- CALLER ----
+// ---- CALLER stream ----
 
 app.get('/caller', (c) => {
   log('CALLER-GET', stateLabel());
-  if (callerPair) {
-    log('CALLER-GET', 'CONFLICT');
-    return c.text('Call already in progress', 409);
-  }
+
   const q = new MessageQueue();
-  callerPair = { queue: q };
-  log('CALLER-GET', 'callerPair created', stateLabel());
+  if (callerQueue) {
+    log('CALLER-GET', 'replacing old caller');
+    pushFrame(callerQueue, encodeFrame('hangup'), 'hangup->old_caller');
+  }
+  callerQueue = q;
+  log('CALLER-GET', 'caller connected', stateLabel());
 
-  queuePush(callerPair.queue, encodeControl('connected'), 'connected->caller');
+  pushFrame(q, encodeFrame('connected'), 'connected->caller');
 
-  if (calleePair) {
-    log('CALLER-GET', 'callee connected, sending incoming_call');
-    queuePush(calleePair.queue, encodeControl('incoming_call'), 'incoming_call->callee');
+  if (calleeQueue) {
+    log('CALLER-GET', 'notifying callee');
+    pushFrame(calleeQueue, encodeFrame('incoming_call'), 'incoming_call->callee');
   }
 
   return stream(c, async (s) => {
@@ -127,78 +127,69 @@ app.get('/caller', (c) => {
       while (true) {
         const data = await q.pop(5000);
         if (data === null) {
-          // Timeout - send heartbeat
-          try {
-            await s.write(encodeControl('heartbeat'));
-          } catch (e) {
-            log('CALLER-GET stream', 'heartbeat write failed:', e);
-            break;
-          }
+          try { await s.write(encodeFrame('heartbeat')); }
+          catch (e) { log('CALLER stream', 'heartbeat write failed:', e); break; }
           continue;
         }
         seq++;
-        log('CALLER-GET stream', `seq=${seq} type=${data[0]} size=${data.length}B`);
-        try {
-          await s.write(data);
-        } catch (e) {
-          log('CALLER-GET stream', 'write error:', e);
-          break;
-        }
+        try { await s.write(data); }
+        catch (e) { log('CALLER stream', 'write error:', e); break; }
       }
     } finally {
-      log('CALLER-GET stream', 'cleanup: seq=', seq, stateLabel());
-      callerPair = null;
-      if (callActive && calleePair) {
-        log('CALLER-GET stream', 'call active, notifying callee');
-        pushHangupTo(calleePair.queue, 'callee');
+      if (callerQueue === q) callerQueue = null;
+      if (callActive && calleeQueue) {
+        pushFrame(calleeQueue, encodeFrame('hangup'), 'hangup->callee');
         callActive = false;
       }
-      log('CALLER-GET stream', 'cleanup done', stateLabel());
+      log('CALLER stream', 'cleanup done', stateLabel());
     }
   });
 });
 
+// ---- CALLER data upload ----
+
 app.post('/caller', async (c) => {
   const body = c.req.raw.body;
-  log('CALLER-POST', 'body present:', !!body, stateLabel());
+  log('CALLER-POST', `body present: ${!!body}`, stateLabel());
   try {
-    if (body && callActive) {
+    if (body && callActive && calleeQueue) {
       const payload = await readAllChunks(body, 'CALLER-POST');
-      forwardAudio('POST/caller', calleePair?.queue ?? null, payload);
-    } else if (body && !callActive) {
+      pushFrame(calleeQueue, wrapAudio(payload), 'audio(caller->callee)');
+    } else if (body) {
       const reader = body.getReader();
-      let total = 0;
-      while (true) { const { done, value } = await reader.read(); if (done) break; total += value.length; }
-      log('CALLER-POST', `call not active, drained ${total}B`);
+      while (true) { const { done } = await reader.read(); if (done) break; }
+      log('CALLER-POST', 'drained body (no target)');
     }
-  } catch (e) {
-    log('CALLER-POST', 'error reading body:', e);
-  }
+  } catch (e) { log('CALLER-POST', 'error:', e); }
   return c.text('ok');
 });
 
+// ---- CALLER hangup ----
+
 app.delete('/caller', async (c) => {
   log('CALLER-DELETE', stateLabel());
-  pushHangupTo(calleePair?.queue ?? null, 'callee');
+  if (callActive && calleeQueue) {
+    pushFrame(calleeQueue, encodeFrame('hangup'), 'hangup->callee');
+  }
   callActive = false;
-  callerPair = null;
   log('CALLER-DELETE done', stateLabel());
   return c.text('ok');
 });
 
-// ---- CALLEE ----
+// ---- CALLEE stream ----
 
 app.get('/callee', (c) => {
   log('CALLEE-GET', stateLabel());
-  if (calleePair) {
-    log('CALLEE-GET', 'CONFLICT');
-    return c.text('Already connected', 409);
-  }
-  const q = new MessageQueue();
-  calleePair = { queue: q };
-  log('CALLEE-GET', 'calleePair created', stateLabel());
 
-  queuePush(calleePair.queue, encodeControl('connected'), 'connected->callee');
+  const q = new MessageQueue();
+  if (calleeQueue) {
+    log('CALLEE-GET', 'replacing old callee');
+    pushFrame(calleeQueue, encodeFrame('hangup'), 'hangup->old_callee');
+  }
+  calleeQueue = q;
+  log('CALLEE-GET', 'callee connected', stateLabel());
+
+  pushFrame(q, encodeFrame('connected'), 'connected->callee');
 
   return stream(c, async (s) => {
     let seq = 0;
@@ -206,68 +197,58 @@ app.get('/callee', (c) => {
       while (true) {
         const data = await q.pop(5000);
         if (data === null) {
-          try {
-            await s.write(encodeControl('heartbeat'));
-          } catch (e) {
-            log('CALLEE-GET stream', 'heartbeat write failed:', e);
-            break;
-          }
+          try { await s.write(encodeFrame('heartbeat')); }
+          catch (e) { log('CALLEE stream', 'heartbeat write failed:', e); break; }
           continue;
         }
         seq++;
-        log('CALLEE-GET stream', `seq=${seq} type=${data[0]} size=${data.length}B`);
-        try {
-          await s.write(data);
-        } catch (e) {
-          log('CALLEE-GET stream', 'write error:', e);
-          break;
-        }
+        try { await s.write(data); }
+        catch (e) { log('CALLEE stream', 'write error:', e); break; }
       }
     } finally {
-      log('CALLEE-GET stream', 'cleanup: seq=', seq, stateLabel());
-      calleePair = null;
-      if (callActive && callerPair) {
-        log('CALLEE-GET stream', 'call active, notifying caller');
-        pushHangupTo(callerPair.queue, 'caller');
+      if (calleeQueue === q) calleeQueue = null;
+      if (callActive && callerQueue) {
+        pushFrame(callerQueue, encodeFrame('hangup'), 'hangup->caller');
         callActive = false;
       }
-      log('CALLEE-GET stream', 'cleanup done', stateLabel());
+      log('CALLEE stream', 'cleanup done', stateLabel());
     }
   });
 });
 
+// ---- CALLEE data upload / answer ----
+
 app.post('/callee', async (c) => {
   const body = c.req.raw.body;
-  log('CALLEE-POST', 'body present:', !!body, stateLabel());
+  log('CALLEE-POST', `body present: ${!!body}`, stateLabel());
 
   try {
     if (!callActive) {
-      log('CALLEE-POST', 'FIRST POST - answering call');
+      log('CALLEE-POST', 'answering call');
       callActive = true;
-      if (callerPair) {
-        queuePush(callerPair.queue, encodeControl('call_answered'), 'call_answered->caller');
-      } else {
-        log('CALLEE-POST', 'WARNING: no callerPair');
+      if (callerQueue) {
+        pushFrame(callerQueue, encodeFrame('call_answered'), 'call_answered->caller');
       }
     }
 
-    if (body) {
+    if (body && callerQueue) {
       const payload = await readAllChunks(body, 'CALLEE-POST');
-      forwardAudio('POST/callee', callerPair?.queue ?? null, payload);
+      pushFrame(callerQueue, wrapAudio(payload), 'audio(callee->caller)');
     } else {
-      log('CALLEE-POST', 'empty answer signal');
+      log('CALLEE-POST', 'no target or empty body');
     }
-  } catch (e) {
-    log('CALLEE-POST', 'error reading body:', e);
-  }
+  } catch (e) { log('CALLEE-POST', 'error:', e); }
   return c.text('ok');
 });
 
+// ---- CALLEE hangup ----
+
 app.delete('/callee', async (c) => {
   log('CALLEE-DELETE', stateLabel());
-  pushHangupTo(callerPair?.queue ?? null, 'caller');
+  if (callActive && callerQueue) {
+    pushFrame(callerQueue, encodeFrame('hangup'), 'hangup->caller');
+  }
   callActive = false;
-  calleePair = null;
   log('CALLEE-DELETE done', stateLabel());
   return c.text('ok');
 });
@@ -287,31 +268,12 @@ async function readAllChunks(stream: ReadableStream<Uint8Array>, label: string):
     chunks.push(value);
     total += value.length;
   }
-  log('READ', `${label}: ${chunks.length} chunks, ${total}B total`);
+  log('READ', `${label}: ${chunks.length} chunks, ${total}B`);
   if (chunks.length === 1) return chunks[0];
   const merged = new Uint8Array(total);
   let offset = 0;
   for (const c of chunks) { merged.set(c, offset); offset += c.length; }
   return merged;
-}
-
-function forwardAudio(source: string, queue: MessageQueue | null, data: Uint8Array) {
-  if (!queue) {
-    log('AUDIO', `${source}: no queue, dropping ${data.length}B`);
-    return;
-  }
-  try {
-    const len = writeInt32BE(data.length);
-    const buf = new Uint8Array(1 + 4 + data.length);
-    buf[0] = 1;
-    buf.set(len, 1);
-    buf.set(data, 5);
-    const kb = (data.length / 1024).toFixed(1);
-    log('AUDIO', `${source}: wrapping ${data.length}B (${kb}KB) as audio frame`);
-    queuePush(queue, buf, `audio(${source})`);
-  } catch (e) {
-    log('AUDIO', `${source}: error:`, e);
-  }
 }
 
 const PORT = parseInt(process.env.PORT || '3001');
