@@ -27,6 +27,8 @@ class OpusStream {
     if (!supported) throw new Error('No supported audio MIME type');
     this.selectedMimeType = supported;
 
+    if (typeof navigator.mediaDevices?.getUserMedia !== 'function') throw new Error('getUserMedia not available');
+
     this.mediaStream = await navigator.mediaDevices.getUserMedia({
       audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true }
     });

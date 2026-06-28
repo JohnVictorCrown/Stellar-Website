@@ -68,6 +68,8 @@ class CallClient {
     this.abortController = new AbortController();
     this.callStateWritable.set('calling');
 
+    opusStream.initStream().catch(() => {});
+
     try {
       const response = await fetch(`${this.baseUrl}/caller`, {
         method: 'GET',
