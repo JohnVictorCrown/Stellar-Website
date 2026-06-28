@@ -1,5 +1,5 @@
-const CACHE = 'stellarium-v1';
-const ASSETS = [
+const CACHE = 'stellarium-v2';
+const STATIC_ASSETS = [
   '/',
   '/index.html',
   '/main.js',
@@ -14,13 +14,22 @@ const ASSETS = [
   '/icons/icon-256.png',
   '/icons/icon-384.png',
   '/icons/icon-512.png',
+  '/fonts/thin.woff2',
+  '/fonts/regular.woff2',
   '/neue_frutiger_world_regular.ttf',
+  '/dvorak.opus',
+  '/egmont.opus',
+  '/john_victor.jpg',
+  '/Stellarium.Society.pdf',
+  '/The.Stellarium.Book.pdf',
+  '/resume.pdf',
+  '/404.html',
 ];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE).then((cache) => {
-      return cache.addAll(ASSETS);
+      return cache.addAll(STATIC_ASSETS);
     })
   );
   self.skipWaiting();
@@ -40,27 +49,30 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(request.url);
 
   if (url.origin !== self.location.origin) return;
-
   if (request.method !== 'GET') return;
-
   if (url.pathname === '/ws') return;
 
+  const isStatic = /\.(js|css|png|webp|jpg|jpeg|svg|ico|woff2?|ttf|otf|eot|opus|pdf)$/.test(url.pathname);
   const isDataFile = /\.(json)$/.test(url.pathname);
   const isNavigational = request.mode === 'navigate';
-  const isStatic = /\.(js|css|png|webp|jpg|jpeg|svg|ico|woff2?|ttf|otf|eot)$/.test(url.pathname);
 
   if (isStatic) {
     event.respondWith(cacheFirst(request));
   } else if (isDataFile) {
     event.respondWith(networkFirst(request));
   } else if (isNavigational) {
-    event.respondWith(networkFirst(request));
+    event.respondWith(networkFirstWithFallback(request));
   }
 });
 
 async function cacheFirst(request) {
   const cached = await caches.match(request);
-  return cached || fetchAndCache(request);
+  if (cached) return cached;
+  try {
+    return await fetchAndCache(request);
+  } catch {
+    return new Response('', { status: 404 });
+  }
 }
 
 async function networkFirst(request) {
@@ -69,11 +81,19 @@ async function networkFirst(request) {
   } catch {
     const cached = await caches.match(request);
     if (cached) return cached;
-    if (request.mode === 'navigate') {
-      const index = await caches.match('/index.html');
-      if (index) return index;
-    }
     throw new Error('Offline');
+  }
+}
+
+async function networkFirstWithFallback(request) {
+  try {
+    return await fetchAndCache(request);
+  } catch {
+    const cached = await caches.match('/index.html');
+    if (cached) return cached;
+    const fallback = await caches.match('/404.html');
+    if (fallback) return fallback;
+    return new Response('Offline', { status: 503 });
   }
 }
 
