@@ -1,6 +1,12 @@
 const PORT = parseInt(process.env.PORT || '3001');
 const HOST = process.env.HOST || '0.0.0.0';
 
+const CORS_HEADERS = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type',
+};
+
 let callerController: ReadableStreamDefaultController<Uint8Array> | null = null;
 let calleeController: ReadableStreamDefaultController<Uint8Array> | null = null;
 let callActive = false;
@@ -67,6 +73,14 @@ function createStream(
   });
 }
 
+function respond(body: string | ReadableStream<Uint8Array>, status = 200): Response {
+  const headers: Record<string, string> = { ...CORS_HEADERS };
+  if (body instanceof ReadableStream) {
+    headers['Content-Type'] = 'application/octet-stream';
+  }
+  return new Response(body, { status, headers });
+}
+
 Bun.serve({
   port: PORT,
   hostname: HOST,
@@ -74,16 +88,20 @@ Bun.serve({
     const url = new URL(req.url);
     const method = req.method;
 
+    // CORS preflight
+    if (method === 'OPTIONS') {
+      return new Response(null, { headers: CORS_HEADERS });
+    }
+
     // ---- CALLER endpoints ----
 
     if (url.pathname === '/caller' && method === 'GET') {
       if (callerController) {
-        return new Response('Call already in progress', { status: 409 });
+        return respond('Call already in progress', 409);
       }
-      return new Response(createStream(
+      return respond(createStream(
         (ctrl) => {
           callerController = ctrl;
-          // Notify callee of incoming call
           if (calleeController) {
             try { calleeController.enqueue(encodeControl('incoming_call')); } catch {}
           }
@@ -92,13 +110,11 @@ Bun.serve({
           callerController = null;
           if (callActive) hangupAll();
         }
-      ), {
-        headers: { 'Content-Type': 'application/octet-stream' }
-      });
+      ));
     }
 
     if (url.pathname === '/caller' && method === 'POST') {
-      if (!req.body) return new Response('No body', { status: 400 });
+      if (!req.body) return respond('No body', 400);
       const reader = req.body.getReader();
       (async () => {
         while (true) {
@@ -109,21 +125,21 @@ Bun.serve({
           }
         }
       })();
-      return new Response('ok');
+      return respond('ok');
     }
 
     if (url.pathname === '/caller' && method === 'DELETE') {
       hangupAll();
-      return new Response('ok');
+      return respond('ok');
     }
 
     // ---- CALLEE endpoints ----
 
     if (url.pathname === '/callee' && method === 'GET') {
       if (calleeController) {
-        return new Response('Already connected', { status: 409 });
+        return respond('Already connected', 409);
       }
-      return new Response(createStream(
+      return respond(createStream(
         (ctrl) => {
           calleeController = ctrl;
         },
@@ -131,15 +147,12 @@ Bun.serve({
           calleeController = null;
           if (callActive) hangupAll();
         }
-      ), {
-        headers: { 'Content-Type': 'application/octet-stream' }
-      });
+      ));
     }
 
     if (url.pathname === '/callee' && method === 'POST') {
-      if (!req.body) return new Response('No body', { status: 400 });
+      if (!req.body) return respond('No body', 400);
 
-      // First POST from callee = answer (even if empty)
       if (!callActive) {
         callActive = true;
         if (callerController) {
@@ -155,15 +168,15 @@ Bun.serve({
           forwardAudio(callerController, value);
         }
       })();
-      return new Response('ok');
+      return respond('ok');
     }
 
     if (url.pathname === '/callee' && method === 'DELETE') {
       hangupAll();
-      return new Response('ok');
+      return respond('ok');
     }
 
-    return new Response('Not found', { status: 404 });
+    return respond('Not found', 404);
   }
 });
 
