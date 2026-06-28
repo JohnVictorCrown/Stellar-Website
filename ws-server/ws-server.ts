@@ -82,19 +82,15 @@ function queuePush(queue: MessageQueue | undefined | null, frame: Uint8Array, la
   queue.push(frame);
 }
 
+function pushHangupTo(queue: MessageQueue | null, label: string) {
+  if (!queue) return;
+  queuePush(queue, encodeControl('hangup'), `hangup->${label}`);
+}
+
 async function hangupAll() {
   log('HANGUP starting', stateLabel());
-  const hangup = encodeControl('hangup');
-  if (callerPair) {
-    queuePush(callerPair.queue, hangup, 'hangup->caller');
-    log('HANGUP caller notified');
-  }
-  if (calleePair) {
-    queuePush(calleePair.queue, hangup, 'hangup->callee');
-    log('HANGUP callee notified');
-  }
-  callerPair = null;
-  calleePair = null;
+  pushHangupTo(callerPair?.queue ?? null, 'caller');
+  pushHangupTo(calleePair?.queue ?? null, 'callee');
   callActive = false;
   log('HANGUP done', stateLabel());
 }
@@ -159,7 +155,12 @@ app.get('/caller', (c) => {
       }
     } finally {
       log('CALLER-GET stream', 'cleanup: seq=', seq, stateLabel());
-      await hangupAll();
+      callerPair = null;
+      if (callActive && calleePair) {
+        log('CALLER-GET stream', 'call active, notifying callee');
+        pushHangupTo(calleePair.queue, 'callee');
+        callActive = false;
+      }
       log('CALLER-GET stream', 'cleanup done', stateLabel());
     }
   });
@@ -168,14 +169,18 @@ app.get('/caller', (c) => {
 app.post('/caller', async (c) => {
   const body = c.req.raw.body;
   log('CALLER-POST', 'body present:', !!body, stateLabel());
-  if (body && callActive) {
-    const payload = await readAllChunks(body, 'CALLER-POST');
-    forwardAudio('POST/caller', calleePair?.queue ?? null, payload);
-  } else if (body && !callActive) {
-    const reader = body.getReader();
-    let total = 0;
-    while (true) { const { done, value } = await reader.read(); if (done) break; total += value.length; }
-    log('CALLER-POST', `call not active, drained ${total}B`);
+  try {
+    if (body && callActive) {
+      const payload = await readAllChunks(body, 'CALLER-POST');
+      forwardAudio('POST/caller', calleePair?.queue ?? null, payload);
+    } else if (body && !callActive) {
+      const reader = body.getReader();
+      let total = 0;
+      while (true) { const { done, value } = await reader.read(); if (done) break; total += value.length; }
+      log('CALLER-POST', `call not active, drained ${total}B`);
+    }
+  } catch (e) {
+    log('CALLER-POST', 'error reading body:', e);
   }
   return c.text('ok');
 });
@@ -225,7 +230,12 @@ app.get('/callee', (c) => {
       }
     } finally {
       log('CALLEE-GET stream', 'cleanup: seq=', seq, stateLabel());
-      await hangupAll();
+      calleePair = null;
+      if (callActive && callerPair) {
+        log('CALLEE-GET stream', 'call active, notifying caller');
+        pushHangupTo(callerPair.queue, 'caller');
+        callActive = false;
+      }
       log('CALLEE-GET stream', 'cleanup done', stateLabel());
     }
   });
@@ -235,21 +245,25 @@ app.post('/callee', async (c) => {
   const body = c.req.raw.body;
   log('CALLEE-POST', 'body present:', !!body, stateLabel());
 
-  if (!callActive) {
-    log('CALLEE-POST', 'FIRST POST - answering call');
-    callActive = true;
-    if (callerPair) {
-      queuePush(callerPair.queue, encodeControl('call_answered'), 'call_answered->caller');
-    } else {
-      log('CALLEE-POST', 'WARNING: no callerPair');
+  try {
+    if (!callActive) {
+      log('CALLEE-POST', 'FIRST POST - answering call');
+      callActive = true;
+      if (callerPair) {
+        queuePush(callerPair.queue, encodeControl('call_answered'), 'call_answered->caller');
+      } else {
+        log('CALLEE-POST', 'WARNING: no callerPair');
+      }
     }
-  }
 
-  if (body) {
-    const payload = await readAllChunks(body, 'CALLEE-POST');
-    forwardAudio('POST/callee', callerPair?.queue ?? null, payload);
-  } else {
-    log('CALLEE-POST', 'empty answer signal');
+    if (body) {
+      const payload = await readAllChunks(body, 'CALLEE-POST');
+      forwardAudio('POST/callee', callerPair?.queue ?? null, payload);
+    } else {
+      log('CALLEE-POST', 'empty answer signal');
+    }
+  } catch (e) {
+    log('CALLEE-POST', 'error reading body:', e);
   }
   return c.text('ok');
 });
