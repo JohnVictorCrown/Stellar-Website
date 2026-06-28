@@ -4,5 +4,8 @@
   "type": "module",
   "scripts": {
     "start": "bun ws-server.ts"
+  },
+  "dependencies": {
+    "hono": "^4.12.27"
   }
 }

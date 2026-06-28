@@ -1,19 +1,13 @@
+import { Hono } from 'hono';
+import { stream } from 'hono/streaming';
+import { cors } from 'hono/cors';
+
 function log(...args: any[]) {
   const ts = new Date().toISOString();
   console.log(`[${ts}]`, ...args);
 }
 
-const PORT = parseInt(process.env.PORT || '3001');
-const HOST = process.env.HOST || '0.0.0.0';
-
-const CORS_HEADERS = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type',
-};
-
 interface StreamPair {
-  readable: ReadableStream<Uint8Array>;
   writable: WritableStream<Uint8Array>;
 }
 
@@ -59,6 +53,174 @@ async function writeFrame(writable: WritableStream<Uint8Array> | null, frame: Ui
   }
 }
 
+async function hangupAll() {
+  log('hangupAll: starting');
+  const hangup = encodeControl('hangup');
+  if (callerPair) {
+    try {
+      await writeFrame(callerPair.writable, hangup);
+      await callerPair.writable.close();
+      log('hangupAll: closed caller writable');
+    } catch (e) {
+      log('hangupAll: caller writable close error:', e);
+    }
+  }
+  if (calleePair) {
+    try {
+      await writeFrame(calleePair.writable, hangup);
+      await calleePair.writable.close();
+      log('hangupAll: closed callee writable');
+    } catch (e) {
+      log('hangupAll: callee writable close error:', e);
+    }
+  }
+  callerPair = null;
+  calleePair = null;
+  callActive = false;
+  log('hangupAll: done, callActive=false');
+}
+
+const app = new Hono();
+
+app.use('*', cors({
+  origin: '*',
+  allowMethods: ['GET', 'POST', 'DELETE', 'OPTIONS'],
+  allowHeaders: ['Content-Type'],
+}));
+
+// ---- CALLER ----
+
+app.get('/caller', (c) => {
+  if (callerPair) {
+    log('GET /caller: conflict');
+    return c.text('Call already in progress', 409);
+  }
+  const ts = new TransformStream<Uint8Array>();
+  callerPair = { writable: ts.writable };
+  log('GET /caller: callerPair set');
+
+  writeFrame(callerPair.writable, encodeControl('connected'));
+
+  if (calleePair) {
+    writeFrame(calleePair.writable, encodeControl('incoming_call'));
+  }
+
+  return stream(c, async (stream) => {
+    const reader = ts.readable.getReader();
+    try {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        await stream.write(value);
+      }
+    } catch (e) {
+      log('GET /caller stream error:', e);
+    } finally {
+      reader.releaseLock();
+      log('GET /caller stream ended');
+    }
+  });
+});
+
+app.post('/caller', async (c) => {
+  const body = c.req.raw.body;
+  if (!body) return c.text('No body', 400);
+  log('POST /caller: reading body');
+  const reader = body.getReader();
+  let totalBytes = 0;
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) {
+      log('POST /caller: done reading, total', totalBytes, 'bytes');
+      break;
+    }
+    totalBytes += value.length;
+    log('POST /caller: chunk', value.length, 'bytes (total', totalBytes + ')');
+    if (callActive) {
+      forwardAudio(calleePair?.writable ?? null, value);
+    } else {
+      log('POST /caller: call not active, dropping chunk');
+    }
+  }
+  return c.text('ok');
+});
+
+app.delete('/caller', async (c) => {
+  log('DELETE /caller');
+  await hangupAll();
+  return c.text('ok');
+});
+
+// ---- CALLEE ----
+
+app.get('/callee', (c) => {
+  if (calleePair) {
+    log('GET /callee: conflict');
+    return c.text('Already connected', 409);
+  }
+  const ts = new TransformStream<Uint8Array>();
+  calleePair = { writable: ts.writable };
+  log('GET /callee: calleePair set');
+
+  writeFrame(calleePair.writable, encodeControl('connected'));
+
+  return stream(c, async (stream) => {
+    const reader = ts.readable.getReader();
+    try {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        await stream.write(value);
+      }
+    } catch (e) {
+      log('GET /callee stream error:', e);
+    } finally {
+      reader.releaseLock();
+      log('GET /callee stream ended');
+    }
+  });
+});
+
+app.post('/callee', async (c) => {
+  const body = c.req.raw.body;
+  if (!body) return c.text('No body', 400);
+
+  if (!callActive) {
+    log('POST /callee: first POST -> answering call');
+    callActive = true;
+    if (callerPair) {
+      await writeFrame(callerPair.writable, encodeControl('call_answered'));
+      log('POST /callee: sent call_answered to caller');
+    }
+  }
+
+  log('POST /callee: reading body');
+  const reader = body.getReader();
+  let totalBytes = 0;
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) {
+      log('POST /callee: done reading, total', totalBytes, 'bytes');
+      break;
+    }
+    totalBytes += value.length;
+    log('POST /callee: chunk', value.length, 'bytes (total', totalBytes + ')');
+    forwardAudio(callerPair?.writable ?? null, value);
+  }
+  return c.text('ok');
+});
+
+app.delete('/callee', async (c) => {
+  log('DELETE /callee');
+  await hangupAll();
+  return c.text('ok');
+});
+
+app.notFound((c) => {
+  log('404:', c.req.path);
+  return c.text('Not found', 404);
+});
+
 function forwardAudio(writable: WritableStream<Uint8Array> | null, data: Uint8Array) {
   if (!writable) {
     log('forwardAudio: no writable, dropping', data.length, 'bytes');
@@ -77,152 +239,10 @@ function forwardAudio(writable: WritableStream<Uint8Array> | null, data: Uint8Ar
   }
 }
 
-async function hangupAll() {
-  log('hangupAll: starting');
-  const hangup = encodeControl('hangup');
-  if (callerPair) {
-    await writeFrame(callerPair.writable, hangup);
-    await callerPair.writable.close();
-    log('hangupAll: closed caller writable');
-  }
-  if (calleePair) {
-    await writeFrame(calleePair.writable, hangup);
-    await calleePair.writable.close();
-    log('hangupAll: closed callee writable');
-  }
-  callerPair = null;
-  calleePair = null;
-  callActive = false;
-  log('hangupAll: done, callActive=false');
-}
+const PORT = parseInt(process.env.PORT || '3001');
+log(`Server started on port ${PORT}`);
 
-function makeStreamPair(label: string): StreamPair {
-  log('makeStreamPair: creating', label);
-  const ts = new TransformStream<Uint8Array>();
-  log('makeStreamPair: created', label, 'TransformStream');
-  return { readable: ts.readable, writable: ts.writable };
-}
-
-function respond(body: string | ReadableStream<Uint8Array>, status = 200): Response {
-  const headers: Record<string, string> = { ...CORS_HEADERS };
-  if (body instanceof ReadableStream) {
-    headers['Content-Type'] = 'application/octet-stream';
-  }
-  log('respond:', status, typeof body);
-  return new Response(body, { status, headers });
-}
-
-Bun.serve({
+export default {
   port: PORT,
-  hostname: HOST,
-  async fetch(req: Request) {
-    const url = new URL(req.url);
-    const method = req.method;
-    const ip = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'unknown';
-    log(`--> ${method} ${url.pathname} from ${ip}`);
-
-    try {
-      if (method === 'OPTIONS') {
-        log('OPTIONS: returning CORS headers');
-        return new Response(null, { headers: CORS_HEADERS });
-      }
-
-      // ---- CALLER ----
-
-      if (url.pathname === '/caller' && method === 'GET') {
-        if (callerPair) {
-          log('GET /caller: conflict');
-          return respond('Call already in progress', 409);
-        }
-        callerPair = makeStreamPair('caller');
-        log('GET /caller: callerPair set, notifying callee if connected');
-        if (calleePair) {
-          writeFrame(calleePair.writable, encodeControl('incoming_call'));
-        }
-        return respond(callerPair.readable);
-      }
-
-      if (url.pathname === '/caller' && method === 'POST') {
-        if (!req.body) return respond('No body', 400);
-        log('POST /caller: reading body');
-        const reader = req.body.getReader();
-        let totalBytes = 0;
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) {
-            log('POST /caller: done reading, total', totalBytes, 'bytes');
-            break;
-          }
-          totalBytes += value.length;
-          log('POST /caller: chunk', value.length, 'bytes (total', totalBytes + ')');
-          if (callActive) {
-            forwardAudio(calleePair?.writable ?? null, value);
-          } else {
-            log('POST /caller: call not active, dropping chunk');
-          }
-        }
-        return respond('ok');
-      }
-
-      if (url.pathname === '/caller' && method === 'DELETE') {
-        log('DELETE /caller');
-        await hangupAll();
-        return respond('ok');
-      }
-
-      // ---- CALLEE ----
-
-      if (url.pathname === '/callee' && method === 'GET') {
-        if (calleePair) {
-          log('GET /callee: conflict');
-          return respond('Already connected', 409);
-        }
-        calleePair = makeStreamPair('callee');
-        log('GET /callee: calleePair set');
-        return respond(calleePair.readable);
-      }
-
-      if (url.pathname === '/callee' && method === 'POST') {
-        if (!req.body) return respond('No body', 400);
-
-        if (!callActive) {
-          log('POST /callee: first POST -> answering call');
-          callActive = true;
-          if (callerPair) {
-            await writeFrame(callerPair.writable, encodeControl('call_answered'));
-            log('POST /callee: sent call_answered to caller');
-          }
-        }
-
-        log('POST /callee: reading body');
-        const reader = req.body.getReader();
-        let totalBytes = 0;
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) {
-            log('POST /callee: done reading, total', totalBytes, 'bytes');
-            break;
-          }
-          totalBytes += value.length;
-          log('POST /callee: chunk', value.length, 'bytes (total', totalBytes + ')');
-          forwardAudio(callerPair?.writable ?? null, value);
-        }
-        return respond('ok');
-      }
-
-      if (url.pathname === '/callee' && method === 'DELETE') {
-        log('DELETE /callee');
-        await hangupAll();
-        return respond('ok');
-      }
-
-      log('404:', url.pathname);
-      return respond('Not found', 404);
-    } catch (e) {
-      log('ERROR:', e);
-      return new Response('Internal Server Error', { status: 500, headers: CORS_HEADERS });
-    }
-  }
-});
-
-log(`Server started on http://${HOST}:${PORT}`);
+  fetch: app.fetch,
+};
