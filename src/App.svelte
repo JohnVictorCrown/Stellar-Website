@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Home, Book, PlayCircle, FileQuestion, CircleDollarSign, Mail, Wifi, WifiOff, Download } from 'lucide-svelte';
+  import { Home, Book, PlayCircle, FileQuestion, CircleDollarSign, Mail, WifiOff } from 'lucide-svelte';
   import HomeScreen from './screens/HomeScreen.svelte';
   import LibraryScreen from './screens/LibraryScreen.svelte';
   import MediaScreen from './screens/MediaScreen.svelte';
@@ -7,18 +7,19 @@
   import SponsorScreen from './screens/SponsorScreen.svelte';
   import ContactScreen from './screens/ContactScreen.svelte';
   import AudioControl from './components/AudioControl.svelte';
-  import { initPWA, getCanInstall, getIsOnline, promptInstall, onInstallChange, onOnlineChange } from './lib/pwa';
 
   let location = $state(window.location.pathname);
-  let canInstall = $state(false);
-  let isOnline = $state(true);
+  let isOnline = $state(navigator.onLine);
 
   $effect(() => {
-    initPWA();
-    canInstall = getCanInstall();
-    isOnline = getIsOnline();
-    onInstallChange((v) => canInstall = v);
-    onOnlineChange((v) => isOnline = v);
+    const onLine = () => isOnline = true;
+    const offLine = () => isOnline = false;
+    window.addEventListener('online', onLine);
+    window.addEventListener('offline', offLine);
+    return () => {
+      window.removeEventListener('online', onLine);
+      window.removeEventListener('offline', offLine);
+    };
   });
 
   async function setupStatusBar() {
@@ -119,16 +120,6 @@
   </div>
 
   <AudioControl />
-
-  {#if canInstall}
-    <button
-      onclick={promptInstall}
-      class="fixed right-4 bottom-24 md:bottom-28 lg:bottom-32 z-50 bg-[var(--color-tertiary)] text-black p-3 md:p-4 rounded-full shadow-lg hover:bg-[var(--color-tertiary)]/90 active:scale-95 transition-all flex items-center gap-2 text-xs md:text-sm tracking-wider uppercase"
-    >
-      <Download size={18} />
-      <span class="hidden sm:inline">Install App</span>
-    </button>
-  {/if}
 
   <div class="bg-black/70 backdrop-blur-md border-t border-white/5 safe-bottom z-50">
     <div class="flex justify-around items-center h-16 md:h-20 lg:h-24 px-2 max-w-lg md:max-w-3xl lg:max-w-5xl mx-auto">
