@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Mail, Shield, Zap, Copy, CheckCircle, Phone, PhoneOff, Mic, MicOff } from 'lucide-svelte';
+  import { Mail, Shield, Zap, Copy, CheckCircle, Phone, PhoneOff, Mic } from 'lucide-svelte';
   import { callClient } from '../utils/callClient';
 
   let email = $state('');
@@ -9,17 +9,15 @@
   let statusType: 'success' | 'error' | 'info' | '' = $state('');
   let portalCopied = $state(false);
   let callState = $state<'idle' | 'calling' | 'in_call' | 'ended' | 'no_answer' | 'failed'>('idle');
-  let isMuted = $state(false);
   let callErrorText = $state('');
+  let isPTT = $state(false);
 
   $effect(() => {
     const unsub1 = callClient.callState.subscribe((v) => callState = v);
-    const unsub2 = callClient.isMuted.subscribe((v) => isMuted = v);
-    const unsub3 = callClient.errorText.subscribe((v) => callErrorText = v);
+    const unsub2 = callClient.errorText.subscribe((v) => callErrorText = v);
     return () => {
       unsub1();
       unsub2();
-      unsub3();
     };
   });
 
@@ -97,7 +95,7 @@
       </div>
 
       <p class="text-xs lg:text-sm xl:text-base text-gray-300 leading-relaxed text-left">
-        Speak directly with John Victor through a secure WebSocket voice channel. Requires microphone access.
+        Walkie-talkie voice with John Victor. Hold to talk, release to listen. Requires microphone access.
       </p>
 
       {#if callState === 'idle' || callState === 'failed' || callState === 'no_answer'}
@@ -119,27 +117,26 @@
         </div>
       {:else if callState === 'in_call'}
         <div class="flex flex-col gap-3">
-          <span class="text-emerald-300 font-semibold text-center">In Call</span>
+          <span class="text-emerald-300 font-semibold text-center">Connected — Walkie-Talkie Mode</span>
           
-          <div class="flex gap-3">
-            <button
-              onclick={() => callClient.toggleMute()}
-              class="flex-1 bg-white/10 text-white font-semibold py-2 rounded-xl flex items-center justify-center gap-2 uppercase tracking-wider text-xs hover:bg-white/15 transition-all"
-            >
-              {#if isMuted}
-                <MicOff size={16} /> Unmute
-              {:else}
-                <Mic size={16} /> Mute
-              {/if}
-            </button>
-            
-            <button
-              onclick={() => callClient.endCall()}
-              class="flex-1 bg-red-500 text-white font-bold py-2 rounded-xl flex items-center justify-center gap-2 uppercase tracking-wider text-xs hover:bg-red-400 transition-all"
-            >
-              <PhoneOff size={16} /> End Call
-            </button>
-          </div>
+          <button
+            ontouchstart={() => { isPTT = true; callClient.startTransmitting(); }}
+            ontouchend={() => { isPTT = false; callClient.stopTransmitting(); }}
+            onmousedown={() => { isPTT = true; callClient.startTransmitting(); }}
+            onmouseup={() => { isPTT = false; callClient.stopTransmitting(); }}
+            onmouseleave={() => { if (isPTT) { isPTT = false; callClient.stopTransmitting(); } }}
+            class="w-full py-6 rounded-xl flex items-center justify-center gap-2 uppercase tracking-wider text-sm font-bold transition-all select-none active:scale-[0.98] {isPTT ? 'bg-emerald-500 text-black shadow-[0_0_30px_rgba(16,185,129,0.5)]' : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-500/30'}"
+          >
+            <Mic size={20} />
+            {isPTT ? 'TRANSMITTING...' : 'HOLD TO TALK'}
+          </button>
+          
+          <button
+            onclick={() => callClient.endCall()}
+            class="w-full bg-red-500/20 text-red-400 border border-red-500/30 font-semibold py-3 rounded-xl flex items-center justify-center gap-2 uppercase tracking-wider text-xs hover:bg-red-500/30 transition-all"
+          >
+            <PhoneOff size={16} /> End Call
+          </button>
         </div>
       {:else if callState === 'ended'}
         <p class="text-xs text-gray-400 text-center">Call ended</p>

@@ -6,55 +6,32 @@ type CallState = 'idle' | 'calling' | 'in_call' | 'ended' | 'no_answer' | 'faile
 class CallClient {
   private ws: WebSocket | null = null;
   private callTimeout: ReturnType<typeof setTimeout> | null = null;
-  private isStreaming = false;
+  private recording = false;
 
   private callStateWritable: Writable<CallState> = writable('idle');
-  private isMutedWritable: Writable<boolean> = writable(false);
   private errorTextWritable: Writable<string> = writable('');
 
   callState: Readable<CallState> = this.callStateWritable;
-  isMuted: Readable<boolean> = this.isMutedWritable;
   errorText: Readable<string> = this.errorTextWritable;
 
   private handleSignalingMessage(msg: any) {
     switch (msg.type) {
       case 'call_accepted':
+      case 'call_answered':
         if (this.callTimeout) clearTimeout(this.callTimeout);
         this.callStateWritable.set('in_call');
-        this.startAudioStream();
         break;
       case 'error':
         if (this.callTimeout) clearTimeout(this.callTimeout);
         this.callStateWritable.set('failed');
         this.errorTextWritable.set(msg.message || 'Call failed');
-        this.stopAudioStream();
         break;
       case 'hangup':
         if (this.callTimeout) clearTimeout(this.callTimeout);
         this.callStateWritable.set('ended');
-        this.stopAudioStream();
+        opusStream.stop();
         break;
     }
-  }
-
-  private async startAudioStream(): Promise<void> {
-    this.isStreaming = true;
-    this.isMutedWritable.set(false);
-    try {
-      const ws = this.ws;
-      await opusStream.startCapture((packet) => {
-        if (ws && ws.readyState === WebSocket.OPEN) {
-          ws.send(packet);
-        }
-      });
-    } catch (e) {
-      console.error('Audio stream start failed:', e);
-    }
-  }
-
-  private stopAudioStream(): void {
-    this.isStreaming = false;
-    opusStream.stop();
   }
 
   private setupWebSocket(): Promise<WebSocket> {
@@ -96,7 +73,7 @@ class CallClient {
         if (currentState === 'in_call') {
           this.callStateWritable.set('ended');
         }
-        this.stopAudioStream();
+        opusStream.stop();
       };
 
       setTimeout(() => reject(new Error('Connection timeout')), 5000);
@@ -135,6 +112,8 @@ class CallClient {
       return;
     }
 
+    opusStream.initDecoder();
+
     this.callStateWritable.set('calling');
 
     this.callTimeout = setTimeout(() => {
@@ -158,7 +137,7 @@ class CallClient {
       ws.close();
     }
     this.callStateWritable.set('ended');
-    this.stopAudioStream();
+    opusStream.stop();
   }
 
   resetCall(): void {
@@ -168,10 +147,25 @@ class CallClient {
     opusStream.stop();
   }
 
-  toggleMute(): void {
-    const newMuted = !get(this.isMutedWritable);
-    this.isMutedWritable.set(newMuted);
-    opusStream.toggleMute();
+  async startTransmitting(): Promise<void> {
+    if (get(this.callStateWritable) !== 'in_call') return;
+    if (this.recording) return;
+    this.recording = true;
+
+    const ws = this.ws;
+    try {
+      const packet = await opusStream.startRecording();
+      if (ws && ws.readyState === WebSocket.OPEN) {
+        ws.send(packet);
+      }
+    } catch (e) {
+      console.error('PTT recording failed:', e);
+    }
+    this.recording = false;
+  }
+
+  stopTransmitting(): void {
+    opusStream.stopRecording();
   }
 }
 
