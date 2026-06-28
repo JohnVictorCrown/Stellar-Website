@@ -276,19 +276,68 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.tag.outputs.release_tag }}
-          name: Continuous Build ${{ steps.tag.outputs.release_tag }}
+          name: 🚀 Stellarium Foundation v1.0.0 — ${{ steps.tag.outputs.release_tag }}
           body: |
-            ## Continuous Build — ${{ steps.tag.outputs.release_tag }}
+            # 🚀 Stellarium Foundation — v1.0.0
 
-            **Commit:** ${{ github.sha }}
+            > **Build:** ${{ steps.tag.outputs.release_tag }} · **Commit:** `${{ github.sha }}`
 
-            ### Artifacts
+            ---
 
-            | Platform | File | Type |
-            |---|---|---|
-            | 📱 Android (Capacitor) | `Stellarium-Foundation-Android-${{ steps.tag.outputs.release_tag }}.apk` | Release APK |
-            | 📱 Android (Capacitor) | `Stellarium-Foundation-Android-${{ steps.tag.outputs.release_tag }}.aab` | Android App Bundle |
-            | 📱 Android (Owner) | `Stellarium-Caller-Owner-${{ steps.tag.outputs.release_tag }}.apk` | Release APK |
-            | 📱 Android (Owner) | `Stellarium-Caller-Owner-${{ steps.tag.outputs.release_tag }}.aab` | Android App Bundle |
-            | 🍏 iOS | `Stellarium-Foundation-iOS-Simulator-${{ steps.tag.outputs.release_tag }}.zip` | Simulator build |
+            ## ✨ What's New
+
+            - **Progressive Web App** — Full offline support via service worker caching
+            - **Knowledge Quiz** — General Knowledge and topic-based quiz modules
+            - **Walkie-Talkie Audio** — Real-time PTT voice chat with room-based multi-participant support
+            - **Background Audio Player** — Ambient classical music (Dvořák & Egmont)
+            - **Interactive Library** — Stellarium literature viewer with PDF downloads
+            - **Sponsor Portal** — In-app donation flow (Bank, Crypto, Patreon, PayPal)
+            - **Secure Communications** — End-to-end encrypted message form + Tor anonymous messaging node
+            - **Cross-Platform** — Web + Android (Capacitor) + StellariumCaller (Owner App)
+
+            ---
+
+            ## 📦 Downloads
+
+            ### Android (Capacitor) — Stellarium Foundation App
+            | File | Type |
+            |------|------|
+            | [📱 `Stellarium-Foundation-Android-${{ steps.tag.outputs.release_tag }}.apk`](./Stellarium-Foundation-Android-${{ steps.tag.outputs.release_tag }}.apk) | Release APK (signed) |
+            | [📦 `Stellarium-Foundation-Android-${{ steps.tag.outputs.release_tag }}.aab`](./Stellarium-Foundation-Android-${{ steps.tag.outputs.release_tag }}.aab) | Android App Bundle (Play Store) |
+
+            ### Android (Owner) — StellariumCaller
+            | File | Type |
+            |------|------|
+            | [📱 `Stellarium-Caller-Owner-${{ steps.tag.outputs.release_tag }}.apk`](./Stellarium-Caller-Owner-${{ steps.tag.outputs.release_tag }}.apk) | Release APK (signed, optimized) |
+            | [📦 `Stellarium-Caller-Owner-${{ steps.tag.outputs.release_tag }}.aab`](./Stellarium-Caller-Owner-${{ steps.tag.outputs.release_tag }}.aab) | Android App Bundle (Play Store) |
+
+            ### iOS
+            | File | Type |
+            |------|------|
+            | [🍏 `Stellarium-Foundation-iOS-Simulator-${{ steps.tag.outputs.release_tag }}.zip`](./Stellarium-Foundation-iOS-Simulator-${{ steps.tag.outputs.release_tag }}.zip) | Simulator build |
+
+            ---
+
+            ## 🛠 Install Instructions
+
+            ### Android
+            1. Download the `.apk` or `.aab` for your device
+            2. Enable **Install from unknown sources** in Settings → Security
+            3. Open the downloaded file and tap **Install**
+
+            ### Web (PWA)
+            1. Open [stellarium.app](https://stellariumfoundation.github.io/StellarWebsite/) in Chrome/Edge
+            2. Tap the **Install** button in the address bar or the Home screen Install button
+            3. The app launches in standalone mode with full offline support
+
+            ### iOS
+            - The simulator build is for Xcode testing only
+            - For device installation, deploy via Xcode or TestFlight
+
+            ---
+
+            ## 🔗 Links
+            - **Website:** https://stellariumfoundation.github.io/StellarWebsite/
+            - **WebSocket Server:** `wss://stellarwebsite-ws.onrender.com/ws`
+            - **Repository:** ${{ github.repository }}
           files: release-files/*
