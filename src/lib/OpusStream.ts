@@ -24,12 +24,41 @@ class OpusStream {
     this.initializedWritable.set(true);
   }
 
-  private isTorBrowser(): boolean {
-    try {
-      return (window as any).chrome === undefined &&
-        navigator.userAgent.includes('Firefox') &&
-        navigator.userAgent.includes('Tor');
-    } catch { return false; }
+  private async tryAllGetUserMedia(constraints: MediaStreamConstraints): Promise<MediaStream | null> {
+    const apis: [string, () => Promise<MediaStream>][] = [
+      ['navigator.mediaDevices.getUserMedia', () => navigator.mediaDevices!.getUserMedia(constraints)],
+    ];
+    if (typeof (navigator as any).getUserMedia === 'function') {
+      apis.push(['navigator.getUserMedia', () => new Promise((res, rej) => (navigator as any).getUserMedia(constraints, res, rej))]);
+    }
+    if (typeof (navigator as any).webkitGetUserMedia === 'function') {
+      apis.push(['navigator.webkitGetUserMedia', () => new Promise((res, rej) => (navigator as any).webkitGetUserMedia(constraints, res, rej))]);
+    }
+    if (typeof (navigator as any).mozGetUserMedia === 'function') {
+      apis.push(['navigator.mozGetUserMedia', () => new Promise((res, rej) => (navigator as any).mozGetUserMedia(constraints, res, rej))]);
+    }
+    for (const [name, fn] of apis) {
+      try {
+        const stream = await fn();
+        console.log('getUserMedia succeeded via', name);
+        return stream;
+      } catch (e) {
+        console.log('getUserMedia failed via', name, e);
+      }
+    }
+    return null;
+  }
+
+  private detectMicBlockReason(): string {
+    if (typeof navigator.mediaDevices === 'undefined') {
+      const isFirefox = navigator.userAgent.includes('Firefox');
+      const isTor = navigator.userAgent.includes('Tor');
+      if (isTor || isFirefox) {
+        return 'Tor Browser blocks microphone at "Safer"/"Safest" level, or about:config flag "media.navigator.enabled" is false. Verify your security level via the shield icon in the URL bar, then check about:config → search "media.navigator.enabled" → set to true.';
+      }
+      return 'navigator.mediaDevices is undefined. Ensure you are on HTTPS and your browser supports getUserMedia.';
+    }
+    return '';
   }
 
   async initStream(): Promise<void> {
@@ -43,32 +72,17 @@ class OpusStream {
     }
     this.selectedMimeType = supported;
 
-    if (typeof navigator.mediaDevices?.getUserMedia !== 'function') {
+    const stream = await this.tryAllGetUserMedia({
+      audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true }
+    });
+
+    if (!stream) {
       this.micBlockedWritable.set(true);
-      if (this.isTorBrowser()) {
-        this.micHintWritable.set('Click the shield icon in the URL bar → set Security Level to "Standard" to enable microphone access.');
-      } else if (typeof navigator.mediaDevices === 'undefined') {
-        this.micHintWritable.set('Microphone access is blocked by your browser. Use HTTPS and a supported browser (Chrome, Firefox, Edge).');
-      } else {
-        this.micHintWritable.set('Microphone API unavailable in this browser.');
-      }
+      this.micHintWritable.set(this.detectMicBlockReason());
       return;
     }
 
-    try {
-      this.mediaStream = await navigator.mediaDevices.getUserMedia({
-        audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true }
-      });
-    } catch (e: any) {
-      this.micBlockedWritable.set(true);
-      if (e.name === 'NotAllowedError' || e.name === 'PermissionDeniedError') {
-        this.micHintWritable.set('Microphone permission denied. Allow mic access in your browser settings, then refresh.');
-      } else {
-        this.micHintWritable.set('Could not access microphone: ' + e.message);
-      }
-      return;
-    }
-
+    this.mediaStream = stream;
     this.mediaRecorder = new MediaRecorder(this.mediaStream, {
       mimeType: this.selectedMimeType,
       audioBitsPerSecond: BITRATE
